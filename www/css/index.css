@@ -1,0 +1,134 @@
+:root {
+    --branco: #fff;
+    --gelo: #f1f1f1;
+    --verde: #19c463;
+    --preto: #2a2a2a;
+    --laranja: #f86100;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+
+body {
+    font-family: 'Bebas Neue', sans-serif;
+    background-color: var(--gelo);
+}
+
+.toolbar {
+    height: 80px;
+}
+
+.tab-link {
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+}
+
+.toolbar-inner .link {
+    flex: 1;
+    height: 80px;
+    line-height: 20px;
+    font-weight: bold;
+    background-color: var(--laranja);
+    color: var(--branco);
+    border: none;
+    border-radius: 22px;
+    width: 90px;
+    height: 55px;
+}
+
+.toolbar-inner {
+    background-color: var(--branco);
+    border-top: 1px solid var(--gelo);
+}
+
+.toolbar-inner span {
+    font-size: 10px;
+}
+
+.toolbar-inner .link:not(.active) {
+    color: gray;
+    font-weight: normal;
+    background-color: var(--branco);
+}
+
+.toolbar-inner>.link i {
+    font-size: 20px;
+}
+
+.top-nav {
+    width: 100%;
+    height: 80px;
+    background: var(--laranja);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-nav2 {
+    width: 100%;
+    height: 80px;
+    background: var(--laranja);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-logo {
+    font-weight: 600;
+    margin-left: 5%;
+    color: var(--branco);
+}
+
+.title-logo2 {
+    font-weight: 600;
+    left: 50%;
+    color: var(--branco);
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.navbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 5%;
+}
+
+.navbar-btn2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5%;
+}
+
+.btn-config {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--branco);
+}
+
+.btn-noti {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5%;
+    font-size: 24px;
+    color: var(--branco);
+}
+
+.btn-voltar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: var(--branco);
+}
