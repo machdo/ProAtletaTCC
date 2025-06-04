@@ -1,6 +1,6 @@
 //INICIALIZAÇÃO DO F7 QUANDO DISPOSITIVO ESTÁ PRONTO
 document.addEventListener('deviceready', onDeviceReady, false);
-var app = new Framework7({
+window.app = new Framework7({
 	// App root element
 	el: '#app',
 	// App Name
@@ -17,6 +17,92 @@ var app = new Framework7({
 	},
 	// Add default routes
 	routes: [
+		{
+			path: '/inicio/',
+			url: 'inicio.html',
+			animate: false,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit({ page }) {
+					// fazer algo quando a página for inicializada
+
+					const cssId = 'inicio-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/inicio.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+
+					const css = document.getElementById('inicio-css');
+					if (css) css.remove();
+				},
+			}
+		},
+
+		{
+			path: '/login/',
+			url: 'login.html',
+			animate: false,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+
+					const css = document.getElementById('inicio-css');
+					if (css) css.remove();
+
+					$.getScript('js/login.js')
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+
+		{
+			path: '/cadastro/',
+			url: 'cadastro.html',
+			animate: false,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit({ page }) {
+					const inicioCss = document.getElementById('inicio-css');
+					if (inicioCss) inicioCss.remove();
+
+					$.getScript('js/cadastro.js')
+				},
+
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+
+					removeCSS('css/cadastro.css');
+				},
+			}
+		},
+
 		{
 			path: '/index/',
 			url: 'index.html',
@@ -141,12 +227,142 @@ var app = new Framework7({
 				},
 			}
 		},
+		{
+			path: '/config/',
+			url: 'config.html',
+			animate: true, // <- animação ativada
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+		{
+			path: '/escolinhas/',
+			url: 'escolinhas.html',
+			animate: true, // <- animação ativada
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+
+					const cssId = 'escolinhas-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/escolinhas.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					$.getScript("js/script.js");
+					console.log('Página escolinhas carregada');
+
+					const input = page.el.querySelector('#endereco');
+					const resultados = page.el.querySelector('#resultados');
+					const enderecoDiv = page.el.querySelector('#endereco-escolinha');
+					const clearBtn = page.el.querySelector('.icon.clear');
+
+					function toggleClear() {
+						if (input.value.trim() !== '') {
+							clearBtn.style.display = 'block';
+						} else {
+							clearBtn.style.display = 'none';
+						}
+					}
+
+					function clearInput() {
+						input.value = '';
+						toggleClear();
+						input.focus();
+					}
+
+					input.addEventListener('input', toggleClear);
+					clearBtn.addEventListener('click', clearInput);
+
+					input.addEventListener('keypress', (e) => {
+						if (e.key === 'Enter') {
+							e.preventDefault();
+							buscarEscolinhas(page);
+						}
+					});
+
+					const btnBuscar = page.el.querySelector('#btnBuscar');
+					btnBuscar.addEventListener('click', () => {
+						buscarEscolinhas(page);
+					});
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+					
+					const css = document.getElementById('inicio-css');
+					if (css) css.remove();
+
+				},
+			}
+		},
+		{
+			path: '/peneiras/',
+			url: 'peneiras.html',
+			animate: true, // <- animação ativada
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+
 	],
 	// ... other parameters
 });
 
+var tabbar = document.querySelector('.toolbar-bottom');
+
+// Evento para controlar a visibilidade da tabbar conforme a rota
+app.on('routeChange', function (route) {
+	const currentPath = route.url;
+
+	// Lista de páginas onde a tabbar deve ser ocultada
+	const paginasSemTabbar = ['/inicio/', '/cadastro/', '/login/'];
+
+	if (paginasSemTabbar.includes(currentPath)) {
+		tabbar.style.display = 'none';
+	} else {
+		tabbar.style.display = 'flex'; // ou 'block'
+	}
+});
+
+
+
+
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/index/' });
+var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -164,7 +380,7 @@ app.on('routeChange', function (route) {
 
 function onDeviceReady() {
 	//Quando estiver rodando no celular
-	var mainView = app.views.create('.view-main', { url: '/index/' });
+	//var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 	//COMANDO PARA "OUVIR" O BOTAO VOLTAR NATIVO DO ANDROID 	
 	document.addEventListener("backbutton", function (e) {

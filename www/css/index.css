@@ -1,13 +1,51 @@
 :root {
     --branco: #fff;
     --gelo: #f1f1f1;
-    --verde: #19c463;
     --preto: #2a2a2a;
     --laranja: #f86100;
     --transparente: #ffffff00;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--laranja);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOut 1.5s ease 2s forwards;
+}
+
+.splash-logo {
+    width: 350px;
+    height: auto;
+    animation: scaleLogo 1.2s ease-in-out;
+}
+
+@keyframes scaleLogo {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
 
 body {
     font-family: 'Bebas Neue', sans-serif;
@@ -194,4 +232,60 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.img-fluid {
+    max-width: 100%;
+}
+
+.block {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 6%;
+    margin-top: 6%;
+}
+
+.divisoria {
+    border-top: 2px solid #e4e3e3;
+}
+
+.btn-home {
+    padding: 5px;
+    height: 18%;
+    align-items: center;
+    margin-top: 6%;
+    margin-bottom: 6%;
+}
+
+.btn-home a {
+    margin-bottom: 6%;
+    border-radius: 20px;
+    margin-left: 8%;
+    width: 78%;
+    text-align: left;
+    font-family: 'Bebas Neue', sans-serif;
+    background-color: #e6e3e3;
+    border: none;
+    font-weight: 300;
+    display: block;
+    padding: 10px;
+    color: #44444a;
+    text-decoration: none;
+    font-size: 17px;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-home a:active {
+    background-color: #d4d4d4;
+    transform: scale(0.97);
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.btn-icone {
+    align-items: center;
+    justify-content: center;
+    font-weight: 1000;
+    font-size: 17px;
+    color: #44444a;
 }
