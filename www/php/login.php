@@ -13,15 +13,20 @@ if (isset($_POST['email'], $_POST['senha'])) {
         exit;
     }
 
-    $stmt = $conn->prepare("SELECT nome FROM usuarios WHERE email = ? AND senha = ?");
+    $stmt = $conn->prepare("SELECT nome, verificado FROM usuarios WHERE email = ? AND senha = ?");
     $stmt->bind_param("ss", $email, $senha);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($nome);
+        $stmt->bind_result($nome, $verificado);
         $stmt->fetch();
-        echo json_encode(['success' => true, 'nome' => $nome]);
+
+        if ($verificado == 1) {
+            echo json_encode(['success' => true, 'nome' => $nome]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Email ainda não verificado.']);
+        }
     } else {
         echo json_encode(['success' => false, 'message' => 'Email ou senha inválidos.']);
     }
@@ -31,3 +36,4 @@ if (isset($_POST['email'], $_POST['senha'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Parâmetros incompletos.']);
 }
+?>

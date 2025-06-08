@@ -12,35 +12,37 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
 		},
 		body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`
 	})
-		.then(response => response.json())
-		.then(data => {
-			console.log(data); // Ver resposta no console
+	.then(response => response.text())
+	.then(text => {
+		console.log("Resposta bruta:", text); // debug
+
+		try {
+			const data = JSON.parse(text);
 
 			if (data.success) {
-				console.log("Cadastro realizado com sucesso! Tentando redirecionar...");
-
-				if (app && app.views && app.views.main) {
-					app.dialog.create({
-						title: 'Sucesso',
-						text: 'Cadastro feito com sucesso!',
-						buttons: [
-							{
-								text: 'OK',
-								onClick: function () {
-									window.location.href = 'index.html';
-								}
+				app.dialog.create({
+					title: 'Verifique seu e-mail',
+					text: 'Um link de verificação foi enviado para o seu e-mail. Clique nele para ativar sua conta.',
+					buttons: [
+						{
+							text: 'OK',
+							onClick: function () {
+								window.location.href = 'index.html';
 							}
-						]
-					}).open();
-				} else {
-					app.dialog.alert('Não foi possível concluir o cadastro. Verifique os dados e tente novamente.', 'Erro');
-				}
+						}
+					]
+				}).open();
+			} else {
+				app.dialog.alert(data.message || 'Erro ao cadastrar.', 'Erro');
 			}
-
-		})
-		.catch(error => {
-			console.error(error);
-			document.getElementById('mensagem').innerText = 'Erro ao enviar dados.';
-			app.dialog.alert('Ocorreu um erro ao enviar os dados. Dados já cadastrados.', 'Erro');
-		});
+		} catch (e) {
+			console.error('Erro ao converter resposta em JSON:', e);
+			app.dialog.alert('Erro inesperado na resposta do servidor.', 'Erro');
+		}
+	})
+	.catch(error => {
+		console.error(error);
+		document.getElementById('mensagem').innerText = 'Erro ao enviar dados.';
+		app.dialog.alert('Ocorreu um erro ao enviar os dados. Dados já cadastrados.', 'Erro');
+	});
 });

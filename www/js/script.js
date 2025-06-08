@@ -41,9 +41,10 @@ async function buscarEscolinhas() {
         const overpassQuery = `
         [out:json];
         (
-          node["leisure"="pitch"](around:3000,${latRef},${lonRef});
-          way["leisure"="pitch"](around:3000,${latRef},${lonRef});
-          relation["leisure"="pitch"](around:3000,${latRef},${lonRef});
+          node["leisure"="sports_centre"](around:3000,${latRef},${lonRef});
+          way["leisure"="sports_centre"](around:3000,${latRef},${lonRef});
+          relation["leisure"="sports_centre"](around:3000,${latRef},${lonRef});
+          
         );
         out center;
         `;

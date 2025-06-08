@@ -139,6 +139,7 @@ body {
 
 .title-logo2 {
     font-weight: 600;
+    font-size: 20px;
     left: 50%;
     color: var(--branco);
     position: absolute;
