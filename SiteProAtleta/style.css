@@ -1,26 +1,39 @@
 /*ESTILO GERAL*/
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
 }
 
-body{
-background-color: #0000;
-height: 100vh;
+html{
+    scroll-behavior: smooth;
 }
 
-.interface{
+main{
+    padding-top: 100px;
+}
+
+body {
+    background-image: url(''); /* Substitua pelo caminho da sua imagem */
+    background-size: cover; /* cobre toda a tela */
+    background-attachment: fixed; /* fixa a imagem no fundo */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0000;
+    height: 100vh;
+}
+
+.interface {
     max-width: 1280px;
     margin: 0 auto;
 }
 
-.flex{
-    display: flex;  
+.flex {
+    display: flex;
 }
 
-.btn-login button{
+.btn-login button {
     padding: 10px 40px;
     font-size: 18px;
     font-weight: 600;
@@ -32,108 +45,120 @@ height: 100vh;
     transition: .4s;
 }
 
-h2.titulo{
+h2.titulo {
     color: #000;
     font-size: 40px;
     text-align: center;
 }
 
-h2.titulo span{
+h2.titulo span {
     color: #f86100;
 }
 
 
-button.login:hover{
+button.login:hover {
     box-shadow: 0px 0px 8px #ffffff;
     transform: scale(1.10);
 }
 
 /* ESTILO DO CABEÇALHO */
-header{
+header {
+    width: 100%;
     padding: 20px 4%;
     background-color: #f86100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    transition: .5s;
 }
 
-header > .interface{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;  
+header.rolagem {
+    color: #fff;
+    padding: 2px 4%;
 }
 
-header a{
- color: #ffffffbb; 
- text-decoration: none;
- display: inline-block;
- transition: .2s;
+header>.interface {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-header a:hover{
+header a {
+    color: #ffffffbb;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s;
+}
+
+header a:hover {
     color: #fff;
     transform: scale(1.10);
     text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255), 0 0 30px rgb(255, 255, 255);
 }
 
-header nav ul{
+header nav ul {
     list-style-type: none;
 }
 
-header nav ul li{
-   display: inline-block;
-   padding: 0px 40px;
+header nav ul li {
+    display: inline-block;
+    padding: 0px 40px;
 }
 
 
 /* ESTILO DO TOPO DO SITE */
-section.topo-do-site{ 
-    padding: 40px 4%;
-    
+section.topo-do-site {
+    padding: 200px 70px 4%;
+
 }
 
-section.topo-do-site .flex{
+section.topo-do-site .flex {
     align-items: center;
     justify-content: center;
-    gap: 90px; 
+    gap: 90px;
 }
 
-.topo-do-site h1{
+.topo-do-site h1 {
     color: #000000;
-    font-size: 34px;
+    font-size: 42px;
     line-height: 40px;
 }
 
-.topo-do-site .txt-topo-site h1 span{
+.topo-do-site .txt-topo-site h1 span {
     color: #f86100;
 }
 
-.topo-do-site .txt-topo-site p{
+.topo-do-site .txt-topo-site p {
     color: #000;
     margin: 40px 0;
 }
 
-.topo-do-site .img-topo-site{
+.topo-do-site .img-topo-site {
     position: relative;
     animation: flutuar 1.3s ease-in-out infinite alternate;
 }
 
-@keyframes flutuar{
-    0%{
+@keyframes flutuar {
+    0% {
         top: 0;
     }
-    100%{
+
+    100% {
         top: 30px;
     }
 }
 
 /* ESTILO DOS SERVIÇOS */
-section.servicos{
-    padding: 120px 4%; 
+section.servicos {
+    padding: 120px 4%;
 }
 
-section.servicos .flex{
+section.servicos .flex {
     gap: 30px;
 }
 
-.servicos .servicos-box{
+.servicos .servicos-box {
     color: #000;
     padding: 40px;
     border-radius: 20px;
@@ -141,59 +166,59 @@ section.servicos .flex{
     transition: .2s;
 }
 
-.servicos .servicos-box:hover{
+.servicos .servicos-box:hover {
     transform: scale(1.10);
     box-shadow: 0 0 15px #000000;
 }
 
-.servicos .servicos-box i{
+.servicos .servicos-box i {
     font-size: 48px;
     color: #f86100;
 }
 
-.servicos .servicos-box h3{
+.servicos .servicos-box h3 {
     font-size: 30px;
     margin: 15px 0;
 }
 
 /*ESTILO DO SOBRE*/
 
-section.sobre{
-     padding: 40px 0 120px 4%;
-     
+section.sobre {
+    padding: 100px 0 120px 4%;
+
 }
 
-section.sobre .flex{
+section.sobre .flex {
     align-items: center;
     gap: 60px;
 }
 
-.sobre .txt-sobre{
+.sobre .txt-sobre {
     color: #000;
 }
 
-.sobre .txt-sobre h2{
+.sobre .txt-sobre h2 {
     font-size: 40px;
     line-height: 40px;
     margin-bottom: 35px;
 }
 
-.sobre .txt-sobre h2 span{
+.sobre .txt-sobre h2 span {
     color: #f86100;
     display: block;
 }
 
-.sobre .txt-sobre p{
+.sobre .txt-sobre p {
     margin: 20px 0;
     text-align: justify;
 }
 
-button.contato:hover{
+button.contato:hover, form .btn-enviar input:hover {
     box-shadow: 0px 0px 12px #f85f00;
     transform: scale(1.10);
 }
 
-.sobre .txt-sobre .btn-social button{
+.btn-social button {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -208,19 +233,18 @@ button.contato:hover{
 
 /* ESTILO DAS APLICACOES */
 
-section.aplicacoes{
-    padding: 80px 4%;
+section.aplicacoes {
+    padding: 100px 4%;
     box-shadow: 0 0 60px 5px #00000039;
-    
 }
 
-section.aplicacoes .flex{
+section.aplicacoes .flex {
     justify-content: space-around;
     gap: 40px;
     margin-top: 60px;
 }
 
-.img-apli{
+.img-apli {
     width: 360px;
     height: 460px;
     background-size: cover;
@@ -229,14 +253,15 @@ section.aplicacoes .flex{
     cursor: pointer;
     border-radius: 40px;
     position: relative;
-    border: 2px solid #f85f00; padding: 10px;
+    border: 2px solid #f85f00;
+    padding: 10px;
 }
 
-.img-apli:hover{
+.img-apli:hover {
     background-position: 100% 100%;
 }
 
-.overlay{
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -249,43 +274,225 @@ section.aplicacoes .flex{
     justify-content: center;
     font-size: 24px;
     font-weight: 600;
-    color: #fff;
+    color: #000000;
     opacity: 0;
     transition: .5s;
 }
 
-.overlay:hover{
+.overlay:hover {
     opacity: 1;
 }
 
-/* ESTILO ESPECÍFICO   */
-   .gradient-separator {
-      width: 0;                 /* começa com 0 de largura */
-      height: 4px;              /* espessura da linha */
-      background: linear-gradient(
-        to right,
-      #ff7e5f, /* cor inicial */
-      #f86100, /* cor final */
-      #a25900  /* cor intermediária opcional */
-);
-      margin: 2rem auto;        /* espaçamento vertical e centralizado */
-      display: block;
-      /* Não definimos animation aqui para não rodar ao carregar */
+/* ESTILO DO FORMULARIO */
+
+section.formulario{
+    padding: 80px 4%;
+}
+
+form{
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+form input, form textarea{
+    width: 100%;
+    background-color: #f85f0058;
+    border: 0;
+    outline: 0;
+    padding: 20px 15px;
+    border-radius: 15px;
+    color: #000000;
+    font-size: 18px;
+}
+
+form input::placeholder{
+    color: #000000;
+}
+
+form textarea{
+    resize: none;
+    min-height: 200px;
+}
+
+form textarea::placeholder{
+    color: #000;
+}
+
+form .btn-enviar{
+    margin-top: 20px;
+    text-align: center;
+}
+
+form .btn-enviar input{
+    width: 120px;
+    background-color: #f85f00;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+
+/* ESTILO DO RODAPÉ */
+
+footer {
+    padding: 48px 4%;
+    box-shadow: 0 0 10px 10px #00000039;
+}
+
+footer .flex {
+    justify-content: space-between;
+}
+
+footer .line-footer {
+    padding: 20px 0;
+}
+
+.borda {
+    border-top: 2px solid #f85f00;
+}
+
+footer .line-footer p i {
+    color: #f86100;
+    font-size: 26px;
+}
+
+footer .line-footer p a {
+    color: #000;
+    font-size: 22px;
+}
+
+/* RESPONSIVO */
+
+@media screen and (max-width: 1020px) {
+
+    /* CLASSES GERAIS */
+    .flex {
+        flex-direction: column;
     }
 
-    /* ================================
+    .topo-do-site .flex {
+        flex-direction: column-reverse;
+        gap: 40px;
+    }
+
+    h2.titulo {
+        font-size: 34px;
+        line-height: 30px;
+    }
+
+    /* CABEÇALHO */
+    .menu-desktop,
+    .btn-login {
+        display: none;
+    }
+
+    /* TOPO DO SITE */
+    section.topo-do-site {
+        padding: 20px 8%;
+    }
+
+    .topo-do-site h1 {
+        font-size: 30px;
+    }
+
+    .to´po-do-site .img-topo-site img {
+        width: 100%;
+    }
+
+    /* ESTILO DOS SERVIÇOS */
+    section.servicos {
+        padding: 120px 8%;
+    }
+
+    /*ESTILO DO SOBRE*/
+    section.sobre {
+        padding: 40px 0 120px 8%;
+
+    }
+
+    .sobre .txt-sobre h2 {
+        font-size: 35px;
+        line-height: 35px;
+        text-align: center;
+    }
+
+    .btn-social {
+        text-align: center;
+    }
+
+    .img-sobre {
+        width: 100%;
+    }
+
+    /* ESTILO DAS APLICACOES */
+    section.aplicacoes {
+        padding: 80px 8%;
+    }
+
+    .img-apli {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+
+    section.aplicacoes .flex {
+       gap: 60px;
+    }
+
+    /* RODAPÉ */
+    footer .flex {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    footer .line-footer{
+        text-align: center;
+    }
+}
+
+
+
+
+/* ESTILO ESPECÍFICO   */
+.gradient-separator {
+    width: 0;
+    /* começa com 0 de largura */
+    height: 4px;
+    /* espessura da linha */
+    background: linear-gradient(to right,
+            #ff7e5f,
+            /* cor inicial */
+            #f86100,
+            /* cor final */
+            #a25900
+            /* cor intermediária opcional */
+        );
+    margin: 2rem auto;
+    /* espaçamento vertical e centralizado */
+    display: block;
+    /* Não definimos animation aqui para não rodar ao carregar */
+}
+
+/* ================================
        Classe que dispara a animação
        ================================ */
-    .gradient-separator.in-view {
-      animation: drawLine 1.5s ease-out forwards;
-      /* ‘forwards’ faz com que o estado final (width: 80%) seja mantido */
-    }
+.gradient-separator.in-view {
+    animation: drawLine 1.5s ease-out forwards;
+    /* ‘forwards’ faz com que o estado final (width: 80%) seja mantido */
+}
 
-    /* ================================
+/* ================================
        Keyframes da animação “desenhar linha”
        ================================ */
-    @keyframes drawLine {
-      to {
-        width: 80%;  /* Largura final desejada */
-      }
+@keyframes drawLine {
+    to {
+        width: 80%;
+        /* Largura final desejada */
     }
+}
