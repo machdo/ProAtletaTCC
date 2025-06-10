@@ -61,6 +61,7 @@ button.login:hover {
     transform: scale(1.10);
 }
 
+
 /* ESTILO DO CABEÇALHO */
 header {
     width: 100%;
@@ -74,14 +75,44 @@ header {
 }
 
 header.rolagem {
-    color: #fff;
     padding: 2px 4%;
+    background-color: #fff;
 }
 
 header>.interface {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+header.rolagem a{
+    color: #f85f00;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s;
+}
+
+header.rolagem a:hover {
+    color: #f85f00;
+    transform: scale(1.10);
+    text-shadow: 0 0 10px #f85f00, 0 0 20px #f85f00, 0 0 30px #f85f00;
+}
+
+header.rolagem .btn-login button{
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #f86100;
+    border: 0;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #fff;
+    transition: .4s;
+}
+
+header.rolagem button.login:hover {
+    box-shadow: 0px 0px 8px #f85f00;
+    transform: scale(1.10);
 }
 
 header a {
@@ -97,6 +128,26 @@ header a:hover {
     text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255), 0 0 30px rgb(255, 255, 255);
 }
 
+/* Esconde a logo laranja por padrão */
+.logo-laranja {
+  display: none;
+}
+
+/* Mostra a logo branca por padrão */
+.logo-branca {
+  display: block;
+}
+
+/* Quando rolar, esconde a branca e mostra a laranja */
+header.rolagem .logo-branca {
+  display: none;
+}
+
+header.rolagem .logo-laranja {
+  display: block;
+}
+
+
 header nav ul {
     list-style-type: none;
 }
@@ -107,9 +158,10 @@ header nav ul li {
 }
 
 
+
 /* ESTILO DO TOPO DO SITE */
 section.topo-do-site {
-    padding: 200px 70px 4%;
+    padding: 120px 20px 4%;
 
 }
 
@@ -121,7 +173,7 @@ section.topo-do-site .flex {
 
 .topo-do-site h1 {
     color: #000000;
-    font-size: 42px;
+    font-size: 39px;
     line-height: 40px;
 }
 
@@ -151,7 +203,7 @@ section.topo-do-site .flex {
 
 /* ESTILO DOS SERVIÇOS */
 section.servicos {
-    padding: 120px 4%;
+    padding: 100px 4%;
 }
 
 section.servicos .flex {
