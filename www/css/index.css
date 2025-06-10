@@ -118,7 +118,7 @@ body {
 }
 
 .logo-titulo img {
-    width: 40%;
+    width: 50%;
     height: auto;
     margin-top: 3px;
     margin-left: 10px;
@@ -338,3 +338,45 @@ body {
     position: fixed;
     font-size: 18px;
 }
+
+.config-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background-color: #ffffff;
+  color: #666666;
+  font-size: 16px;
+  cursor: pointer;
+  border-bottom: 2px solid #ccc;
+  transition: background 0.2s;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.config-list-item:hover {
+  background-color: #f5f5f5;
+}
+
+.left-group {
+  display: flex;
+  align-items: center;
+}
+
+.config-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #999999;
+}
+
+.config-text {
+  color: #666666;
+}
+
+.config-arrow {
+  font-size: 30px;
+  color: #444444;
+}
+
