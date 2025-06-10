@@ -7,7 +7,7 @@
 }
 
 .page-content {
-    background-color: var(--laranja);
+    background-color: var(--laranja) !important;
 }
 
 .top-nav2 {
@@ -35,8 +35,8 @@
 }
 
 .block {
-    margin-left: 0;
-    padding-left: 0;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 .imagem-com-texto {

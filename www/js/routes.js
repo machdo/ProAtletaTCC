@@ -69,6 +69,10 @@ window.app = new Framework7({
 					const css = document.getElementById('inicio-css');
 					if (css) css.remove();
 
+					if (localStorage.getItem('loggedIn') === 'true') {
+						app.views.main.router.navigate('/index/');
+					}
+
 					$.getScript('js/login.js')
 				},
 				pageBeforeRemove: function (event, page) {
@@ -234,15 +238,43 @@ window.app = new Framework7({
 			on: {
 				pageBeforeIn: function (event, page) {
 					// fazer algo antes da página ser exibida
+
+					$.getScript('js/config.js');
+
 				},
 				pageAfterIn: function (event, page) {
 					// fazer algo depois da página ser exibida
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+
+					const cssId = 'index-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/index.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					if (localStorage.getItem('loggedIn') !== 'true') {
+						app.views.main.router.navigate('/inicio/');
+						return;
+					}
+					// Exibe os dados do usuário na página, por exemplo:
+					document.getElementById('nomeUsuario').textContent = localStorage.getItem('userNome') || 'Usuário';
+					document.getElementById('emailUsuario').textContent = localStorage.getItem('userEmail') || '';
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					const css = document.getElementById('index-css');
+					if (css) css.remove();
+
 				},
 			}
 		},
@@ -272,7 +304,7 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
-					$.getScript("js/script.js");
+					$.getScript("js/escolinha.js");
 					console.log('Página escolinhas carregada');
 
 					const input = page.el.querySelector('#endereco');
@@ -311,10 +343,56 @@ window.app = new Framework7({
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
-					
+
 					const css = document.getElementById('inicio-css');
 					if (css) css.remove();
 
+				},
+			}
+		},
+		{
+			path: '/esporte_escolinha/',
+			url: 'esporte_escolinha.html',
+			animate: true, // <- animação ativada
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+					const cssId = 'esporte-escolinha-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/index.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					// Lógica dos botões diretamente no pageInit
+					const buttons = page.el.querySelectorAll('.sport-button');
+					const linkContainer = page.el.querySelector('#goToEscolinhas');
+
+					buttons.forEach(btn => {
+						btn.addEventListener('click', () => {
+							buttons.forEach(b => b.classList.remove('selected'));
+							btn.classList.add('selected');
+							const esporte = btn.dataset.sport;
+							localStorage.setItem('esporteSelecionado', esporte);
+							linkContainer.style.display = 'block';
+						});
+					});
+				},
+				pageBeforeRemove: function () {
+					// Remove o CSS da página ao sair dela
+					const css = document.getElementById('esporte-escolinha-css');
+					if (css) css.remove();
 				},
 			}
 		},
@@ -362,7 +440,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/inicio/' });
+//var mainView = app.views.create('.view-main', { url: '/index/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -380,20 +458,36 @@ app.on('routeChange', function (route) {
 
 function onDeviceReady() {
 	//Quando estiver rodando no celular
-	//var mainView = app.views.create('.view-main', { url: '/inicio/' });
+	let initialUrl = '/inicio/';
+	if (localStorage.getItem('loggedIn') === 'true') {
+		initialUrl = '/index/';
+	}
 
-	//COMANDO PARA "OUVIR" O BOTAO VOLTAR NATIVO DO ANDROID 	
+	window.mainView = app.views.create('.view-main', { url: initialUrl });
+
 	document.addEventListener("backbutton", function (e) {
-
 		if (mainView.router.currentRoute.path === '/index/') {
 			e.preventDefault();
-			app.dialog.confirm('Deseja sair do aplicativo?', function () {
-				navigator.app.exitApp();
-			});
+			app.dialog.create({
+				title: 'Sair do ProAtleta',
+				text: 'Quer mesmo sair do ProAtleta?',
+				buttons: [
+					{
+						text: 'Não',
+						close: true
+					},
+					{
+						text: 'Sim',
+						onClick: function () {
+							navigator.app.exitApp();
+						}
+					}
+				]
+			}).open();
+
 		} else {
 			e.preventDefault();
 			mainView.router.back({ force: true });
 		}
 	}, false);
-
 }

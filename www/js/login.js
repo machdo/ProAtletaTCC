@@ -15,18 +15,23 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     .then(data => {
       console.log(data); // Ver no console
       if (data.success) {
+        // Salva no localStorage para manter sessão
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('userNome', data.nome || 'Usuário');
+        localStorage.setItem('userEmail', email);
+
         app.dialog.create({
-						title: 'Sucesso',
-						text: 'Login bem sucedido!',
-						buttons: [
-							{
-								text: 'Entrar',
-								onClick: function () {
-									 app.views.main.router.navigate('/index/');
-								}
-							}
-						]
-					}).open();
+          title: 'Sucesso',
+          text: 'Login bem sucedido!',
+          buttons: [
+            {
+              text: 'Entrar',
+              onClick: function () {
+                app.views.main.router.navigate('/index/');
+              }
+            }
+          ]
+        }).open();
       } else {
         document.getElementById('mensagemLogin').innerText = data.message;
       }
