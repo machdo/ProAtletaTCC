@@ -6,7 +6,7 @@ document.addEventListener('page:afterin', function (e) {
     if (btnLogout) {
       btnLogout.addEventListener('click', function () {
         localStorage.clear();
-        app.views.main.router.navigate('/inicio/');
+        app.views.main.router.navigate('/inicio/', { clearPreviousHistory: true });
       });
     }
   }

@@ -443,10 +443,13 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/index/' });
+//var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
+
+	protegerRotas(route);
+
 	var currentRoute = route.url;
 	console.log(currentRoute);
 	document.querySelectorAll('.tab-link').forEach(function (el) {
@@ -494,3 +497,27 @@ function onDeviceReady() {
 		}
 	}, false);
 }
+
+function protegerRotas(route) {
+	const paginasProtegidas = [
+		'/index/',
+		'/config/',
+		'/escolinhas/',
+		'/esporte_escolinha/',
+		'/peneiras/',
+		'/link2/',
+		'/link3/',
+		'/link4/',
+		'/link5/'
+	];
+
+	const estaLogado = localStorage.getItem('loggedIn') === 'true';
+
+	if (paginasProtegidas.includes(route.url) && !estaLogado) {
+		console.log('Tentativa de acesso sem login. Redirecionando para /inicio/');
+		app.views.main.router.navigate('/inicio/', { clearPreviousHistory: true });
+		return false;
+	}
+	return true;
+}
+
