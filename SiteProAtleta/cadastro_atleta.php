@@ -55,9 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt_insert->bind_param("sss", $nome, $email, $senha_digitada); 
 
-    if ($stmt_insert->execute()) {
-        $_SESSION['sucesso_cadastro'] = "Cadastro realizado com sucesso! Agora você pode fazer login.";
-        header("Location: login.html");
+if ($stmt_insert->execute()) {
+    // Sucesso no cadastro
+    header("Location: index.html?cadastro=ok");
+    exit();
+}
+
+
         exit();
     } else {
         $_SESSION['erro_cadastro'] = "Erro ao cadastrar: " . $stmt_insert->error;

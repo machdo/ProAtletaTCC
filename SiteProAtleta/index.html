@@ -15,6 +15,17 @@
     <title>ProAtleta</title>
 </head>
 <body>
+    <script>
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("cadastro") === "ok") {
+    alert("Cadastro realizado com sucesso!");
+    // Remove o parâmetro para evitar repetição:
+    history.replaceState(null, '', window.location.pathname);
+  }
+});
+</script>
+
 
     <header class="header">
             <div class="interface">
