@@ -73,7 +73,9 @@ window.app = new Framework7({
 						app.views.main.router.navigate('/index/');
 					}
 
-					$.getScript('js/login.js')
+					$.getScript('js/login.js');
+					$.getScript('js/mascaras.js');
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -120,6 +122,10 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+					
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+					
 					$.getScript('js/index.js');
 
 					var swiper = new Swiper(".mySwiper", {
@@ -168,6 +174,10 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -187,6 +197,10 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -206,6 +220,10 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -226,11 +244,27 @@ window.app = new Framework7({
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
 
+					const cssId = 'perfil-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/perfil.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
 					$.getScript('js/config.js');
 
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
 				},
 			}
 		},
@@ -443,7 +477,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/inicio/' });
+//var mainView = app.views.create('.view-main', { url: '/index/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {

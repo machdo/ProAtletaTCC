@@ -1,0 +1,55 @@
+
+:root {
+    --branco: #fff;
+    --gelo: #f1f1f1;
+    --preto: #2a2a2a;
+    --laranja: #f86100;
+}
+
+body {
+    background-color: var(--gelo);
+    margin: 0;
+    padding: 0;
+}
+
+.page-content {
+    padding: 16px;
+    
+}
+
+.top-nav2 {
+    width: 100%;
+    height: 80px;
+    background: var(--laranja);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.title-logo2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--branco);
+}
+
+.block {
+    background-color: var(--branco);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin: 24px auto;
+    max-width: 100%;
+}
+
+.block h2 {
+    font-size: 24px;
+    color: var(--preto);
+    margin-bottom: 10px;
+}
+
+.block p {
+    font-size: 18px;
+    color: #444;
+}
+
