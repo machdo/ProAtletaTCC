@@ -1,54 +1,53 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="loginstyle.css">
+    <title>Cadastro de Atleta</title> <link rel="stylesheet" href="loginstyle.css">
 
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+<script src="cadastro.js"></script>
+
 <body>
-<div class="form-container">
-<header class="header">
+    <div class="form-container">
+        <header class="header">
             <div class="interface">
                 <div class="logo">
                     <a href="#">
                         <img src="images/logo.png" alt="Logo branca" class="logo-branca" width="200px" height="75px">
-</a>
-</div>
-</header>
-    <section class="formulario" id="contato">
-        <div class="interface">
-            <h2 class="titulo">Cadastro</h2>
-            
-<div class="input-group">
-    <i class="fas fa-user"></i>
-    <input type="text" placeholder="Seu nome:" required>
-</div>
+                    </a>
+                </div>
+            </div> </header>
+        <section class="formulario" id="contato">
+            <div class="interface">
+                <h2 class="titulo">Cadastro</h2>
 
-<div class="input-group">
-    <i class="fas fa-at"></i>
-    <input type="email" placeholder="Seu email:" required>
-</div>
+                <form action="cadastro_atleta.php" method="POST">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Seu nome:" required name="nome">
+                    </div>
 
-<div class="input-group">
-    <i class="fas fa-lock"></i>
-    <input type="password" placeholder="Sua senha:" required>
-</div>
+                    <div class="input-group">
+                        <i class="fas fa-at"></i>
+                        <input type="email" placeholder="Ex: nome@gmail.com:" required name="email">
+                    </div>
 
-<div class="input-group">
-    <i class="fas fa-phone"></i>
-    <input type="tel" placeholder="Seu telefone:" required>
-</div>
-               <button>
-    <span>Cadastrar</span>
-</button>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Sua senha:" required name="senha">
+                    </div>
 
-            </form>
-        </div><!-- interface -->
-    </section><!-- formulario -->
-</div>
+                   <!-- <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="telefone" placeholder="Ex: (XX) XXXXX-XXXX" maxlength="15" required name="telefone">
+                    </div>-->
+                    <button type="submit"> <span>Cadastrar</span>
+                    </button>
+                </form>
+            </div></section></div>
 </body>
+
 </html>
