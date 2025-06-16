@@ -15,11 +15,11 @@ header .interface {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 0; /* diminuído de 20px */
+    padding: 10px 0; 
 }
 
 .logo img {
-    width: 150px; /* antes estava 200px */
+    width: 150px; 
     height: auto;
 
 }
@@ -56,11 +56,11 @@ header .interface {
     border: none;
     border-radius: 12px;
     background-color: #ffffff;
-    font-size: 14px; /* DIMINUI FONTE DO PLACEHOLDER */
+    font-size: 14px; 
 }
 button {
-    margin: 20px auto 0 auto; /* centraliza horizontalmente */
-    display: block; /* necessário para o auto funcionar */
+    margin: 20px auto 0 auto; 
+    display: block; 
   background: transparent;
   position: relative;
   padding: 5px 15px;
@@ -114,6 +114,13 @@ button:hover::before {
     padding: 40px;
     border-radius: 12px;
     max-width: 600px;
-    margin: 40px auto; /* centraliza */
+    margin: 40px auto; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .olho {
+    right: -30px; 
+    left: auto;  
+    cursor: pointer;
+    color: #666;
 }

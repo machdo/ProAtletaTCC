@@ -40,3 +40,21 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
       document.getElementById('mensagem').innerText = 'Erro ao enviar dados.';
     });
 });
+
+  const senhaInput = document.getElementById('senha');
+  const changeIcon = document.getElementById('viewPassword');
+
+  changeIcon.addEventListener('click', function () {
+    const tipoAtual = senhaInput.getAttribute('type');
+    if (tipoAtual === 'password') {
+      senhaInput.setAttribute('type', 'text');
+      changeIcon.classList.remove('fa-eye');
+      changeIcon.classList.add('fa-eye-slash');
+    } else {
+      senhaInput.setAttribute('type', 'password');
+      changeIcon.classList.remove('fa-eye-slash');
+      changeIcon.classList.add('fa-eye');
+    }
+  });
+
+
