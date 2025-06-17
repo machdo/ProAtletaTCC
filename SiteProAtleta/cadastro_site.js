@@ -5,32 +5,43 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
   const email = document.getElementById('email').value;
   const senha = document.getElementById('senha').value;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const senhaRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,14}$/;
+  const temMaiuscula = /[A-Z]/.test(senha);
+  const temNumero = /[0-9]/.test(senha);
 
-  if (!emailRegex.test(email)) {
-    document.getElementById('mensagem').innerText = 'E-mail inválido.';
+  if (!temMaiuscula || !temNumero) {
+    Swal.fire({
+      title: 'Erro na Senha',
+      text: 'A senha deve conter pelo menos uma letra maiúscula e um número.',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: {
+        confirmButton: 'meu-botao-personalizado'
+      }
+    });
     return;
   }
 
-  if (!senhaRegex.test(senha)) {
-    document.getElementById('mensagem').innerText =
-      'A senha deve ter entre 8 e 14 caracteres, com pelo menos uma letra maiúscula e um número.';
-    return;
-  }
-
-  fetch('https://mediumslateblue-ibex-354235.hostingersite.com/cadastro_site.php', {
+  fetch('https://proesportes.shop/cadastro_site.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`
   })
-    .then(response => response.json())
+  .then(response => response.json()) 
     .then(data => {
       if (data.success) {
-        alert('Cadastro realizado com sucesso! Verifique seu e-mail.');
-        window.location.href = 'index.html';
+        Swal.fire({
+          title: 'Verifique seu E-Mail',
+          text: 'Um link de verificação foi enviado para o seu e-mail. Clique nele para ativar sua conta.',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: {
+            confirmButton: 'meu-botao-personalizado'
+          }
+        }).then(() => {
+          window.location.href = 'index.html';
+        });
       } else {
         document.getElementById('mensagem').innerText = data.message || 'Erro ao cadastrar.';
       }
@@ -40,21 +51,5 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
       document.getElementById('mensagem').innerText = 'Erro ao enviar dados.';
     });
 });
-
-  const senhaInput = document.getElementById('senha');
-  const changeIcon = document.getElementById('viewPassword');
-
-  changeIcon.addEventListener('click', function () {
-    const tipoAtual = senhaInput.getAttribute('type');
-    if (tipoAtual === 'password') {
-      senhaInput.setAttribute('type', 'text');
-      changeIcon.classList.remove('fa-eye');
-      changeIcon.classList.add('fa-eye-slash');
-    } else {
-      senhaInput.setAttribute('type', 'password');
-      changeIcon.classList.remove('fa-eye-slash');
-      changeIcon.classList.add('fa-eye');
-    }
-  });
 
 

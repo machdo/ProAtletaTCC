@@ -3,7 +3,7 @@ if (isset($_GET['email'], $_GET['token'])) {
     $email = $_GET['email'];
     $token = $_GET['token'];
 
-    $conn = new mysqli("localhost", "u808148692_proatleta123", "Vini@#07alves", "u808148692_proatleta");
+    $conn = new mysqli("localhost", "u579644408_proatleta1", "Vini@#07alves", "u579644408_proatleta");
 
     if ($conn->connect_error) {
         die("Erro de conexão.");
