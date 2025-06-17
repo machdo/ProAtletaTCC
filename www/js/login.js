@@ -4,7 +4,7 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
   const email = document.getElementById('email').value;
   const senha = document.getElementById('senha').value;
 
-  fetch('https://mediumslateblue-ibex-354235.hostingersite.com/login.php', {
+  fetch('https://proesportes.shop/login.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

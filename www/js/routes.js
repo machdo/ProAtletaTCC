@@ -69,16 +69,49 @@ window.app = new Framework7({
 					const css = document.getElementById('inicio-css');
 					if (css) css.remove();
 
+					const cssId = 'login-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/login.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
 					if (localStorage.getItem('loggedIn') === 'true') {
 						app.views.main.router.navigate('/index/');
 					}
 
+					const senhaInput = page.el.querySelector('#senha');
+					const changeIcon = page.el.querySelector('#viewPassword2');
+
+					if (senhaInput && changeIcon) {
+						changeIcon.addEventListener('click', function () {
+							if (senhaInput.type === 'password') {
+								senhaInput.type = 'text';
+								changeIcon.classList.remove('ri-eye-line');
+								changeIcon.classList.add('ri-eye-off-line');
+							} else {
+								senhaInput.type = 'password';
+								changeIcon.classList.remove('ri-eye-off-line');
+								changeIcon.classList.add('ri-eye-line');
+							}
+						});
+					}
+
 					$.getScript('js/login.js');
-					$.getScript('js/mascaras.js');
+
 
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					const css = document.getElementById('login-css');
+					if (css) css.remove();
+
 				},
 			}
 		},
@@ -122,10 +155,10 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
-					
+
 					const css = document.getElementById('perfil-css');
 					if (css) css.remove();
-					
+
 					$.getScript('js/index.js');
 
 					var swiper = new Swiper(".mySwiper", {
@@ -454,7 +487,7 @@ window.app = new Framework7({
 		},
 
 	],
-	// ... other parameters
+
 });
 
 var tabbar = document.querySelector('.toolbar-bottom');
@@ -477,7 +510,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/index/' });
+//var mainView = app.views.create('.view-main', { url: '/login/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {

@@ -9,7 +9,6 @@
     <meta name="theme-color" content="#2196f3">
     <title>Cadastro</title>
     <link rel="stylesheet" href="lib/framework7-bundle.min.css">
-    <link rel="stylesheet" href="css/personalizado.css">
     <link rel="stylesheet" href="css/materialdesignicons.min.css">
     <link rel="stylesheet" href="css/cadastro.css">
     <link rel="stylesheet" href="css/remixicon/remixicon.css">
@@ -61,6 +60,7 @@
                                             <div class="item-input-wrap">
                                                 <input type="password" id="senha" name="senha"
                                                     placeholder="Digite sua senha" required>
+                                                <i id="viewPassword" class="ri-eye-line olho"></i>
                                             </div>
                                         </div>
                                     </li>
@@ -80,15 +80,12 @@
         </div>
     </div>
 
-    <!-- Framework7 Bundle JS -->
     <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
-    <!-- jQuery -->
     <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
-    <!-- Rotas -->
     <script type="text/javascript" src="js/routes.js"></script>
     <script src="cordova.js"></script>
-
     <script src="js/cadastro.js"></script>
+    <script src="js/mascara_cadastro.js"></script>
 
 </body>
 

@@ -11,7 +11,7 @@ if (isset($_POST['nome'], $_POST['email'], $_POST['senha'])) {
 
     $token = bin2hex(random_bytes(16)); // Gera token aleatório
 
-    $conn = new mysqli("localhost", "u808148692_proatleta123", "Vini@#07alves", "u808148692_proatleta");
+    $conn = new mysqli("localhost", "u579644408_proatleta1", "Vini@#07alves", "u579644408_proatleta");
 
     if ($conn->connect_error) {
         echo json_encode(['success' => false, 'message' => 'Erro de conexão.']);
@@ -24,7 +24,7 @@ if (isset($_POST['nome'], $_POST['email'], $_POST['senha'])) {
 
     if ($stmt->execute()) {
         // Envia o e-mail
-        $link = "https://mediumslateblue-ibex-354235.hostingersite.com/verificar.php?email=$email&token=$token";
+        $link = "https://proesportes.shop/verificar.php?email=$email&token=$token";
         $mensagem = "Olá $nome,\n\nClique no link abaixo para confirmar seu cadastro:\n$link";
         mail($email, "Confirmação de Cadastro - ProAtleta", $mensagem);
 

@@ -6,14 +6,14 @@ if (isset($_POST['email'], $_POST['senha'])) {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
-    $conn = new mysqli("localhost", "u808148692_proatleta123", "Vini@#07alves", "u808148692_proatleta");
+    $conn = new mysqli("localhost", "u579644408_proatleta1", "Vini@#07alves", "u579644408_proatleta");
 
     if ($conn->connect_error) {
         echo json_encode(['success' => false, 'message' => 'Erro de conexão.']);
         exit;
     }
 
-    $stmt = $conn->prepare("SELECT nome, verificado FROM usuarios WHERE email = ? AND senha = ?");
+    $stmt = $conn->prepare("SELECT nome, verificado FROM usuarios WHERE email = BINARY ? AND senha = BINARY ?");
     $stmt->bind_param("ss", $email, $senha);
     $stmt->execute();
     $stmt->store_result();
