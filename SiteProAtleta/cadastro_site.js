@@ -4,6 +4,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
   const nome = document.getElementById('nome').value;
   const email = document.getElementById('email').value;
   const senha = document.getElementById('senha').value;
+  const confirmar = document.getElementById('confirmar').value;
 
   const temMaiuscula = /[A-Z]/.test(senha);
   const temNumero = /[0-9]/.test(senha);
@@ -21,6 +22,19 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
     return;
   }
 
+  if (senha !== confirmar) {
+    Swal.fire({
+      title: 'Erro na Senha',
+      text: 'As senhas não são iguais.',
+      icon: 'warning',
+      confirmButtonText: 'Ok',
+      customClass: {
+        confirmButton: 'meu-botao-personalizado'
+      }
+    });
+    return;
+  }
+
   fetch('https://proesportes.shop/cadastro_site.php', {
     method: 'POST',
     headers: {
@@ -28,7 +42,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
     },
     body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`
   })
-  .then(response => response.json()) 
+    .then(response => response.json())
     .then(data => {
       if (data.success) {
         Swal.fire({

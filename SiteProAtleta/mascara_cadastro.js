@@ -14,6 +14,24 @@ changeIcon.addEventListener('click', function () {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const confirmarInput = document.getElementById('confirmar');
+    const changeIcon = document.getElementById('viewPassword2');
+
+    changeIcon.addEventListener('click', function () {
+        const tipoAtual2 = confirmarInput.getAttribute('type');
+        if (tipoAtual2 === 'password') {
+            confirmarInput.setAttribute('type', 'text');
+            changeIcon.classList.remove('fa-eye');
+            changeIcon.classList.add('fa-eye-slash');
+        } else {
+            confirmarInput.setAttribute('type', 'password');
+            changeIcon.classList.remove('fa-eye-slash');
+            changeIcon.classList.add('fa-eye');
+        }
+    });
+});
+
 document.getElementById("senha").addEventListener("input", function (event) {
   let input = event.target.value;
   if (input.length > 14) {
