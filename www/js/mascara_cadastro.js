@@ -40,3 +40,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const confirmarInput = document.getElementById('confirmar');
+    const changeIcon = document.getElementById('viewPassword3');
+
+    changeIcon.addEventListener('click', function () {
+        const tipoAtual2 = confirmarInput.getAttribute('type');
+        if (tipoAtual2 === 'password') {
+            confirmarInput.setAttribute('type', 'text');
+            changeIcon.classList.remove('ri-eye-line');
+            changeIcon.classList.add('ri-eye-off-line');
+        } else {
+            confirmarInput.setAttribute('type', 'password');
+            changeIcon.classList.remove('ri-eye-off-line');
+            changeIcon.classList.add('ri-eye-line');
+        }
+    });
+});

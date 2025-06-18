@@ -510,7 +510,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/login/' });
+var mainView = app.views.create('.view-main', { url: '/login/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
