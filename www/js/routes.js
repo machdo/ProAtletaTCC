@@ -290,6 +290,7 @@ window.app = new Framework7({
 					}
 
 					$.getScript('js/config.js');
+					$.getScript('js/salvar_foto.js');
 
 				},
 				pageBeforeRemove: function (event, page) {
@@ -510,7 +511,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/login/' });
+var mainView = app.views.create('.view-main', { url: '/link5/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -530,7 +531,6 @@ app.on('routeChange', function (route) {
 
 
 function onDeviceReady() {
-	//Quando estiver rodando no celular
 	let initialUrl = '/inicio/';
 	if (localStorage.getItem('loggedIn') === 'true') {
 		initialUrl = '/index/';

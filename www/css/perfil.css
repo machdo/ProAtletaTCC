@@ -53,3 +53,67 @@ body {
     color: #444;
 }
 
+.foto-container {
+    position: relative;
+    width: 120px;
+    margin: 0 auto;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
+.foto-perfil {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.input-arquivo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.botao-upload {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-color: #2196f3;
+    color: white;
+    font-size: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#uploadFotoForm button {
+    margin: 10px auto 0 auto; 
+    padding: 10px 20px;
+    width: 40%;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block; 
+    transition: background-color 0.3s ease;
+}
+
+#uploadFotoForm button:hover {
+    background-color: #1976d2;
+}
+
+#uploadFotoForm button:active {
+    background-color: #1565c0;
+}
+
