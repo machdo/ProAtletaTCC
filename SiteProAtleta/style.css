@@ -85,20 +85,20 @@ header>.interface {
     justify-content: space-between;
 }
 
-header.menu-desktop.rolagem a{
+header.rolagem .menu-desktop a{
     color: #f85f00;
     text-decoration: none;
     display: inline-block;
     transition: .2s;
 }
 
-header.menu-desktop.rolagem a:hover {
+header.rolagem .menu-desktop a:hover {
     color: #f85f00;
     transform: scale(1.10);
     text-shadow: 0 0 10px #f85f00, 0 0 20px #f85f00, 0 0 30px #f85f00;
 }
 
-header.menu-desktop.rolagem .btn-login button{
+header.rolagem .menu-desktop .btn-login button{
     padding: 10px 40px;
     font-size: 18px;
     font-weight: 600;
@@ -110,7 +110,7 @@ header.menu-desktop.rolagem .btn-login button{
     transition: .4s;
 }
 
-header.menu-desktop.rolagem button.login:hover {
+header.rolagem .menu-desktop button.login:hover {
     box-shadow: 0px 0px 8px #f85f00;
     transform: scale(1.10);
 }
