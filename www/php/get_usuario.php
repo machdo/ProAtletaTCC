@@ -7,15 +7,15 @@ if (!isset($_GET['email'])) {
     exit;
 }
 
-$host = 'localhost';
-$db = 'u579644408_proatleta';
-$user = 'u579644408_proatleta1';
-$pass = 'Vini@#07alves';
+$host = "localhost";
+$usuario = "u339248760_proatleta1";
+$senha = "Vini@#07alves";
+$banco = "u339248760_proatleta";
 
 $email = $_GET['email'];
 
 // conexão com o banco (use as credenciais corretas)
-$pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+$pdo = new PDO("mysql:host=$host;dbname=$banco;charset=utf8", $usuario, $senha);
 
 $stmt = $pdo->prepare("SELECT nome, email, foto FROM usuarios WHERE email = ?");
 $stmt->execute([$email]);

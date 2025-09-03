@@ -159,7 +159,13 @@ window.app = new Framework7({
 					const css = document.getElementById('perfil-css');
 					if (css) css.remove();
 
+					document.addEventListener('DOMContentLoaded', function () {
+						atualizarTabbarPorTipoUsuario();
+					});
+
 					$.getScript('js/index.js');
+
+					$.getScript('js/entrada.js');
 
 					var swiper = new Swiper(".mySwiper", {
 						slidesPerView: 1,
@@ -268,15 +274,8 @@ window.app = new Framework7({
 			url: 'link5.html',
 			animate: false,
 			on: {
-				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
-				},
-				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
-				},
 				pageInit: function (event, page) {
-					// fazer algo quando a página for inicializada
-
+					// Adiciona CSS da página
 					const cssId = 'perfil-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -289,19 +288,53 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
+					// Adiciona CSS do Sheet Modal
+					const cssPopupId = 'popup_solicitacoes-css';
+					if (!document.getElementById(cssPopupId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssPopupId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/popup_solicitacao.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					// Scripts gerais da página
 					$.getScript('js/config.js');
 					$.getScript('js/salvar_foto.js');
+					$.getScript('js/popup_solicitacoes.js');
+
+					// Inicialização do Sheet Modal
+					const btn = page.el.querySelector("#btnProfessores");
+					const sheet = page.el.querySelector("#sheetProfessores");
+					const closeBtn = sheet ? sheet.querySelector(".close-sheet") : null;
+
+					if (btn && sheet && closeBtn) {
+						btn.addEventListener("click", function (e) {
+							e.preventDefault();
+							app.sheet.open(sheet);
+						});
+
+						closeBtn.addEventListener("click", function () {
+							app.sheet.close(sheet);
+						});
+					}
 
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-
+					// Remove CSS da página e do Sheet Modal
 					const css = document.getElementById('perfil-css');
 					if (css) css.remove();
 
+					const cssPopup = document.getElementById('popup_solicitacoes-css');
+					if (cssPopup) cssPopup.remove();
 				},
 			}
 		},
+
+
 		{
 			path: '/config/',
 			url: 'config.html',
@@ -486,6 +519,99 @@ window.app = new Framework7({
 				},
 			}
 		},
+		{
+			path: '/prof/',
+			url: 'index_prof.html',
+			animate: true,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+		{
+			path: '/teste/',
+			url: 'teste.html',
+			animate: true,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+		{
+			path: '/perfil_prof/',
+			url: 'perfil_prof.html',
+			animate: true,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+
+					const cssId = 'perfil-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/perfil.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					$.getScript('js/config.js');
+					$.getScript('js/foto_prof.js');
+					$.getScript('js/solicitacao.js');
+
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
+		{
+			path: '/treinos_prof/',
+			url: 'treinos_prof.html',
+			animate: true,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageAfterIn: function (event, page) {
+					// fazer algo depois da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// fazer algo quando a página for inicializada
+				},
+				pageBeforeRemove: function (event, page) {
+					// fazer algo antes da página ser removida do DOM
+				},
+			}
+		},
 
 	],
 
@@ -508,10 +634,8 @@ app.on('routeChange', function (route) {
 });
 
 
-
-
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/link5/' });
+//var mainView = app.views.create('.view-main', { url: '/link5/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -575,7 +699,10 @@ function protegerRotas(route) {
 		'/link2/',
 		'/link3/',
 		'/link4/',
-		'/link5/'
+		'/link5/',
+		'/prof/',
+		'/perfil_prof/',
+		'/treinos_prof/'
 	];
 
 	const estaLogado = localStorage.getItem('loggedIn') === 'true';

@@ -10,7 +10,7 @@ document.addEventListener('page:afterin', function (e) {
     const email = localStorage.getItem('userEmail');
 
     // Busca os dados do usuário do servidor (incluindo foto)
-    fetch('https://proesportes.shop/get_usuario.php?email=' + encodeURIComponent(email))
+    fetch('https://proatleta.site/get_usuario.php?email=' + encodeURIComponent(email))
       .then(res => res.json())
       .then(data => {
         if(data.success) {
@@ -43,7 +43,7 @@ document.addEventListener('page:afterin', function (e) {
       formData.append('foto', file);
       formData.append('email', email);
 
-      fetch('https://proesportes.shop/upload_foto.php', {
+      fetch('https://proatleta.site/upload_foto.php', {
         method: 'POST',
         body: formData
       })

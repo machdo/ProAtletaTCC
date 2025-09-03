@@ -3,13 +3,13 @@
         $email = $_GET['email'];
         $token = $_GET['token'];
 
-        $conn = new mysqli("localhost", "u579644408_proatleta1", "Vini@#07alves", "u579644408_proatleta");
+
+        $conn = new mysqli("localhost", "u339248760_proatleta1", "Vini@#07alves", "u339248760_proatleta");
 
         if ($conn->connect_error) {
             die("Erro de conexão.");
         }
 
-        // Corrigido: nome da coluna agora é "token_verificado"
         $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ? AND token_verificado = ?");
         $stmt->bind_param("ss", $email, $token);
         $stmt->execute();

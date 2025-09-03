@@ -35,11 +35,19 @@ body {
 
 .block {
     background-color: var(--branco);
-    padding: 20px;
+    padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin: 24px auto;
     max-width: 100%;
+}
+
+.block img {
+    margin-top: -8px;
+}
+
+.tamanho1 {
+    height: 42%;
 }
 
 .block h2 {
@@ -114,6 +122,28 @@ body {
 }
 
 #uploadFotoForm button:active {
+    background-color: #1565c0;
+}
+
+#uploadFotoprofForm button {
+    margin: 10px auto 0 auto; 
+    padding: 10px 20px;
+    width: 40%;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block; 
+    transition: background-color 0.3s ease;
+}
+
+#uploadFotoprofForm button:hover {
+    background-color: #1976d2;
+}
+
+#uploadFotoprofForm button:active {
     background-color: #1565c0;
 }
 

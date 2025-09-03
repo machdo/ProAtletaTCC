@@ -4,6 +4,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
+    const categoria = document.querySelector('input[name="categoria"]:checked').value;
     const confirmar = document.getElementById('confirmar').value;
 
     const temMaiuscula = /[A-Z]/.test(senha);
@@ -30,12 +31,12 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
         return;
     }
 
-    fetch('https://proesportes.shop/cadastro.php', {
+    fetch('https://proatleta.site/cadastro.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`
+       body: `nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}&categoria=${encodeURIComponent(categoria)}`
     })
         .then(response => response.text())
         .then(text => {

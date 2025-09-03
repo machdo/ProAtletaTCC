@@ -36,14 +36,13 @@ if (!in_array($ext, $allowed)) {
 $newName = uniqid('foto_') . '.' . $ext;
 $targetFile = $uploadDir . $newName;
 
-// Conexão com o banco de dados
-$host = 'localhost';
-$db = 'u579644408_proatleta';
-$user = 'u579644408_proatleta1';
-$pass = 'Vini@#07alves';
+$host = "localhost";
+$usuario = "u339248760_proatleta1";
+$senha = "Vini@#07alves";
+$banco = "u339248760_proatleta";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo = new PDO("mysql:host=$host;dbname=$banco;charset=utf8", $usuario, $senha);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Busca a foto antiga
@@ -53,7 +52,7 @@ try {
 
     // Move o novo arquivo
     if (move_uploaded_file($_FILES['foto']['tmp_name'], $targetFile)) {
-        $url = 'https://proesportes.shop/' . $targetFile;
+        $url = 'https://proatleta.site/' . $targetFile;
 
         // Atualiza a URL no banco
         $stmt = $pdo->prepare("UPDATE usuarios SET foto = ? WHERE email = ?");
