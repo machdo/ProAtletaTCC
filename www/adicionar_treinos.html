@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <title>Adicionar Treino</title>
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css">
+    <link rel="stylesheet" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="css/remixicon/remixicon.css">
+    <style>
+        .exercicio-item {
+            background: #f4f4f4;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .btn-remover-exercicio {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .btn-adicionar-exercicio {
+            background: #2196f3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        
+        .aluno-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .aluno-info h3 {
+            margin: 0 0 5px 0;
+            color: #1976d2;
+        }
+        
+        .aluno-info p {
+            margin: 0;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="view view-main">
+            <div data-name="adicionar_treino" class="page">
+
+                <!-- Top Navbar -->
+                <div class="top-nav2">
+                    <div class="navbar-btn">
+                        <a href="/treinos_prof/" class="btn-voltar">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </a>
+                    </div>
+                    <h1 class="title-logo2">Adicionar Treino</h1>
+                </div>
+
+                <!-- Conteúdo da página -->
+                <div class="page-content">
+                    <div class="block">
+                        
+                        <!-- Informações do Aluno -->
+                        <div class="aluno-info">
+                            <h3>Aluno: <span id="nomeAluno">Carregando...</span></h3>
+                            <p>Email: <span id="emailAluno">Carregando...</span></p>
+                        </div>
+
+                        <!-- Formulário de Treino -->
+                        <form id="formTreino">
+                            <div class="list no-hairlines-md">
+                                <ul>
+                                    <li class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Nome do Treino</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" id="nomeTreino" name="nomeTreino" 
+                                                       placeholder="Ex: Treino A - Peito e Tríceps" required>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Tipo de Treino</div>
+                                            <div class="item-input-wrap">
+                                                <select id="tipoTreino" name="tipoTreino">
+                                                    <option value="musculacao">Musculação</option>
+                                                    <option value="cardio">Cardio</option>
+                                                    <option value="funcional">Funcional</option>
+                                                    <option value="esporte">Esporte Específico</option>
+                                                    <option value="outro">Outro</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Data do Treino</div>
+                                            <div class="item-input-wrap">
+                                                <input type="date" id="dataTreino" name="dataTreino" required>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Observações</div>
+                                            <div class="item-input-wrap">
+                                                <textarea id="observacoes" name="observacoes" 
+                                                          placeholder="Instruções gerais, aquecimento, etc..."></textarea>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Container de Exercícios -->
+                            <div class="block">
+                                <h3>Exercícios</h3>
+                                <div id="exerciciosContainer">
+                                    <!-- Exercícios serão adicionados aqui dinamicamente -->
+                                </div>
+                                
+                                <button type="button" class="btn-adicionar-exercicio" onclick="adicionarExercicio()">
+                                    <i class="mdi mdi-plus"></i> Adicionar Exercício
+                                </button>
+                            </div>
+
+                            <!-- Botão de Salvar -->
+                            <div class="block">
+                                <button type="submit" class="button button-fill color-blue">
+                                    <i class="mdi mdi-content-save"></i> Salvar Treino
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="mensagem" class="block text-align-center"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="js/routes.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/adicionar_treino.js"></script>
+</body>
+
+</html>
