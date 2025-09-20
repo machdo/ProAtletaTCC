@@ -121,7 +121,7 @@ async function carregarAlunosDebug() {
         addDebug(`Resposta recebida - Status: ${response.status}`);
 
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);//trocar ."text" para alunos
         }
 
         const textResponse = await response.text();
@@ -365,5 +365,6 @@ window.adicionarTreino = adicionarTreinoDebug;
 window.verTreinos = verTreinosDebug;
 window.mostrarLogCompleto = mostrarLogCompleto;
 window.testarConexaoDebug = testarConexaoDebug;
+
 
 addDebug('Sistema de debug inicializado');
