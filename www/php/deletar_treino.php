@@ -44,26 +44,38 @@ if ($result->num_rows == 0) {
     exit;
 }
 
-// Em vez de deletar fisicamente, vamos apenas desativar (soft delete)
-$stmt = $conn->prepare("UPDATE treinos SET ativo = 0 WHERE id = ?");
-$stmt->bind_param("i", $treino_id);
+// Inicia uma transação
+$conn->begin_transaction();
 
-if ($stmt->execute()) {
+try {
+    // Primeiro deleta os exercícios relacionados
+    $stmt = $conn->prepare("DELETE FROM exercicios WHERE treino_id = ?");
+    $stmt->bind_param("i", $treino_id);
+    $stmt->execute();
+
+    // Depois deleta o treino
+    $stmt = $conn->prepare("DELETE FROM treinos WHERE id = ? AND professor_id = ?");
+    $stmt->bind_param("ii", $treino_id, $professor_id);
+    $stmt->execute();
+
+    // Se chegou até aqui, commit na transação
+    $conn->commit();
+
     echo json_encode([
         'success' => true,
-        'message' => 'Treino removido com sucesso'
+        'message' => 'Treino deletado com sucesso'
     ]);
-} else {
+
+} catch (Exception $e) {
+    // Se der erro, faz rollback
+    $conn->rollback();
+    
     echo json_encode([
         'success' => false,
-        'message' => 'Erro ao remover treino: ' . $stmt->error
+        'message' => 'Erro ao deletar treino: ' . $e->getMessage()
     ]);
 }
 
 $stmt->close();
 $conn->close();
-
-// Nota: Se quiser deletar fisicamente (permanentemente), use:
-// DELETE FROM treinos WHERE id = ? AND professor_id = ?
-// Os exercícios serão deletados automaticamente devido ao ON DELETE CASCADE
 ?>

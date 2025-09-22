@@ -48,7 +48,7 @@ $aluno = $result->fetch_assoc();
 $aluno_id = $aluno['id'];
 
 // Busca os treinos do aluno
-$sql = "SELECT t.*, u.nome as professor_nome 
+$sql = "SELECT t.*, u.nome as professor_nome, u.email as professor_email 
         FROM treinos t
         INNER JOIN usuarios u ON t.professor_id = u.id
         WHERE t.aluno_id = ?";
@@ -67,6 +67,11 @@ if ($professor_id > 0) {
 } else {
     $stmt->bind_param("i", $aluno_id);
 }
+
+// Adicionar log para debug
+error_log("SQL Query: " . $sql);
+error_log("Aluno ID: " . $aluno_id);
+error_log("Professor ID: " . $professor_id);
 
 $stmt->execute();
 $result = $stmt->get_result();

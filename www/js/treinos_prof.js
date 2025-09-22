@@ -1,370 +1,330 @@
 // ========================================
-// SISTEMA DE DEBUG AVANÇADO
+// SISTEMA DE TREINOS - VERSÃO PERSISTENTE
 // ========================================
 
-let debugLog = [];
-let statusElement = document.getElementById('debugStatus');
-let statusInfoElement = document.getElementById('statusInfo');
+// Criar um wrapper que persiste entre navegações
+(function () {
+    'use strict';
 
-function addDebug(message, data = null) {
-    const timestamp = new Date().toLocaleTimeString();
-    const logEntry = `${timestamp}: ${message}`;
-
-    console.log('[DEBUG]', logEntry, data || '');
-    debugLog.push(logEntry);
-
-    if (statusElement) {
-        statusElement.innerHTML = debugLog.slice(-3).join('<br>');
-    }
-}
-
-function updateStatus(message, type = 'info') {
-    if (statusInfoElement) {
-        statusInfoElement.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
-        statusInfoElement.className = `status-info ${type}`;
-    }
-}
-
-// ========================================
-// VERIFICAÇÕES INICIAIS
-// ========================================
-
-function verificarAmbiente() {
-    addDebug('Verificando ambiente...');
-
-    const checks = {
-        localStorage: typeof (Storage) !== "undefined",
-        fetch: typeof fetch !== 'undefined',
-        jQuery: typeof $ !== 'undefined',
-        app: typeof app !== 'undefined'
-    };
-
-    addDebug('Verificações do ambiente', checks);
-
-    for (let check in checks) {
-        if (!checks[check]) {
-            addDebug(`❌ ERRO: ${check} não disponível`);
-            updateStatus(`Erro: ${check} não disponível`, 'error');
-            return false;
-        }
-    }
-
-    addDebug('✅ Ambiente OK');
-    return true;
-}
-
-function verificarDadosUsuario() {
-    addDebug('Verificando dados do usuário...');
-
-    const dados = {
-        loggedIn: localStorage.getItem('loggedIn'),
-        userType: localStorage.getItem('userType'),
-        userId: localStorage.getItem('userId'),
-        professor_id: localStorage.getItem('professor_id'),
-        userEmail: localStorage.getItem('userEmail'),
-        userNome: localStorage.getItem('userNome')
-    };
-
-    addDebug('Dados do localStorage', dados);
-
-    // Verificar login
-    if (dados.loggedIn !== 'true') {
-        updateStatus('Usuário não está logado', 'error');
-        return false;
-    }
-
-    // Verificar se é professor
-    if (dados.userType !== 'prof') {
-        updateStatus('Usuário não é professor', 'error');
-        return false;
-    }
-
-    // Configurar professor_id se necessário
-    if (!dados.professor_id && dados.userId) {
-        localStorage.setItem('professor_id', dados.userId);
-        addDebug('professor_id configurado automaticamente');
-        dados.professor_id = dados.userId;
-    }
-
-    if (!dados.professor_id) {
-        updateStatus('ID do professor não encontrado', 'error');
-        return false;
-    }
-
-    updateStatus(`Professor: ${dados.userNome} (ID: ${dados.professor_id})`, 'success');
-    addDebug('✅ Dados do usuário OK');
-    return dados;
-}
-
-// ========================================
-// CARREGAR ALUNOS COM DEBUG
-// ========================================
-
-async function carregarAlunosDebug() {
-    addDebug('Iniciando carregamento de alunos...');
-
-    const dadosUsuario = verificarDadosUsuario();
-    if (!dadosUsuario) {
-        mostrarErroDebug('Dados do usuário inválidos');
+    // Verificar se já foi inicializado globalmente
+    if (window.SistemaTreinos) {
+        console.log('Sistema já existe, reinicializando...');
+        window.SistemaTreinos.reinicializar();
         return;
     }
 
-    const professorId = dadosUsuario.professor_id;
-    const url = `https://proatleta.site/get_alunos_professor.php?professor_id=${professorId}`;
+    // Criar o sistema como singleton global
+    window.SistemaTreinos = {
+        config: {
+            userType: localStorage.getItem("userType"),
+            userId: localStorage.getItem("userId"),
+            professorId: localStorage.getItem("professor_id"),
+            get finalProfessorId() {
+                return this.professorId || this.userId;
+            },
+            statusInfo: null,
+            inicializado: false,
+            intervalos: []
+        },
 
-    addDebug(`Fazendo requisição para: ${url}`);
-    updateStatus('Buscando alunos na base de dados...', 'info');
+        utils: {
+            updateStatus: (message, type = 'info') => {
+                const config = window.SistemaTreinos.config;
+                if (config.statusInfo) {
+                    config.statusInfo.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+                    config.statusInfo.className = `status-info ${type}`;
+                }
+                console.log(`[${type}]`, message);
+            },
 
-    try {
-        const response = await fetch(url);
-
-        addDebug(`Resposta recebida - Status: ${response.status}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);//trocar ."text" para alunos
-        }
-
-        const textResponse = await response.text();
-        addDebug(`Resposta (${textResponse.length} chars): ${textResponse.substring(0, 100)}...`);
-
-        let data;
-        try {
-            data = JSON.parse(textResponse);
-            addDebug('JSON parseado com sucesso', data);
-        } catch (parseError) {
-            addDebug('❌ Erro no parse JSON', parseError);
-            throw new Error('Resposta não é JSON válido: ' + textResponse.substring(0, 200));
-        }
-
-        // Processar resposta
-        if (data.success) {
-            if (data.alunos && data.alunos.length > 0) {
-                addDebug(`✅ ${data.alunos.length} alunos encontrados`);
-                updateStatus(`${data.alunos.length} alunos encontrados`, 'success');
-                mostrarAlunosDebug(data.alunos);
-            } else {
-                addDebug('Nenhum aluno encontrado');
-                updateStatus('Nenhum aluno vinculado a este professor', 'warning');
-                mostrarListaVaziaDebug('Nenhum aluno encontrado');
-            }
-        } else {
-            const errorMsg = data.message || 'Erro desconhecido do servidor';
-            addDebug('❌ Erro do servidor: ' + errorMsg);
-            updateStatus('Erro do servidor: ' + errorMsg, 'error');
-            mostrarErroDebug(errorMsg);
-        }
-
-    } catch (error) {
-        addDebug('❌ Erro na requisição: ' + error.message);
-        updateStatus('Erro na conexão: ' + error.message, 'error');
-        mostrarErroDebug('Erro ao conectar com o servidor: ' + error.message);
-    }
-}
-
-// ========================================
-// FUNÇÕES DE EXIBIÇÃO COM DEBUG
-// ========================================
-
-function mostrarAlunosDebug(alunos) {
-    addDebug(`Exibindo ${alunos.length} alunos`);
-
-    const container = document.getElementById('listaAlunos');
-    if (!container) {
-        addDebug('❌ Container listaAlunos não encontrado');
-        return;
-    }
-
-    let html = '';
-    alunos.forEach((aluno, index) => {
-        const nome = aluno.nome || 'Nome não disponível';
-        const email = aluno.email || 'Email não disponível';
-        const totalTreinos = aluno.total_treinos || 0;
-
-        addDebug(`Processando aluno ${index + 1}: ${nome} (${email})`);
-
-        html += `
-                    <div class="aluno-card" data-email="${email}">
-                        <div class="aluno-info">
-                            <div class="aluno-nome">${nome}</div>
-                            <div class="aluno-email">${email}</div>
-                            <small style="color: #666;">Treinos: ${totalTreinos}</small>
-                        </div>
-                        <div class="aluno-actions">
-                            <button class="btn-action btn-adicionar" onclick="adicionarTreinoDebug('${email}')">
-                                <i class="mdi mdi-plus"></i> Adicionar
-                            </button>
-                            <button class="btn-action btn-ver" onclick="verTreinosDebug('${email}')">
-                                <i class="mdi mdi-eye"></i> Ver
-                            </button>
-                        </div>
-                    </div>
-                `;
-    });
-
-    container.innerHTML = html;
-    addDebug('✅ HTML inserido no container');
-}
-
-function mostrarListaVaziaDebug(mensagem) {
-    addDebug('Mostrando lista vazia: ' + mensagem);
-
-    const container = document.getElementById('listaAlunos');
-    if (container) {
-        container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="mdi mdi-account-group-outline"></i>
-                        <h3>Nenhum aluno encontrado</h3>
-                        <p>${mensagem}</p>
-                        <p>Para vincular alunos:</p>
-                        <ol style="text-align: left; max-width: 300px; margin: 20px auto;">
-                            <li>Vá ao seu perfil</li>
-                            <li>Digite o email do aluno</li>
-                            <li>Envie a solicitação</li>
-                            <li>Aguarde o aluno aceitar</li>
-                        </ol>
-                        <button class="button button-fill" onclick="irParaPerfilDebug()">
-                            Ir para Perfil
-                        </button>
-                        <button class="button button-outline" onclick="testarConexaoDebug()" style="margin-top: 10px;">
-                            Testar Conexão
-                        </button>
-                    </div>
-                `;
-    }
-}
-
-function mostrarErroDebug(mensagem) {
-    addDebug('Mostrando erro: ' + mensagem);
-
-    const container = document.getElementById('listaAlunos');
-    if (container) {
-        container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="mdi mdi-alert-circle-outline"></i>
-                        <h3>Erro</h3>
-                        <p>${mensagem}</p>
-                        <div style="margin: 20px 0;">
-                            <button class="button button-outline" onclick="carregarAlunosDebug()">
+            mostrarErro: (mensagem) => {
+                const container = document.getElementById('listaAlunos');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="mdi mdi-alert-circle-outline"></i>
+                            <h3>Erro</h3>
+                            <p>${mensagem}</p>
+                            <button class="button button-outline" onclick="window.SistemaTreinos.actions.carregarAlunos()">
                                 Tentar Novamente
                             </button>
-                            <button class="button button-outline" onclick="mostrarLogCompleto()" style="margin-left: 10px;">
-                                Ver Log Completo
+                        </div>
+                    `;
+                }
+            },
+
+            mostrarListaVazia: () => {
+                const container = document.getElementById('listaAlunos');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="mdi mdi-account-group-outline"></i>
+                            <h3>Nenhum aluno encontrado</h3>
+                            <p>Você ainda não tem alunos vinculados</p>
+                            <button class="button button-fill" onclick="window.SistemaTreinos.actions.irParaPerfil()">
+                                Ir para Perfil
                             </button>
                         </div>
-                        <button class="button button-fill" onclick="testarConexaoDebug()">
-                            Testar Conexão
+                    `;
+                }
+            },
+
+            criarCardAluno: (aluno) => {
+                const div = document.createElement("div");
+                div.classList.add("aluno-card");
+                div.setAttribute("data-email", aluno.email || '');
+
+                div.innerHTML = `
+                    <div class="aluno-info">
+                        <div class="aluno-nome">${aluno.nome || 'Nome não disponível'}</div>
+                        <div class="aluno-email" >${aluno.email || 'Email não disponível'}</div>
+                        <small style="color: #666;">Treinos: ${aluno.total_treinos || 0}</small>
+                    </div>
+                    <div class="aluno-actions">
+                        <button class="btn-action btn-adicionar" onclick="window.SistemaTreinos.actions.adicionarTreino('${aluno.email}')">
+                            <i class="mdi mdi-plus"></i> Adicionar
+                        </button>
+                        <button class="btn-action btn-ver" onclick="window.SistemaTreinos.actions.verTreinos('${aluno.email}')">
+                            <i class="mdi mdi-eye"></i> Ver
                         </button>
                     </div>
                 `;
-    }
-}
 
-// ========================================
-// FUNÇÕES DE AÇÃO
-// ========================================
+                return div;
+            }
+        },
 
-function adicionarTreinoDebug(email) {
-    addDebug('Adicionando treino para: ' + email);
-    localStorage.setItem('alunoSelecionado', email);
+        actions: {
+            carregarAlunos: () => {
+                const sistema = window.SistemaTreinos;
+                console.log("Iniciando carregamento de alunos...");
 
-    if (typeof app !== 'undefined' && app.views && app.views.main) {
-        app.views.main.router.navigate('/adicionar_treino/');
-    } else {
-        alert('Framework7 não disponível. Email salvo: ' + email);
-    }
-}
+                // Verificar se é professor
+                if (sistema.config.userType !== "prof") {
+                    console.error("Usuário não é professor");
+                    sistema.utils.mostrarErro("Acesso restrito a professores");
+                    return;
+                }
 
-function verTreinosDebug(email) {
-    addDebug('Visualizando treinos para: ' + email);
-    localStorage.setItem('alunoSelecionado', email);
+                // Verificar ID
+                if (!sistema.config.finalProfessorId) {
+                    console.error("ID do professor não encontrado");
+                    sistema.utils.mostrarErro("ID do professor não encontrado");
+                    return;
+                }
 
-    if (typeof app !== 'undefined' && app.views && app.views.main) {
-        app.views.main.router.navigate('/ver_treinos_aluno/');
-    } else {
-        alert('Framework7 não disponível. Email salvo: ' + email);
-    }
-}
+                sistema.utils.updateStatus('Buscando alunos...', 'info');
 
-function irParaPerfilDebug() {
-    addDebug('Navegando para perfil');
+                // Fazer requisição
+                fetch(`https://proatleta.site/get_alunos_professor.php?professor_id=${sistema.config.finalProfessorId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Resposta recebida:", data);
 
-    if (typeof app !== 'undefined' && app.views && app.views.main) {
-        app.views.main.router.navigate('/perfil_prof/');
-    } else {
-        alert('Framework7 não disponível');
-    }
-}
+                        const container = document.getElementById('listaAlunos');
+                        if (!container) {
+                            console.error("Container #listaAlunos não encontrado");
+                            return;
+                        }
 
-// ========================================
-// FUNÇÕES DE DEBUG
-// ========================================
+                        // Limpar container
+                        container.innerHTML = "";
 
-function mostrarLogCompleto() {
-    const logText = debugLog.join('\n');
-    console.log('LOG COMPLETO:', logText);
-    alert('Log salvo no console. Pressione F12 para ver.');
-}
+                        // Processar resposta
+                        if (data.success && data.alunos && data.alunos.length > 0) {
+                            sistema.utils.updateStatus(`${data.alunos.length} alunos encontrados`, 'success');
 
-async function testarConexaoDebug() {
-    addDebug('Testando conexão com a API...');
-    updateStatus('Testando conexão...', 'info');
+                            // Criar cards dos alunos
+                            data.alunos.forEach(aluno => {
+                                container.appendChild(sistema.utils.criarCardAluno(aluno));
+                            });
+                        } else {
+                            // Lista vazia
+                            sistema.utils.updateStatus('Nenhum aluno encontrado', 'warning');
+                            sistema.utils.mostrarListaVazia();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro ao buscar alunos:", error);
+                        sistema.utils.updateStatus('Erro na conexão', 'error');
+                        sistema.utils.mostrarErro('Erro ao conectar com o servidor: ' + error.message);
+                    });
+            },
 
-    try {
-        const response = await fetch('https://proatleta.site/get_alunos_professor.php?professor_id=1');
-        const text = await response.text();
+            adicionarTreino: (email) => {
+                console.log('Adicionando treino para:', email);
+                localStorage.setItem('alunoSelecionado', email);
 
-        addDebug(`Teste OK - Status: ${response.status}, Resposta: ${text.substring(0, 100)}`);
-        updateStatus('Conexão OK com a API', 'success');
+                // salvar também nome
+                const card = document.querySelector(`.aluno-card[data-email="${email}"] .aluno-nome`);
+                if (card) {
+                    localStorage.setItem('nomeAlunoSelecionado', card.textContent);
+                }
 
-        alert('Conexão OK! Verifique o console para detalhes.');
-    } catch (error) {
-        addDebug('❌ Teste falhou: ' + error.message);
-        updateStatus('Falha na conexão: ' + error.message, 'error');
+                if (typeof app !== 'undefined' && app.views && app.views.main) {
+                    app.views.main.router.navigate('/adicionar_treino/');
+                } else {
+                    console.error('Framework7 não disponível');
+                }
+            },
 
-        alert('Erro na conexão: ' + error.message);
-    }
-}
+            verTreinos: (email) => {
+                console.log('Visualizando treinos para:', email);
+                localStorage.setItem('alunoSelecionado', email);
 
-function filtrarAlunosDebug(busca) {
-    addDebug('Filtrando por: ' + busca);
-    // Implementar filtro se necessário
-}
+                if (typeof app !== 'undefined' && app.views && app.views.main) {
+                    app.views.main.router.navigate('/ver_treinos_aluno/');
+                } else {
+                    console.error('Framework7 não disponível');
+                }
+            },
 
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
+            irParaPerfil: () => {
+                console.log('Navegando para perfil');
 
-document.addEventListener('DOMContentLoaded', function () {
-    addDebug('DOMContentLoaded disparado');
+                if (typeof app !== 'undefined' && app.views && app.views.main) {
+                    app.views.main.router.navigate('/perfil_prof/');
+                } else {
+                    console.error('Framework7 não disponível');
+                }
+            },
 
-    setTimeout(() => {
-        addDebug('Iniciando verificações...');
+            filtrarAlunos: (busca) => {
+                const cards = document.querySelectorAll('.aluno-card');
+                const termoBusca = busca.toLowerCase();
+                let encontrados = 0;
 
-        if (!verificarAmbiente()) {
-            return;
+                cards.forEach(card => {
+                    const nome = card.querySelector('.aluno-nome').textContent.toLowerCase();
+                    const email = card.querySelector('.aluno-email').textContent.toLowerCase();
+
+                    if (nome.includes(termoBusca) || email.includes(termoBusca)) {
+                        card.style.display = 'flex';
+                        encontrados++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Atualizar status
+                if (busca && encontrados === 0) {
+                    window.SistemaTreinos.utils.updateStatus('Nenhum aluno encontrado com esse termo', 'warning');
+                } else if (busca) {
+                    window.SistemaTreinos.utils.updateStatus(`${encontrados} aluno(s) encontrado(s)`, 'info');
+                }
+            }
+        },
+
+        inicializar: () => {
+            const sistema = window.SistemaTreinos;
+            console.log('Inicializando sistema de treinos...');
+
+            // Configurar elementos
+            sistema.config.statusInfo = document.getElementById('statusInfo');
+
+            // Configurar busca
+            const buscarInput = document.getElementById('buscarAluno');
+            if (buscarInput && !buscarInput.hasAttribute('data-listener-added')) {
+                buscarInput.addEventListener('input', (e) => {
+                    sistema.actions.filtrarAlunos(e.target.value);
+                });
+                buscarInput.setAttribute('data-listener-added', 'true');
+            }
+
+            // Carregar alunos automaticamente
+            setTimeout(() => {
+                sistema.actions.carregarAlunos();
+            }, 100);
+
+            sistema.config.inicializado = true;
+        },
+
+        reinicializar: () => {
+            const sistema = window.SistemaTreinos;
+            console.log('Reinicializando sistema...');
+
+            // Limpar intervalos anteriores
+            sistema.config.intervalos.forEach(id => clearInterval(id));
+            sistema.config.intervalos = [];
+
+            // Resetar flag
+            sistema.config.inicializado = false;
+
+            // Verificar se está na página correta
+            const listaAlunos = document.getElementById('listaAlunos');
+            if (listaAlunos) {
+                sistema.inicializar();
+            }
+        },
+
+        // Monitorar mudanças de página
+        monitorarPagina: () => {
+            const sistema = window.SistemaTreinos;
+
+            const intervaloMonitoramento = setInterval(() => {
+                const listaAlunos = document.getElementById('listaAlunos');
+                const buscarInput = document.getElementById('buscarAluno');
+
+                // Se os elementos existem mas o sistema não está inicializado
+                if (listaAlunos && buscarInput && !sistema.config.inicializado) {
+                    console.log('Detectada página de treinos, inicializando...');
+                    sistema.inicializar();
+                }
+                // Se não existem mais os elementos, marcar como não inicializado
+                else if (!listaAlunos && sistema.config.inicializado) {
+                    console.log('Saiu da página de treinos');
+                    sistema.config.inicializado = false;
+                }
+            }, 1000);
+
+            sistema.config.intervalos.push(intervaloMonitoramento);
         }
+    };
 
-        // Configurar busca
-        const buscarInput = document.getElementById('buscarAluno');
-        if (buscarInput) {
-            buscarInput.addEventListener('input', function (e) {
-                filtrarAlunosDebug(e.target.value);
-            });
-            addDebug('Busca configurada');
+    // Expor funções globalmente para compatibilidade
+    window.carregarAlunos = window.SistemaTreinos.actions.carregarAlunos;
+    window.adicionarTreino = window.SistemaTreinos.actions.adicionarTreino;
+    window.verTreinos = window.SistemaTreinos.actions.verTreinos;
+    window.irParaPerfil = window.SistemaTreinos.actions.irParaPerfil;
+    window.filtrarAlunos = window.SistemaTreinos.actions.filtrarAlunos;
+
+    // Inicializar eventos de monitoramento
+    window.SistemaTreinos.monitorarPagina();
+
+    // Múltiplos eventos para capturar diferentes situações
+    const executarInicializacao = () => {
+        const listaAlunos = document.getElementById('listaAlunos');
+        if (listaAlunos && !window.SistemaTreinos.config.inicializado) {
+            window.SistemaTreinos.inicializar();
         }
+    };
 
-        // Carregar alunos
-        carregarAlunosDebug();
+    // Eventos padrão
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', executarInicializacao);
+    } else {
+        executarInicializacao();
+    }
 
-    }, 500);
-});
+    // Eventos para SPAs
+    document.addEventListener('page:init', executarInicializacao);
+    document.addEventListener('page:reinit', executarInicializacao);
 
-// Expor funções globalmente
-window.carregarAlunos = carregarAlunosDebug;
-window.adicionarTreino = adicionarTreinoDebug;
-window.verTreinos = verTreinosDebug;
-window.mostrarLogCompleto = mostrarLogCompleto;
-window.testarConexaoDebug = testarConexaoDebug;
+    // Eventos Framework7
+    if (typeof app !== 'undefined') {
+        app.on('pageInit', (page) => {
+            setTimeout(executarInicializacao, 50);
+        });
 
+        app.on('pageBeforeIn', (page) => {
+            setTimeout(executarInicializacao, 100);
+        });
+    }
 
-addDebug('Sistema de debug inicializado');
+    console.log('Sistema de treinos persistente inicializado');
+})();

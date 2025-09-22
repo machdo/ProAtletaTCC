@@ -247,8 +247,8 @@ window.app = new Framework7({
 			}
 		},
 		{
-			path: '/sport-treino/',
-			url: 'sport-treino.html',
+			path: '/treinos_aluno/',
+			url: 'treinos_aluno.html',
 			animate: false,
 			on: {
 				pageBeforeIn: function (event, page) {
@@ -264,21 +264,20 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
-					// Adiciona o CSS da página sport-treino
-					const cssId = 'sport-treino-css';
+					const cssId = 'treinos-aluno-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
 						const link = document.createElement('link');
 						link.id = cssId;
 						link.rel = 'stylesheet';
 						link.type = 'text/css';
-						link.href = 'css/index.css'; // ou outro CSS específico se existir
+						link.href = 'css/treinos_aluno.css';
 						link.media = 'all';
 						head.appendChild(link);
 					}
 
-					const css = document.getElementById('perfil-css');
-					if (css) css.remove();
+					$.getScript('js/treinos_aluno.js');
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove o CSS da página sport-treino
@@ -288,9 +287,9 @@ window.app = new Framework7({
 			}
 		},
 		{
-			path: '/treino-fut/',
-			url: 'treino-fut.html',
-			animate: true, // <- animação ativada
+			path: '/ver_treinos_prof/',
+			url: 'ver_treinos_prof.html',
+			animate: false,
 			on: {
 				pageBeforeIn: function (event, page) {
 					// fazer algo antes da página ser exibida
@@ -299,113 +298,32 @@ window.app = new Framework7({
 					// fazer algo depois da página ser exibida
 				},
 				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
+					// fazer algo quando a página for inicializada
+					const cssId = 'ver-treinos-prof-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/ver_treinos_prof.css';
+						link.media = 'all';
+						head.appendChild(link);
 					}
 
-					// fazer algo quando a página for inicializada
-				},
-				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-				},
-			}
-		},
-		{
-			path: '/treino-volei/',
-			url: 'treino-volei.html',
-			animate: true, // <- animação ativada
-			on: {
-				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
-				},
-				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
-				},
-				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
+					const cssIndexId = 'index-css';
+					if (!document.getElementById(cssIndexId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssIndexId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/index.css';
+						link.media = 'all';
+						head.appendChild(link);
 					}
 
-					// fazer algo quando a página for inicializada
-				},
-				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-				},
-			}
-		},
-		{
-			path: '/treino-basq/',
-			url: 'treino-basq.html',
-			animate: true, // <- animação ativada
-			on: {
-				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
-				},
-				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
-				},
-				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
-
-					// fazer algo quando a página for inicializada
-				},
-				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-				},
-			}
-		},
-		{
-			path: '/basq-func/',
-			url: 'basq-func.html',
-			animate: true, // <- animação ativada
-			on: {
-				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
-				},
-				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
-				},
-				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
-
-					// fazer algo quando a página for inicializada
-				},
-				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-				},
-			}
-		},
-		{
-			path: '/treino-tenis/',
-			url: 'treino-tenis.html',
-			animate: true, // <- animação ativada
-			on: {
-				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
-				},
-				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
-				},
-				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
-
-					// fazer algo quando a página for inicializada
+					$.getScript('js/ver_treinos_prof.js');
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -508,12 +426,6 @@ window.app = new Framework7({
 				pageAfterIn: function (event, page) {
 				},
 				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
-
 					// Adiciona o CSS específico da agenda_prof
 					const cssId = 'agenda-prof-css';
 					if (!document.getElementById(cssId)) {
@@ -550,6 +462,7 @@ window.app = new Framework7({
 			on: {
 				pageInit: function (event, page) {
 					// Adiciona CSS da página
+
 					const cssId = 'perfil_aluno-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -629,7 +542,7 @@ window.app = new Framework7({
 					const css = document.getElementById('perfil_aluno-css');
 					if (css) css.remove();
 				},
-			}
+			},
 		},
 
 
@@ -890,6 +803,16 @@ window.app = new Framework7({
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
 
+					const oldCss = document.getElementById('treinos-prof-css');
+					if (oldCss) {
+						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-prof-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
 					const cssId = 'perfil-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -936,21 +859,42 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					console.log('Página treinos_prof inicializando...');
-					
+
 					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
+					const oldAgendaCss = document.getElementById('agenda-prof-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+					const oldPerfilCss = document.getElementById('perfil-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldAddTreinoCss = document.getElementById('adicionar-treino-css');
+					if (oldAddTreinoCss) {
+						oldAddTreinoCss.parentNode.removeChild(oldAddTreinoCss);
+					}
+
+					const cssId = 'treinos-prof-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/treinos_prof.css';
+						link.media = 'all';
+						head.appendChild(link);
 					}
 
 					// Carregar o script treinos_prof.js
 					$.getScript('js/treinos_prof.js')
-						.done(function(script, textStatus) {
+						.done(function (script, textStatus) {
 							console.log('treinos_prof.js carregado com sucesso:', textStatus);
 						})
-						.fail(function(jqxhr, settings, exception) {
+						.fail(function (jqxhr, settings, exception) {
 							console.error('Erro ao carregar treinos_prof.js:', exception);
-							
+
 							// Fallback: executar lógica básica inline
 							setTimeout(() => {
 								carregarAlunosFallback();
@@ -970,32 +914,70 @@ window.app = new Framework7({
 			animate: true,
 			on: {
 				pageInit: function (event, page) {
-					console.log('Página adicionar_treino inicializando...');
 					// Carrega o script de adicionar treino
-					$.getScript('js/adicionar_treino.js')
-						.done(function() {
-							console.log('adicionar_treino.js carregado com sucesso');
-						})
-						.fail(function(jqxhr, settings, exception) {
-							console.error('Erro ao carregar adicionar_treino.js:', exception);
-						});
+					$.getScript('js/adicionar_treino.js');
+
+					const oldCss = document.getElementById('treinos-prof-css');
+					if (oldCss) {
+						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					const cssId = 'adicionar-treino-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/adicionar_treino.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
 				}
 			}
 		},
 
-		// Rota para ver treinos do aluno
 		{
 			path: '/ver_treinos_aluno/',
 			url: 'ver_treinos_aluno.html',
 			animate: true,
 			on: {
 				pageInit: function (event, page) {
-					console.log('Página ver_treinos_aluno inicializando...');
 					// A lógica já está inline no HTML
+
+					const oldCss = document.getElementById('treinos-prof-css');
+					if (oldCss) {
+						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					$.getScript('js/ver_treinos_aluno.js')
+
+					const cssId = 'ver-treinos-aluno-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/ver_treinos_aluno.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
 				}
 			}
-		}
+		},
 
+		{
+			path: '/detalhe_treino/',
+			url: 'detalhe_treino.html',
+			animate: true,
+			on: {
+				pageInit: function (event, page) {
+					// Carrega detalhes do treino
+				}
+			}
+		},
 	],
 
 });
@@ -1084,12 +1066,7 @@ function protegerRotas(route) {
 		'/link5/',
 		'/prof/',
 		'/perfil_prof/',
-		'/sport-treino/',
-		'/treino-fut/',
-		'/treino-volei/',
-		'/treino-basq/',
-		'/basq-func/',
-		'/treino-tenis/',
+		'/treinos_aluno/',
 		'/treinos_prof/',
 		'/adicionar_treino/',
 		'/ver_treinos_aluno/'
@@ -1109,190 +1086,9 @@ function protegerRotas(route) {
 // FUNÇÃO FALLBACK PARA TREINOS_PROF
 // ========================================
 
-function carregarAlunosFallback() {
-	console.log('Executando fallback para carregar alunos...');
-	
-	// Verificar dados do usuário
-	let professorId = localStorage.getItem('professor_id');
-	const userId = localStorage.getItem('userId');
-	const userType = localStorage.getItem('userType');
-	
-	// Fallback para userId se for professor
-	if (!professorId && userType === 'prof' && userId) {
-		professorId = userId;
-		localStorage.setItem('professor_id', professorId);
-		console.log('professor_id definido automaticamente como:', professorId);
-	}
-
-	if (!professorId) {
-		console.error('ID do professor não encontrado no fallback');
-		mostrarErroFallback('ID do professor não encontrado. Por favor, faça login novamente.');
-		return;
-	}
-
-	console.log('Buscando alunos para professor ID:', professorId);
-	
-	// Mostrar loading
-	const container = document.getElementById('listaAlunos');
-	if (container) {
-		container.innerHTML = `
-			<div class="empty-state">
-				<i class="mdi mdi-loading mdi-spin"></i>
-				<p>Carregando alunos... (Modo Fallback)</p>
-			</div>
-		`;
-	}
-
-	// Fazer requisição
-	const url = `https://proatleta.site/get_alunos_professor.php?professor_id=${professorId}`;
-	console.log('URL da requisição (fallback):', url);
-
-	fetch(url)
-		.then(response => {
-			console.log('Resposta recebida (fallback):', response.status, response.ok);
-			
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-			}
-			
-			return response.text();
-		})
-		.then(textResponse => {
-			console.log('Resposta texto (fallback):', textResponse.substring(0, 100));
-			
-			let data;
-			try {
-				data = JSON.parse(textResponse);
-			} catch (e) {
-				console.error('Erro no parse JSON (fallback):', e);
-				throw new Error('Resposta inválida do servidor');
-			}
-			
-			console.log('Dados parseados (fallback):', data);
-			
-			if (data.success) {
-				if (data.alunos && data.alunos.length > 0) {
-					console.log(`${data.alunos.length} alunos encontrados (fallback)`);
-					mostrarAlunosFallback(data.alunos);
-				} else {
-					console.log('Nenhum aluno encontrado (fallback)');
-					mostrarListaVaziaFallback();
-				}
-			} else {
-				console.error('Erro do servidor (fallback):', data.message);
-				mostrarErroFallback(data.message || 'Erro do servidor');
-			}
-		})
-		.catch(error => {
-			console.error('Erro na requisição (fallback):', error);
-			mostrarErroFallback('Erro ao carregar alunos: ' + error.message);
-		});
-}
-
-function mostrarAlunosFallback(alunos) {
-	console.log('Mostrando', alunos.length, 'alunos (fallback)');
-	
-	const container = document.getElementById('listaAlunos');
-	if (!container) {
-		console.error('Container listaAlunos não encontrado! (fallback)');
-		return;
-	}
-
-	let html = '';
-	alunos.forEach((aluno, index) => {
-		const nome = aluno.nome || 'Nome não disponível';
-		const email = aluno.email || 'Email não disponível';
-		const totalTreinos = aluno.total_treinos || 0;
-		
-		html += `
-			<div class="aluno-card" data-email="${email}">
-				<div class="aluno-info">
-					<div class="aluno-nome">${nome}</div>
-					<div class="aluno-email">${email}</div>
-					<small style="color: #666;">Treinos: ${totalTreinos}</small>
-				</div>
-				<div class="aluno-actions">
-					<button class="btn-action btn-adicionar" onclick="adicionarTreinoFallback('${email}')">
-						<i class="mdi mdi-plus"></i> Adicionar
-					</button>
-					<button class="btn-action btn-ver" onclick="verTreinosFallback('${email}')">
-						<i class="mdi mdi-eye"></i> Ver
-					</button>
-				</div>
-			</div>
-		`;
-	});
-
-	container.innerHTML = html;
-	console.log('Alunos exibidos com sucesso (fallback)');
-}
-
-function mostrarListaVaziaFallback() {
-	const container = document.getElementById('listaAlunos');
-	if (container) {
-		container.innerHTML = `
-			<div class="empty-state">
-				<i class="mdi mdi-account-group-outline"></i>
-				<h3>Nenhum aluno encontrado</h3>
-				<p>Você ainda não tem alunos aceitos.</p>
-				<p>Para vincular alunos, vá ao seu perfil e envie solicitações.</p>
-				<button class="button button-fill" onclick="irParaPerfilFallback()">
-					Ir para Perfil
-				</button>
-			</div>
-		`;
-	}
-}
-
-function mostrarErroFallback(mensagem) {
-	const container = document.getElementById('listaAlunos');
-	if (container) {
-		container.innerHTML = `
-			<div class="empty-state">
-				<i class="mdi mdi-alert-circle-outline"></i>
-				<h3>Erro (Modo Fallback)</h3>
-				<p>${mensagem}</p>
-				<button class="button button-outline" onclick="carregarAlunosFallback()">
-					Tentar Novamente
-				</button>
-			</div>
-		`;
-	}
-}
-
-// Funções de navegação fallback
-function adicionarTreinoFallback(email) {
-	console.log('Adicionando treino para:', email, '(fallback)');
-	localStorage.setItem('alunoSelecionado', email);
-	
-	if (typeof app !== 'undefined' && app.views && app.views.main) {
-		app.views.main.router.navigate('/adicionar_treino/');
-	} else {
-		console.warn('App não disponível (fallback)');
-	}
-}
-
-function verTreinosFallback(email) {
-	console.log('Visualizando treinos para:', email, '(fallback)');
-	localStorage.setItem('alunoSelecionado', email);
-	
-	if (typeof app !== 'undefined' && app.views && app.views.main) {
-		app.views.main.router.navigate('/ver_treinos_aluno/');
-	} else {
-		console.warn('App não disponível (fallback)');
-	}
-}
-
-function irParaPerfilFallback() {
-	if (typeof app !== 'undefined' && app.views && app.views.main) {
-		app.views.main.router.navigate('/perfil_prof/');
-	} else {
-		console.warn('App não disponível (fallback)');
-	}
-}
-
-// Expor funções fallback globalmente
-window.carregarAlunosFallback = carregarAlunosFallback;
-window.adicionarTreinoFallback = adicionarTreinoFallback;
-window.verTreinosFallback = verTreinosFallback;
-window.irParaPerfilFallback = irParaPerfilFallback;
+// Expor funções globalmente para uso nos botões
+window.carregarAlunos = carregarAlunos;
+window.adicionarTreino = adicionarTreino;
+window.verTreinos = verTreinos;
+window.irParaPerfil = irParaPerfil;
+window.filtrarAlunos = filtrarAlunos;
