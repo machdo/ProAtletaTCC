@@ -224,8 +224,8 @@ window.app = new Framework7({
 			}
 		},
 		{
-			path: '/link2/',
-			url: 'link2.html',
+			path: '/proatletaplus/',
+			url: 'proatletaplus.html',
 			animate: false,
 			on: {
 				pageBeforeIn: function (event, page) {
@@ -239,6 +239,18 @@ window.app = new Framework7({
 
 					const css = document.getElementById('perfil-css');
 					if (css) css.remove();
+
+					const cssId = 'proatleta-plus-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/proatletaplus.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
 
 				},
 				pageBeforeRemove: function (event, page) {
