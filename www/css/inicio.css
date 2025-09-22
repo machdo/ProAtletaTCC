@@ -10,14 +10,13 @@
   background-color: var(--laranja) !important;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  /* joga tudo pro fim */
+  justify-content: space-between;
   align-items: center;
   height: 100vh;
-  /* ocupa a tela inteira */
-  padding-bottom: 80px;
-  /* espaço pro botão */
+  padding: 0;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
 .top-nav2 {
@@ -58,36 +57,40 @@
 }
 
 .img-menino {
-  width: auto;
-  max-width: 150%;
+  width: 145%;
   height: auto;
   object-fit: contain;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
 }
 
 .texto-sobre-imagem {
   position: absolute;
-  bottom: 20%;
-  /* fica acima da imagem */
+  bottom: 22%;
   left: 10%;
   right: 10%;
+  z-index: 2;
   color: white;
   font-size: 23px;
   font-weight: bold;
   text-align: left;
 }
 
-.botao-container,
-.botao-comecar {
+.botao-container {
   position: absolute;
   bottom: 15%;
-  /* botão sempre fixo embaixo */
   width: 100%;
   display: flex;
   justify-content: center;
+  z-index: 2;
 }
 
 .botao-comecar {
   max-width: 300px;
+  width: 80%;
   padding: 12px 0;
   background-color: white;
   color: var(--laranja);
