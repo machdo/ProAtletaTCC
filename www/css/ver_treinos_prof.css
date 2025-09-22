@@ -1,0 +1,259 @@
+.professor-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.treinos-container {
+    padding: 0 15px;
+}
+
+.treino-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.treino-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.treino-header {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.treino-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.treino-titulo h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    flex: 1;
+}
+
+.treino-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-expand {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-expand:hover {
+    background: #e9ecef;
+}
+
+.btn-expand i {
+    transition: transform 0.2s ease;
+}
+
+.treino-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+    color: #666;
+}
+
+.treino-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Badges para tipos de treino */
+.tipo-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.tipo-hipertrofia { background: #fff3e0; color: #f57c00; }
+.tipo-cardio { background: #e8f5e8; color: #388e3c; }
+.tipo-forca { background: #fce4ec; color: #c2185b; }
+.tipo-funcional { background: #f3e5f5; color: #7b1fa2; }
+
+/* Box de observações */
+.observacoes-box {
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    padding: 12px 16px;
+    margin: 0 20px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.observacoes-box i {
+    color: #007bff;
+    margin-right: 8px;
+}
+
+/* Container de exercícios */
+.exercicios-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.exercicios-container.show {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in;
+}
+
+.exercicio-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.exercicio-item:last-child {
+    border-bottom: none;
+}
+
+.exercicio-nome {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.exercicio-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 8px;
+}
+
+.exercicio-detail {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #666;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.exercicio-detail i {
+    color: #007bff;
+    font-size: 14px;
+}
+
+.exercicio-obs {
+    font-size: 13px;
+    color: #888;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Estados vazios e loading */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 64px;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.empty-state p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Estatísticas */
+.stats-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Loading */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* Busca */
+.search-container {
+    padding: 15px;
+    background: white;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}

@@ -1,0 +1,121 @@
+/* Variables */
+:root {
+  --primary-color: #f86100;
+  --danger-color: #ff3b30;
+  --bg-light: #f4f4f4;
+  --white: #ffffff;
+  --border-radius-lg: 20px;
+  --border-radius-md: 8px;
+  --border-radius-sm: 5px;
+  --spacing-sm: 8px;
+  --spacing-md: 15px;
+  --spacing-lg: 24px;
+}
+
+/* Layout */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 40%;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Exercise Items */
+.exercicio-item {
+  background: var(--bg-light);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.exercicio-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-remover-exercicio {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: var(--danger-color);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-remover-exercicio:hover {
+  background: darken(var(--danger-color), 10%);
+}
+
+.btn-adicionar-exercicio {
+  background-color: var(--primary-color) !important; /* força a cor de fundo */
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  width: 100%;
+  margin-top: var(--spacing-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+  opacity: 1 !important; /* garante opacidade total */
+  -webkit-appearance: none; /* remove estilo padrão em iOS */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Estilo para o estado hover */
+.btn-adicionar-exercicio:hover {
+  background-color: #e65800 !important; /* um tom mais escuro do primary color */
+}
+
+.btn-adicionar-exercicio:active {
+  background-color: #d65200 !important;
+  transform: translateY(1px);
+}
+
+/* Student Info Section */
+.aluno-info {
+  background: var(--primary-color);
+  padding: var(--spacing-sm);
+  color: var(--white);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.aluno-header h3 {
+  margin: 0 0 var(--spacing-sm);
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.aluno-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

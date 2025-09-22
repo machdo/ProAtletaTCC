@@ -1,89 +1,98 @@
 :root {
-    --branco: #fff;
-    --gelo: #f1f1f1;
-    --preto: #2a2a2a;
-    --laranja: #f86100;
-    --transparente: #ffffff00;
+  --branco: #fff;
+  --gelo: #f1f1f1;
+  --preto: #2a2a2a;
+  --laranja: #f86100;
+  --transparente: #ffffff00;
 }
 
 .page-content {
-    background-color: var(--laranja) !important;
+  background-color: var(--laranja) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* joga tudo pro fim */
+  align-items: center;
+  height: 100vh;
+  /* ocupa a tela inteira */
+  padding-bottom: 80px;
+  /* espaço pro botão */
+  box-sizing: border-box;
 }
 
 .top-nav2 {
-    height: 10%;
+  height: 10%;
 }
 
 .top-nav2 img {
-    width: 55%;
-    height: auto;
-    margin-top: 10px;
-    margin-left: 10px;
+  width: 55%;
+  height: auto;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .block img {
-    margin-top: 5px;
-    position: relative;
-    top: -130px;
-    height: auto;
-    width: auto;
-    max-width: 100%;
-    display: block;
-    margin: 0;
-    padding: 0;
-    float: left;
+  margin-top: 5px;
+  position: relative;
+  top: -130px;
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  float: left;
 }
 
 .block {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 .imagem-com-texto {
-    position: relative;
-    margin-top: 15%;
-    width: 100%;
-    height: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .img-menino {
-    width: 100%;
-    height: auto;
-    display: block;
+  width: auto;
+  max-width: 150%;
+  height: auto;
+  object-fit: contain;
 }
 
 .texto-sobre-imagem {
   position: absolute;
-  margin-top: 110%;
-  top: 20%;
+  bottom: 20%;
+  /* fica acima da imagem */
   left: 10%;
-  right: 1%;
+  right: 10%;
   color: white;
   font-size: 23px;
   font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: left;
 }
 
-.botao-container {
+.botao-container,
+.botao-comecar {
   position: absolute;
-  bottom: 8%;
+  bottom: 15%;
+  /* botão sempre fixo embaixo */
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .botao-comecar {
-  width: 100%;
   max-width: 300px;
   padding: 12px 0;
   background-color: white;
   color: var(--laranja);
   border-radius: 8px;
   text-decoration: none;
-  font-weight: bold;
   font-weight: 400;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
