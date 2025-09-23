@@ -32,51 +32,59 @@
                 <!-- Página com formulário -->
                 <div class="page-content">
                     <div class="block">
-                        <form id="cadastroForm" data-name="cadastro"
-                            action="https://proatleta.site/cadastro.php" method="POST">
-                            <div class="list no-hairlines-md">
+                        <h1>Bem-Vindo ao ProAtleta!</h1>
+                        <p class="cadastro-subtitle">Para criar sua conta,<br>preencha com suas credenciais.</p>
+                        <form id="cadastroForm" data-name="cadastro" action="https://proatleta.site/cadastro.php"
+                            method="POST">
+                            <div class="list no-hairlines">
                                 <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Nome</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" id="nome" name="nome" placeholder="Digite seu nome"
-                                                    required>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Email</div>
-                                            <div class="item-input-wrap">
-                                                <input type="email" id="email" name="email"
-                                                    placeholder="Digite seu email" required>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Senha</div>
-                                            <div class="item-input-wrap">
-                                                <input type="password" id="senha" name="senha"
-                                                    placeholder="Digite sua senha" required>
-                                                <i id="viewPassword" class="ri-eye-line olho"></i>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Confirmar senha</div>
-                                            <div class="item-input-wrap">
-                                                <input type="password" id="confirmar" name="confirmar"
-                                                    placeholder="Confirme sua senha" required>
-                                                <i id="viewPassword3" class="ri-eye-line olho"></i>
+                                    <li>
+                                        <h2 class="title-input">Nome</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="text" id="nome" name="nome"
+                                                        placeholder="Digite seu nome" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
+                                        <h2 class="title-input">Email</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="email" id="email" name="email"
+                                                        placeholder="Digite seu email" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h2 class="title-input">Senha</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                                                    <i id="viewPassword" class="password-toggle-icon ri-eye-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h2 class="title-input">Confirme sua Senha</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="password" id="confirmar" name="confirmar" placeholder="Confirme sua senha" required>
+                                                    <i id="viewPassword3" class="password-toggle-icon ri-eye-line"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <h2 class="title-input">Indique</h2>
                                         <div class="item-inner">
-                                            <div class="item-title item-label">indique</div>
                                             <div class="item-input-wrap">
                                                 <input type="radio" id="aluno" name="categoria" value="aluno">
                                                 <label for="aluno">Aluno</label><br>
@@ -88,8 +96,8 @@
                                 </ul>
                             </div>
 
-                            <div class="block">
-                                <button type="submit" class="button button-fill color-blue">Cadastrar</button>
+                            <div class="cadastro-button">
+                                <button type="submit" class="button button-large button-fill">Cadastrar</button>
                             </div>
                         </form>
 

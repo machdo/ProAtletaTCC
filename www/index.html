@@ -59,7 +59,7 @@
                         <i class="mdi mdi-dumbbell"></i><span>Treino</span>
                     </a>
                     <a href="/agenda_prof/" class="tab-link link prof-link" data-user="professor" style="display: none;">
-                        <i class="ri-calendar-fill"></i><span>agenda</span>
+                        <i class="ri-calendar-fill"></i><span>Agenda</span>
                     </a>
                     <a href="/perfil_prof/" class="tab-link link prof-link" data-user="professor" style="display: none;">
                         <i class="ri-user-fill"></i><span>Perfil</span>
@@ -87,6 +87,20 @@
 
             <!-- Conteúdo principal -->
             <div class="page-content">
+                <!-- Saudação e foto do perfil -->
+                <div class="block welcome-block">
+                    <div class="welcome-container">
+                        <div class="welcome-text">
+                            <h2>Olá, <span id="welcomeUserName">Usuário</span>!</h2>
+                            <p class="welcome-subtitle">Bem-vindo de volta</p>
+                        </div>
+                        <!-- Clique na foto leva para /link5/ via router (Framework7) -->
+                        <a href="/link5/" class="link profile-photo-link" title="Ver perfil">
+                            <img id="welcomeUserPhoto" src="img/user.jpg" alt="Foto de Perfil" class="welcome-photo" />
+                        </a>
+                    </div>
+                </div>
+
                 <div class="block aluno-link" data-user="aluno">
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
@@ -117,11 +131,14 @@
                 </div>
 
                 <div class="divisoria"></div>
+
+                
+
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts - Make sure these are in this exact order -->
     <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
     <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
     <script type="text/javascript" src="js/routes.js"></script>

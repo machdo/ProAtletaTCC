@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="lib/framework7-bundle.min.css">
     <!--Ícones Material Design-->
     <link rel="stylesheet" href="css/materialdesignicons.min.css">
-
-
+    <!-- CSS específico para professor -->
+    <link rel="stylesheet" href="css/index_prof.css">
 </head>
 
 <body>
@@ -45,8 +45,21 @@
                 <!-- Conteúdo principal -->
                 <div class="page-content">
 
-                    teste de entrada
+                    <!-- Welcome block (mesma funcionalidade do index.html) -->
+                    <div class="block welcome-block">
+                        <div class="welcome-container">
+                            <div class="welcome-text">
+                                <h2>Olá, <span id="welcomeUserName">Professor</span>!</h2>
+                                <p class="welcome-subtitle">Bem-vindo de volta</p>
+                            </div>
+                            <!-- Clique na foto leva para /perfil_prof/ -->
+                            <a href="/perfil_prof/" class="link profile-photo-link" title="Ver perfil">
+                                <img id="welcomeUserPhoto" src="img/user.jpg" alt="Foto de Perfil" class="welcome-photo" />
+                            </a>
+                        </div>
+                    </div>
 
+                    <!-- Bloco de propaganda / carrossel -->
                     <div class="block">
                         <div class="swiper mySwiper">
                             <div class="swiper-wrapper">
@@ -88,6 +101,8 @@
     <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
     <!-- Roteamento do app-->
     <script type="text/javascript" src="js/routes.js"></script>
+    <!-- JS específico do welcome-block (professor) -->
+    <script type="text/javascript" src="js/index_prof.js"></script>
     <script src="cordova.js"></script>
 </body>
 
