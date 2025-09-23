@@ -1,0 +1,60 @@
+/* Estilos mínimos necessários para o bloco de boas-vindas do professor */
+
+:root {
+    --branco: #fff;
+    --gelo: #f1f1f1;
+    --preto: #2a2a2a;
+    --laranja: #f86100;
+}
+
+.page-content {
+    background-color: var(--gelo);
+}
+
+/* Estilos para o bloco de boas-vindas */
+.welcome-block {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: transparent;
+}
+
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.welcome-text h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--preto);
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.welcome-subtitle {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.profile-photo-link {
+    text-decoration: none;
+}
+
+.welcome-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--laranja);
+}
+
+.welcome-photo:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}

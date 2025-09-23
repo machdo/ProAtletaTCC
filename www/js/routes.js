@@ -37,6 +37,20 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
+					const oldIndexCss = document.getElementById('index-css');
+					if (oldIndexCss) {
+						oldIndexCss.parentNode.removeChild(oldIndexCss);
+					}
+
+					const oldLoginCss = document.getElementById('login-css');
+					if (oldLoginCss) {
+						oldLoginCss.parentNode.removeChild(oldLoginCss);
+					}
+
+					const css = document.getElementById('login-css');
+					if (css) css.remove();
+
+
 					const cssId = 'inicio-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -76,6 +90,11 @@ window.app = new Framework7({
 					const oldCss = document.getElementById('agenda-css');
 					if (oldCss) {
 						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					const oldIndexCss = document.getElementById('index-css');
+					if (oldIndexCss) {
+						oldIndexCss.parentNode.removeChild(oldIndexCss);
 					}
 
 					const css = document.getElementById('inicio-css');
@@ -121,9 +140,6 @@ window.app = new Framework7({
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
 
-					const css = document.getElementById('login-css');
-					if (css) css.remove();
-
 				},
 			}
 		},
@@ -146,10 +162,28 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
+					const oldLoginCss = document.getElementById('login-css');
+					if (oldLoginCss) {
+						oldLoginCss.parentNode.removeChild(oldLoginCss);
+					}
+
 					const inicioCss = document.getElementById('inicio-css');
 					if (inicioCss) inicioCss.remove();
 
+					const cssId = 'cadastro-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/cadastro.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
 					$.getScript('js/cadastro.js')
+					$.getScript('js/mascara_cadastro.js')
 				},
 
 				pageBeforeRemove: function (event, page) {
@@ -183,12 +217,33 @@ window.app = new Framework7({
 					const css = document.getElementById('perfil-css');
 					if (css) css.remove();
 
+					const oldLoginCss = document.getElementById('login-css');
+					if (oldLoginCss) {
+						oldLoginCss.parentNode.removeChild(oldLoginCss);
+					}
+
+					const oldCadastroCss = document.getElementById('cadastro-css');
+					if (oldCadastroCss) {
+						oldCadastroCss.parentNode.removeChild(oldCadastroCss);
+					}
+
+					const cssId = 'index-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/index.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
 					document.addEventListener('DOMContentLoaded', function () {
 						atualizarTabbarPorTipoUsuario();
 					});
 
 					$.getScript('js/index.js');
-					$.getScript('js/entrada.js');
 
 					var swiper = new Swiper(".mySwiper", {
 						slidesPerView: 1,
@@ -776,6 +831,48 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
+
+					const oldLoginCss = document.getElementById('login-css');
+					if (oldLoginCss) {
+						oldLoginCss.parentNode.removeChild(oldLoginCss);
+					}
+
+					const oldCadastroCss = document.getElementById('cadastro-css');
+					if (oldCadastroCss) {
+						oldCadastroCss.parentNode.removeChild(oldCadastroCss);
+					}
+
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-prof-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					const cssId = 'index-prof-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/index_prof.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					$.getScript('js/index_prof.js');
+
+					
+
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -1012,7 +1109,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/inicio/' });
+var mainView = app.views.create('.view-main', { url: '/index/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -1068,20 +1165,25 @@ function onDeviceReady() {
 
 function protegerRotas(route) {
 	const paginasProtegidas = [
-		'/index/',
+		'/adicionar_treino/',
+		'/agenda_prof/',
+		'/agenda/',
+		'/cadastro/',
 		'/config/',
 		'/escolinhas/',
 		'/esporte_escolinha/',
-		'/peneiras/',
-		'/agenda/',
-		'/agenda_prof/',
+		'/index_prof/',
+		'/index/',
+		'/inicio/',
 		'/link5/',
-		'/prof/',
+		'/login/',
+		'/peneiras/',
 		'/perfil_prof/',
+		'/proatletaplus/',
 		'/treinos_aluno/',
 		'/treinos_prof/',
-		'/adicionar_treino/',
-		'/ver_treinos_aluno/'
+		'/ver_treinos_aluno/',
+		'/ver_treinos_prof/',
 	];
 
 	const estaLogado = localStorage.getItem('loggedIn') === 'true';

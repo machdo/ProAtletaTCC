@@ -1,3 +1,9 @@
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 150px; /* altura da tab-bar */
+}
+
 .professor-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;

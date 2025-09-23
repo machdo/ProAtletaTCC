@@ -1,3 +1,9 @@
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 150px; /* altura da tab-bar */
+}
+
 /* ========================================
    HEADER DO ALUNO
    ======================================== */

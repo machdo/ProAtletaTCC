@@ -1,12 +1,220 @@
-.olho {
+.page-content {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  background-color: #f1f1f1;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-container h1 {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.login-subtitle {
+  font-size: 18px;
+  text-align: center;
+  color: #666;
+  margin-bottom: 40px;
+  line-height: 1.4;
+}
+
+.list {
+  margin: 0 0 20px 0;
+}
+
+.title-input {
+  font-size: 20px;
+  text-align: left;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.list,
+.list ul,
+.list li,
+.list .item-content,
+.list .item-inner,
+.list .item-input,
+.list .item-input-wrap {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  border: none !important;
+}
+
+.list ul:before,
+.list ul:after,
+.list .item-inner:after,
+.list:before,
+.list:after {
+  display: none !important;
+}
+
+/* Nosso estilo customizado para input */
+.list .item-input-wrap {
+  margin-bottom: 16px;
+}
+
+.list .item-input-wrap input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+/* Remover qualquer outro estilo que o Framework7 possa adicionar */
+.list * {
+  box-shadow: none !important;
+}
+
+.item-input {
+  background: #f3f3f3;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.item-input .item-inner {
+  padding: 0;
+  min-height: 44px;
+}
+
+.item-input .item-inner:after {
+  display: none;
+}
+
+.item-input .item-input-wrap {
+  padding: 0 15px;
+}
+
+.item-input input {
+  height: 44px;
+  color: #000;
+  font-size: 14px;
+}
+
+.item-input input::placeholder {
+  color: #999;
+}
+
+.button {
+  height: 50px;
+  font-size: 16px;
+  border-radius: 8px;
+  text-transform: none;
+  background: #ff6b22;
+}
+
+.forgot-password {
+  text-align: left;
+  margin-bottom: 32px;
+  margin-left: 15px;
+}
+
+.forgot-password a {
+  color: #ff6b00;
+  text-decoration: none;
+}
+
+.login-button {
+  margin-top: 50%;
+  margin-bottom: 24px;
+  justify-items: center;
+  align-items: center;
+}
+
+.login-button .button {
+  width: 80%;
+  height: 60px;
+  background: #ff6b00;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.signup-link {
+  text-align: center;
+}
+
+.signup-link p {
+  color: #666;
+}
+
+.signup-link a {
+  color: #ff6b00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.navbar {
+  background: transparent;
+}
+
+.navbar .icon-back {
+  color: #000;
+}
+
+/* Remover todos os estilos do Framework7 para inputs */
+.list .item-content.item-input,
+.list .item-inner,
+.list .item-input .item-inner,
+.list .item-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.list ul:before,
+.list ul:after,
+.list .item-inner:after,
+.list .item-content:after {
+  display: none !important;
+}
+
+/* Nossos estilos personalizados para input */
+.list .item-input-wrap {
+  margin-bottom: 16px;
+}
+
+.list .item-input-wrap input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+/* Remover qualquer outro estilo do Framework7 */
+.list .item-input-wrap:after,
+.list .item-input-wrap:before {
+  display: none !important;
+}
+
+.item-input-wrap {
+  position: relative;
+}
+
+.password-toggle-icon {
   position: absolute;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
+  color: #666;
+  font-size: 20px;
   cursor: pointer;
 }
-
-.btn-voltar {
-margin-left: 15px;
-}
-

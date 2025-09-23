@@ -66,3 +66,17 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
       console.error(error);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.querySelector('.password-toggle-icon');
+    const senhaInput = document.getElementById('senha');
+
+    toggleIcon.addEventListener('click', function() {
+        const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        senhaInput.setAttribute('type', type);
+        
+        // Alternar ícone
+        this.classList.toggle('ri-eye-line');
+        this.classList.toggle('ri-eye-off-line');
+    });
+});

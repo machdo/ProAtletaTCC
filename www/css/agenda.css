@@ -57,7 +57,7 @@ body {
 .page-content {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 80px; /* altura da tab-bar */
+    padding-bottom: 150px; /* altura da tab-bar */
 }
 
 .calendario-container {
