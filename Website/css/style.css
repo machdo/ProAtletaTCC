@@ -1,0 +1,731 @@
+/*ESTILO GERAL*/
+:root {
+    --cor-primaria: #f86100;
+    --cor-secundaria: #000000;
+    --cor-fundo: #ffffff;
+    --cor-texto: #000000;
+    --cor-link: #f85f00;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+main {
+    padding-top: 100px;
+}
+
+body {
+    background-image: url('');
+    /* Substitua pelo caminho da sua imagem */
+    background-size: cover;
+    /* cobre toda a tela */
+    background-attachment: fixed;
+    /* fixa a imagem no fundo */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0000;
+    height: 100vh;
+}
+
+.interface {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.btn-login button {
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #fff;
+    border: 0;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #f86100;
+    transition: .4s;
+}
+
+
+h2.titulo {
+    color: #000;
+    font-size: 60px;
+    text-align: center;
+}
+
+h2.titulo span {
+    color: #f86100;
+}
+
+p {
+    color: #000;
+    font-size: 22px;
+    line-height: 28px;
+}
+
+
+button.login:hover {
+    box-shadow: 0px 0px 8px #ffffff;
+    transform: scale(1.10);
+}
+
+
+/* ESTILO DO CABEÇALHO */
+header {
+    width: 100%;
+    padding: 20px 4%;
+    background-color: #f86100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9996;
+    transition: .5s;
+}
+
+header.rolagem {
+    padding: 2px 4%;
+    background-color: #fff;
+}
+
+header>.interface {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header.rolagem .menu-desktop a {
+    color: #f85f00;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s;
+}
+
+header.rolagem .menu-desktop a:hover {
+    color: #f85f00;
+    transform: scale(1.10);
+    text-shadow: 0 0 10px #f85f00, 0 0 20px #f85f00, 0 0 30px #f85f00;
+}
+
+header.rolagem .menu-desktop .btn-login button {
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #f86100;
+    border: 0;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #fff;
+    transition: .4s;
+}
+
+header.rolagem .menu-desktop button.login:hover {
+    box-shadow: 0px 0px 8px #f85f00;
+    transform: scale(1.10);
+}
+
+header a {
+    color: #ffffffbb;
+    text-decoration: none;
+    display: inline-block;
+    transition: .2s;
+    font-size: 17px;
+}
+
+header a:hover {
+    color: #fff;
+    transform: scale(1.10);
+    text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255), 0 0 30px rgb(255, 255, 255);
+}
+
+/* Esconde a logo laranja por padrão */
+.logo-laranja {
+    display: none;
+}
+
+/* Mostra a logo branca por padrão */
+.logo-branca {
+    display: block;
+}
+
+/* Quando rolar, esconde a branca e mostra a laranja */
+header.rolagem .logo-branca {
+    display: none;
+}
+
+header.rolagem .logo-laranja {
+    display: block;
+}
+
+
+header nav ul {
+    list-style-type: none;
+}
+
+header nav.menu-desktop ul li {
+    display: inline-block;
+    padding: 0px 40px;
+}
+
+/* ESTILO DO MENU MOBILE */
+.btn-abrir-menu i {
+    color: #ffffff;
+    font-size: 40px;
+}
+
+header.rolagem .btn-abrir-menu i {
+    color: #f85f00;
+}
+
+.menu-mobile {
+    background-color: #ffffff;
+    height: 200vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+    width: 0%;
+    overflow: hidden;
+    transition: .5s;
+}
+
+.menu-mobile.abrir-menu {
+    width: 70%;
+}
+
+.menu-mobile.abrir-menu~.overlay-menu {
+    display: block;
+}
+
+.menu-mobile .btn-fechar {
+    padding: 20px 5%;
+
+}
+
+.menu-mobile .btn-fechar i {
+    color: #f85f00;
+    font-size: 30px;
+}
+
+.menu-mobile nav ul {
+    text-align: right;
+}
+
+.menu-mobile nav ul li a {
+    color: #000000;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 20px 8%;
+    display: block;
+}
+
+.menu-mobile nav ul li a:hover {
+    background-color: #f85f00;
+    color: #fff;
+}
+
+.overlay-menu {
+    background-color: #00000069;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 8888;
+    display: none;
+}
+
+.btn-abrir-menu {
+    display: none;
+}
+
+/* ESTILO DO TOPO DO SITE */
+section.topo-do-site {
+    padding: 120px 20px 4%;
+
+}
+
+section.topo-do-site .flex {
+    align-items: center;
+    justify-content: center;
+    gap: 90px;
+}
+
+.topo-do-site h1 {
+    color: #000000;
+    font-size: 50px;
+    line-height: 40px;
+}
+
+.topo-do-site .txt-topo-site h1 span {
+    color: #f86100;
+}
+
+.topo-do-site .txt-topo-site p {
+    color: #000;
+    margin: 40px 0;
+}
+
+.topo-do-site .img-topo-site {
+    position: relative;
+    animation: flutuar 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes flutuar {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 30px;
+    }
+}
+
+/* ESTILO DOS SERVIÇOS */
+section.servicos {
+    padding: 100px 4%;
+}
+
+section.servicos .flex {
+    gap: 30px;
+}
+
+.servicos .servicos-box {
+    color: #000;
+    padding: 40px;
+    border-radius: 20px;
+    margin-top: 45px;
+    transition: .2s;
+}
+
+.servicos .servicos-box:hover {
+    transform: scale(1.10);
+    box-shadow: 0 0 15px #000000;
+}
+
+.servicos .servicos-box i {
+    font-size: 48px;
+    color: #f86100;
+}
+
+.servicos .servicos-box h3 {
+    font-size: 30px;
+    margin: 15px 0;
+}
+
+/*ESTILO DO SOBRE*/
+
+section.sobre {
+    padding: 100px 0 120px 4%;
+
+}
+
+section.sobre .flex {
+    align-items: center;
+    gap: 60px;
+}
+
+.sobre .txt-sobre {
+    color: #000;
+}
+
+.sobre .txt-sobre h2 {
+    font-size: 40px;
+    line-height: 40px;
+    margin-bottom: 35px;
+}
+
+.sobre .txt-sobre h2 span {
+    color: #f86100;
+    display: block;
+}
+
+.sobre .txt-sobre p {
+    margin: 20px 0;
+    text-align: justify;
+}
+
+button.contato:hover,
+form .btn-enviar input:hover {
+    box-shadow: 0px 0px 12px #f85f00;
+    transform: scale(1.10);
+}
+
+.btn-social button {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ffffff;
+    font-size: 30px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: .2s;
+}
+
+
+/* ESTILO DAS APLICACOES */
+
+section.aplicacoes {
+    padding: 100px 4%;
+    box-shadow: 0 0 60px 5px #00000039;
+}
+
+section.aplicacoes .flex {
+    gap: 30px;
+    justify-content: center;
+}
+
+.img-apli {
+    color: #000;
+    padding: 40px;
+    border-radius: 20px;
+    margin-top: 80px;
+    transition: .2s;
+}
+
+.img-apli:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #000000;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f85f0073;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #000000;
+    opacity: 0;
+    transition: .5s;
+}
+
+.overlay:hover {
+    opacity: 1;
+}
+
+/* ESTILO DO FORMULARIO */
+
+section.formulario {
+    padding: 80px 4%;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    background-color: #f85f0058;
+    border: 0;
+    outline: 0;
+    padding: 20px 15px;
+    border-radius: 15px;
+    color: #000000;
+    font-size: 18px;
+}
+
+form input::placeholder {
+    color: #000000;
+}
+
+form textarea {
+    resize: none;
+    min-height: 200px;
+}
+
+form textarea::placeholder {
+    color: #000;
+}
+
+form .btn-enviar {
+    margin-top: 20px;
+    text-align: center;
+}
+
+form .btn-enviar input {
+    width: 120px;
+    background-color: #f85f00;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+
+/* ESTILO DO RODAPÉ */
+
+footer {
+    padding: 48px 4%;
+    box-shadow: 0 0 10px 10px #00000039;
+    background-color: var(--cor-link);
+}
+
+footer .flex {
+    justify-content: space-between;
+}
+
+footer .line-footer {
+    padding: 20px 0;
+}
+
+.borda {
+    border-top: 2px solid #ffffff;
+}
+
+footer .line-footer p i {
+    color: #f86100;
+    font-size: 26px;
+}
+
+footer .line-footer p a {
+    color: #000;
+    font-size: 22px;
+}
+
+
+/* ESTILO ESPECÍFICO   */
+.gradient-separator {
+    width: 0;
+    /* começa com 0 de largura */
+    height: 4px;
+    /* espessura da linha */
+    background: linear-gradient(to right,
+            #ff7e5f,
+            /* cor inicial */
+            #f86100,
+            /* cor final */
+            #a25900
+            /* cor intermediária opcional */
+        );
+    margin: 2rem auto;
+    /* espaçamento vertical e centralizado */
+    display: block;
+    /* Não definimos animation aqui para não rodar ao carregar */
+}
+
+/* ================================
+       Classe que dispara a animação
+       ================================ */
+.gradient-separator.in-view {
+    animation: drawLine 1.5s ease-out forwards;
+    /* ‘forwards’ faz com que o estado final (width: 80%) seja mantido */
+}
+
+/* ================================
+       Keyframes da animação “desenhar linha”
+       ================================ */
+@keyframes drawLine {
+    to {
+        width: 80%;
+        /* Largura final desejada */
+    }
+}
+
+/* Fundo escuro */
+.overlay-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    /* escondido por padrão */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caixa do popup */
+.popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Inputs */
+.popup input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.header-popup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.header-popup h2 {
+    color: #000;
+    font-size: 30px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 20px;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 10px 10px 10px 40px;
+    border: none;
+    border-bottom: 1px solid var(--cor-primaria);
+    outline: none;
+    border-radius: 0px;
+    background-color: #ffffff;
+    font-size: 14px;
+}
+
+.input-group .olho {
+    right: 10px;
+    left: auto;
+    cursor: pointer;
+    color: #666;
+}
+
+.close {
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit {
+    margin: 20px auto 0 auto;
+}
+
+.popup button {
+    display: block;
+    background: transparent;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid var(--cor-link);
+    border-radius: 25px;
+    outline: none;
+    overflow: hidden;
+    color: var(--cor-link);
+    transition: color 0.3s 0.1s ease-out;
+    text-align: center;
+}
+
+.popup button span {
+    margin: 10px;
+}
+
+.popup button::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    content: '';
+    border-radius: 50%;
+    display: block;
+    width: 20em;
+    height: 20em;
+    left: -5em;
+    text-align: center;
+    transition: box-shadow 0.5s ease-out;
+    z-index: -1;
+}
+
+.popup button:hover {
+    color: #fff;
+    border: 1px solid var(--cor-link);
+    background-color: var(--cor-link);
+}
+
+.popup button:hover::before {
+    box-shadow: inset 0 0 0 10em var(--cor-link);
+}
+
+.form-container {
+    background-color: #ffab7773;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.meu-botao-personalizado {
+    background-color: var(--cor-link) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 8px 20px !important;
+    font-size: 16px !important;
+}
+
+.meu-botao-personalizado:hover {
+    background-color: var(--cor-link) !important;
+}
+
+input[type=number]::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
+    
+}
