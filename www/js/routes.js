@@ -493,6 +493,13 @@ window.app = new Framework7({
 				pageAfterIn: function (event, page) {
 				},
 				pageInit: function (event, page) {
+
+					const oldIndexCss = document.getElementById('index-prof-css');
+					if (oldIndexCss) {
+						oldIndexCss.parentNode.removeChild(oldIndexCss);
+					}
+
+
 					// Adiciona o CSS específico da agenda_prof
 					const cssId = 'agenda-prof-css';
 					if (!document.getElementById(cssId)) {
@@ -1109,7 +1116,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/index/' });
+//var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -1127,6 +1134,15 @@ app.on('routeChange', function (route) {
 	}
 });
 
+
+// Guarda a última rota que não seja /config/
+window.lastNonConfigRoute = '/index/';
+app.on('routeChange', function (route) {
+    // Já existem outros listeners; este só cuida da última rota útil
+    if (route.url && route.url !== '/config/' && !route.url.startsWith('http')) {
+        window.lastNonConfigRoute = route.url;
+    }
+});
 
 function onDeviceReady() {
 	let initialUrl = '/inicio/';
