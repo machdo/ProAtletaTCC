@@ -1,92 +1,121 @@
+/* ========================= */
+/* 🔹 Barra de navegação */
+.top-nav2 {
+  display: flex;
+  align-items: center;
+  background: #f26522;
+  color: #fff;
+  padding: 12px;
+}
+
+.top-nav2 .title-logo2 {
+  font-size: 18px;
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.top-nav2 .btn-voltar {
+  color: #fff;
+  font-size: 20px;
+}
+
+/* ========================= */
+/* 🔹 Caixa de busca */
 .search-container {
-    position: relative;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .search-container input {
-    width: 100%;
-    padding: 8px 35px 8px 35px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 20px;
-    box-sizing: border-box;
-}
-
-.search-container .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-    font-size: 18px;
-    user-select: none;
-}
-
-.search-container .icon.search {
-    left: 10px;
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  margin-left: 6px;
 }
 
 .search-container .icon.clear {
-    right: 10px;
-    display: none;
+  display: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
 }
 
-.search-input::placeholder {
-    color: #aaa;
+/* ========================= */
+/* 🔹 AUTOCOMPLETE (endereços → cards brancos) */
+.resultado-endereco {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  font-size: 15px;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: background 0.2s;
+  list-style: none;
 }
 
+.resultado-endereco:hover {
+  background: #f5f5f5;
+}
+#resultados {
+  list-style: none;   /* tira as bolinhas pretas */
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* ========================= */
+/* 🔹 ESCOLINHAS (cards laranjas) */
 .escolinha-button {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--laranja);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: left;
-    transition: background-color 0.3s;
+  background: #f26522;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  width: 100%;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
 }
 
 .escolinha-button:hover {
-    background-color: #e65902;
+  background: #d9541d;
 }
 
-.nome-escola {
-    font-weight: bold;
+.escolinha-button .nome-escola {
+  flex: 1;
 }
 
-.distancia-escola {
-    font-size: 14px;
-    opacity: 0.9;
+.escolinha-button .distancia-escola {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
-#resultados {
-  list-style: none;
-  padding-left: 0; /* Remove o recuo padrão */
-  margin-left: 0;  /* Remove margem esquerda, opcional */
-}
-
-/* Caixa fixa para mostrar o endereço */
+/* ========================= */
+/* 🔹 Endereço detalhado */
 .endereco-box {
-    position: fixed;
-    bottom: 100px; /* Fica acima do rodapé, ajuste se necessário */
-    left: 10px;
-    right: 10px;
-    background: #fff;
-    border-radius: 12px;
-    padding: 12px 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-    font-size: 14px;
-    color: #333;
-    z-index: 999;
-    display: none;
-}
-
-/* Se quiser deixar o texto mais bonito */
-.endereco-box strong {
-    font-weight: 600;
+  margin: 12px 0;
+  padding: 12px;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #444;
+  display: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

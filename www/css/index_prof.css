@@ -7,6 +7,7 @@
     --laranja: #f86100;
 }
 
+/* Mantém o fundo do conteúdo */
 .page-content {
     background-color: var(--gelo);
 }
@@ -57,4 +58,63 @@
 .welcome-photo:active {
     transform: scale(0.95);
     transition: transform 0.1s ease;
+}
+
+/* ===========================
+   Bloco de Atalhos / Summary
+   =========================== */
+
+.summary-block {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.summary-cards {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 140px;
+    background: var(--branco);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+}
+
+.summary-card i {
+    font-size: 20px;
+    color: var(--laranja);
+    width: 28px;
+    text-align: center;
+}
+
+.summary-card .label {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.summary-card .sub {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+    .summary-card {
+        flex: 1 1 100%;
+    }
 }

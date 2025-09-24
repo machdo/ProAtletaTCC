@@ -135,12 +135,12 @@
 }
 
 .btn-ver {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: #f86100;
     color: white;
 }
 
 .btn-ver:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: #f86100;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
@@ -202,24 +202,24 @@
 }
 
 .button-fill {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #f86100;
     color: white;
 }
 
 .button-fill:hover {
-    background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    background: #f86100;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .button-outline {
     background: transparent;
-    color: #667eea;
-    border: 2px solid #667eea;
+    color: #f86100;
+    border: 2px solid #f86100;
 }
 
 .button-outline:hover {
-    background: #667eea;
+    background: #f86100;
     color: white;
     transform: translateY(-2px);
 }
