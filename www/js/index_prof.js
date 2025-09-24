@@ -1,109 +1,81 @@
 // Script responsável pelo bloco de boas-vindas da tela do professor
 
 (function () {
-    // acesso rápido aos elementos
-    function getEls() {
-        return {
-            nameEl: document.getElementById('welcomeUserName'),
-            photoEl: document.getElementById('welcomeUserPhoto'),
-            email: localStorage.getItem('userEmail'),
-        };
-    }
+    'use strict';
 
-    // Atualiza UI a partir do localStorage
-    function renderFromStorage() {
-        const els = getEls();
-        if (els.nameEl) els.nameEl.textContent = localStorage.getItem('userNome') || 'Professor';
-        if (els.photoEl) els.photoEl.src = localStorage.getItem('userFoto') || 'img/user.jpg';
-    }
+    // Função principal para carregar dados (copiada exatamente de foto_prof.js)
+    function carregarDadosUsuarioProf() {
+        const email = localStorage.getItem('userEmail');
+        const welcomeNameEl = document.getElementById('welcomeUserName');
+        const welcomePhotoEl = document.getElementById('welcomeUserPhoto');
 
-    // Busca dados atualizados do servidor e atualiza localStorage + UI
-    function fetchAndUpdate() {
-        const els = getEls();
-        const email = els.email;
         if (!email) return;
 
-        const url = 'https://proatleta.site/php/get_usuario.php?email=' + encodeURIComponent(email);
-        fetch(url)
+        // Busca os dados do usuário do servidor (usando o mesmo endpoint dos perfis)
+        fetch('https://proatleta.site/get_usuario.php?email=' + encodeURIComponent(email))
             .then(res => res.json())
             .then(data => {
-                if (data && data.success && data.usuario) {
-                    if (data.usuario.nome) {
-                        localStorage.setItem('userNome', data.usuario.nome);
-                        if (els.nameEl) els.nameEl.textContent = data.usuario.nome;
-                    }
-                    if (data.usuario.foto) {
-                        localStorage.setItem('userFoto', data.usuario.foto);
-                        if (els.photoEl) els.photoEl.src = data.usuario.foto;
-                    }
+                if (data.success) {
+                    localStorage.setItem('userFoto', data.usuario.foto); // foto do banco
+                    if (welcomePhotoEl) welcomePhotoEl.src = data.usuario.foto || 'img/user.jpg';
+                    if (welcomeNameEl) welcomeNameEl.textContent = data.usuario.nome || 'Professor';
+                    
+                    // Atualiza localStorage também
+                    localStorage.setItem('userNome', data.usuario.nome || '');
+                } else {
+                    // Se não achou, usa dados do localStorage ou default
+                    if (welcomePhotoEl) welcomePhotoEl.src = localStorage.getItem('userFoto') || 'img/user.jpg';
+                    if (welcomeNameEl) welcomeNameEl.textContent = localStorage.getItem('userNome') || 'Professor';
                 }
             })
-            .catch(err => {
-                console.warn('index_prof.js: erro ao buscar usuário', err);
+            .catch(() => {
+                // Em caso de erro, usa localStorage ou default
+                if (welcomePhotoEl) welcomePhotoEl.src = localStorage.getItem('userFoto') || 'img/user.jpg';
+                if (welcomeNameEl) welcomeNameEl.textContent = localStorage.getItem('userNome') || 'Professor';
             });
     }
 
-    // Função principal para carregar foto (usa localStorage imediatamente e tenta buscar)
-    function carregarFotoUsuario() {
-        const els = getEls();
-        if (!els.photoEl) return;
-
-        // render rápido com localStorage
-        const stored = localStorage.getItem('userFoto');
-        if (stored) els.photoEl.src = stored;
-
-        // buscar no servidor (se tiver email ou id)
-        const email = localStorage.getItem('userEmail');
-        const userId = localStorage.getItem('userId');
-        if (!email && !userId) return;
-
-        const url = email ? ('https://proatleta.site/php/get_usuario.php?email=' + encodeURIComponent(email))
-            : ('https://proatleta.site/php/get_usuario.php?id=' + encodeURIComponent(userId));
-
-        fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error('Resposta não OK');
-                return res.json();
-            })
-            .then(data => {
-                if (data && data.success && data.usuario) {
-                    if (data.usuario.foto) {
-                        localStorage.setItem('userFoto', data.usuario.foto);
-                        els.photoEl.src = data.usuario.foto;
-                    }
-                    if (data.usuario.nome) {
-                        localStorage.setItem('userNome', data.usuario.nome);
-                        const nameEl = document.getElementById('welcomeUserName');
-                        if (nameEl) nameEl.textContent = data.usuario.nome;
-                    }
-                }
-            })
-            .catch(err => {
-                // mantém foto do storage ou padrão
-                if (!stored && els.photoEl) els.photoEl.src = 'img/user.jpg';
-                console.warn('index_prof.js carregarFotoUsuario erro', err);
-            });
-    }
-
-    // Inicialização imediata quando o script for carregado (se o DOM já tiver os elementos)
-    function initIfReady() {
-        renderFromStorage();
-        carregarFotoUsuario();
-        fetchAndUpdate();
-    }
-
-    // Inicializa sempre que a página do Framework7 for exibida (rota /prof/)
+    // Executa quando a página for carregada
     document.addEventListener('page:afterin', function (e) {
-        // quando carregar a página via router, atualizar
-        initIfReady();
+        if (e.detail.name === 'index' || (e.detail.route && e.detail.route.path === '/prof/')) {
+            console.log('Página professor carregada - executando lógica dos perfis');
+            carregarDadosUsuarioProf();
+            initSummaryBlock();
+        }
     });
 
-    // Também tenta quando o DOM estiver pronto (cobre carregamento direto)
-    document.addEventListener('DOMContentLoaded', function () {
-        initIfReady();
+    // Executa também no DOM ready para primeira carga
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM ready prof - executando carregamento de dados');
+        setTimeout(carregarDadosUsuarioProf, 100);
+        initSummaryBlock();
     });
 
-    // init imediato por segurança (caso o script seja carregado após DOM)
-    initIfReady();
+    // Inicialização imediata
+    setTimeout(carregarDadosUsuarioProf, 100);
 
+    function initSummaryBlock() {
+        const countEl = document.getElementById('countAlunos');
+        const perfilEmail = document.getElementById('perfilEmail');
+        const nextEvent = document.getElementById('nextEvent');
+        const ultimoTreino = document.getElementById('ultimoTreino');
+
+        if (countEl) {
+            const associados = localStorage.getItem('associados_count') || localStorage.getItem('associados') || '';
+            countEl.textContent = associados ? (associados + ' alunos') : 'Abrir lista';
+        }
+        if (perfilEmail) perfilEmail.textContent = localStorage.getItem('userEmail') || 'Abrir perfil';
+        if (nextEvent) nextEvent.textContent = localStorage.getItem('proximo_evento') || 'Sem eventos';
+        if (ultimoTreino) ultimoTreino.textContent = localStorage.getItem('ultimo_treino_nome') || '—';
+
+        // Keep navigation compatible with Framework7 SPA (no-op here, router will handle links)
+        document.querySelectorAll('.summary-card.link').forEach(function (el) {
+            el.addEventListener('click', function () {
+                // placeholder: left intentionally empty to preserve default link behavior
+            });
+        });
+    }
+
+    // Expose simple refresh if needed
+    window.indexProfSummaryRefresh = initSummaryBlock;
 })();

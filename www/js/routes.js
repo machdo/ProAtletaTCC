@@ -200,22 +200,26 @@ window.app = new Framework7({
 			animate: false,
 			on: {
 				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
+					// Limpa cache se mudou o tipo de usuário
+					const currentUserType = localStorage.getItem('userType');
+					const lastUserType = localStorage.getItem('lastUserType');
+					
+					console.log('pageBeforeIn /index/ - userType atual:', currentUserType, 'anterior:', lastUserType);
+					
+					if (currentUserType !== lastUserType) {
+						limparCacheUsuario();
+						localStorage.setItem('lastUserType', currentUserType);
+					}
 				},
 				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
+					// Força recarregamento dos dados do usuário
+					console.log('pageAfterIn /index/ - carregando dados do aluno');
+					setTimeout(() => carregarDadosUsuarioFresh('aluno'), 200);
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
 
 					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
-
-					const css = document.getElementById('perfil-css');
-					if (css) css.remove();
 
 					const oldLoginCss = document.getElementById('login-css');
 					if (oldLoginCss) {
@@ -225,6 +229,26 @@ window.app = new Framework7({
 					const oldCadastroCss = document.getElementById('cadastro-css');
 					if (oldCadastroCss) {
 						oldCadastroCss.parentNode.removeChild(oldCadastroCss);
+					}
+
+					const oldTreinoCss = document.getElementById('treino-css');
+					if (oldTreinoCss) {
+						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
 					}
 
 					const cssId = 'index-css';
@@ -292,8 +316,25 @@ window.app = new Framework7({
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
 
-					const css = document.getElementById('perfil-css');
-					if (css) css.remove();
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldTreinoCss = document.getElementById('treino-css');
+					if (oldTreinoCss) {
+						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
 
 					const cssId = 'proatleta-plus-css';
 					if (!document.getElementById(cssId)) {
@@ -326,9 +367,24 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
 					}
 
 					const cssId = 'treinos-aluno-css';
@@ -348,8 +404,6 @@ window.app = new Framework7({
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove o CSS da página sport-treino
-					const css = document.getElementById('sport-treino-css');
-					if (css) css.remove();
 				},
 			}
 		},
@@ -421,6 +475,26 @@ window.app = new Framework7({
 					const oldCss = document.getElementById('agenda-css');
 					if (oldCss) {
 						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
+
+					const oldTreinoCss = document.getElementById('treino-css');
+					if (oldTreinoCss) {
+						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
 					}
 
 					const cssId = 'agenda-css';
@@ -536,6 +610,27 @@ window.app = new Framework7({
 			on: {
 				pageInit: function (event, page) {
 					// Adiciona CSS da página
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
+
+					const oldTreinoCss = document.getElementById('treino-css');
+					if (oldTreinoCss) {
+						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+
 
 					const cssId = 'perfil_aluno-css';
 					if (!document.getElementById(cssId)) {
@@ -831,10 +926,21 @@ window.app = new Framework7({
 			animate: true,
 			on: {
 				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
+					// Limpa cache se mudou o tipo de usuário
+					const currentUserType = localStorage.getItem('userType');
+					const lastUserType = localStorage.getItem('lastUserType');
+					
+					console.log('pageBeforeIn /prof/ - userType atual:', currentUserType, 'anterior:', lastUserType);
+					
+					if (currentUserType !== lastUserType) {
+						limparCacheUsuario();
+						localStorage.setItem('lastUserType', currentUserType);
+					}
 				},
 				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
+					// Força recarregamento dos dados do usuário
+					console.log('pageAfterIn /prof/ - carregando dados do professor');
+					setTimeout(() => carregarDadosUsuarioFresh('prof'), 200);
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
@@ -1066,6 +1172,26 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
+					const oldInicioCss = document.getElementById('inicio-css');
+					if (oldInicioCss) {
+						oldInicioCss.parentNode.removeChild(oldInicioCss);
+					}
+
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
 					$.getScript('js/ver_treinos_aluno.js')
 
 					const cssId = 'ver-treinos-aluno-css';
@@ -1116,7 +1242,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/inicio/' });
+var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -1222,3 +1348,45 @@ window.adicionarTreino = adicionarTreino;
 window.verTreinos = verTreinos;
 window.irParaPerfil = irParaPerfil;
 window.filtrarAlunos = filtrarAlunos;
+
+// Add this function after the existing functions
+function limparCacheUsuario() {
+	// Remove dados específicos do usuário anterior
+	localStorage.removeItem('userFoto');
+	localStorage.removeItem('userNome');
+	console.log('Cache do usuário limpo');
+}
+
+function carregarDadosUsuarioFresh(userType) {
+	const email = localStorage.getItem('userEmail');
+	if (!email) return;
+
+	console.log('Carregando dados frescos para:', userType);
+
+	// Usar o mesmo endpoint dos perfis (sem /php/)
+	fetch('https://proatleta.site/get_usuario.php?email=' + encodeURIComponent(email))
+		.then(response => response.json())
+		.then(data => {
+			if (data.success && data.usuario) {
+				// Atualiza localStorage com dados frescos
+				localStorage.setItem('userNome', data.usuario.nome);
+				localStorage.setItem('userFoto', data.usuario.foto || 'img/user.jpg');
+				
+				console.log('Dados atualizados:', data.usuario.nome, data.usuario.foto);
+				
+				// Força atualização da UI após 100ms para garantir que elementos existam
+				setTimeout(() => {
+					const nameEl = document.getElementById('welcomeUserName');
+					const photoEl = document.getElementById('welcomeUserPhoto');
+					
+					if (nameEl) nameEl.textContent = data.usuario.nome;
+					if (photoEl) photoEl.src = data.usuario.foto || 'img/user.jpg';
+					
+					console.log('UI atualizada com dados frescos');
+				}, 100);
+			}
+		})
+		.catch(error => {
+			console.error('Erro ao carregar dados do usuário:', error);
+		});
+}

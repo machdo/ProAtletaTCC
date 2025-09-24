@@ -1,5 +1,6 @@
 const API_KEY = 'pk.189efc57c2334b907bc107b028bc4b36';
 
+// ---------------- DISTÂNCIA ----------------
 function calcularDistancia(lat1, lon1, lat2, lon2) {
     const R = 6371000;
     const toRad = x => x * Math.PI / 180;
@@ -14,6 +15,74 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
     return Math.round(R * c);
 }
 
+// ---------------- LIMPA TEXTO DO ENDEREÇO ----------------
+function limparEndereco(displayName) {
+    let endereco = displayName;
+
+    // remove "Região Geográfica ..." e "Região Metropolitana ..."
+    endereco = endereco.replace(/,?\s*Região [^,]*/g, "");
+
+    // remove "Brazil"
+    endereco = endereco.replace(/,?\s*Brazil/g, "");
+
+    // remove CEP ou números no final (ex: ", 09190-610" ou ", 12345")
+    endereco = endereco.replace(/,?\s*\d{5}(-\d{3})?$/g, "");
+
+    // remove vírgulas duplicadas e espaços extras
+    endereco = endereco.replace(/,\s*,/g, ",").replace(/,\s*$/, "").trim();
+
+    return endereco;
+}
+
+// ---------------- AUTOCOMPLETE ----------------
+async function mostrarSugestoes() {
+    const query = document.getElementById("endereco").value.trim();
+    const resultados = document.getElementById("resultados");
+
+    resultados.innerHTML = "";
+
+    if (query.length < 3) return; // só busca se tiver 3+ letras
+
+    try {
+        const resp = await fetch(
+            `https://us1.locationiq.com/v1/autocomplete?key=${API_KEY}&q=${encodeURIComponent(query)}&limit=8&format=json&countrycodes=br`
+        );
+        const data = await resp.json();
+
+        const filtrados = data.filter(item =>
+            item.display_name.includes("Brazil")
+        );
+
+        if (!filtrados.length) {
+            resultados.innerHTML = "<li>Nenhum resultado encontrado no Brasil</li>";
+            return;
+        }
+
+        filtrados.forEach(item => {
+            const li = document.createElement("li");
+            li.classList.add("resultado-endereco");
+
+            const enderecoFormatado = limparEndereco(item.display_name);
+            li.textContent = enderecoFormatado;
+
+            li.onclick = () => {
+                document.getElementById("endereco").value = enderecoFormatado;
+                resultados.innerHTML = "";
+                buscarEscolinhas();
+            };
+
+            resultados.appendChild(li);
+        });
+
+    } catch (err) {
+        console.error("Erro no autocomplete:", err);
+        resultados.innerHTML = "<li>Erro ao buscar sugestões</li>";
+    }
+
+    toggleClear();
+}
+
+// ---------------- BUSCAR ESCOLINHAS ----------------
 async function buscarEscolinhas() {
     const endereco = document.getElementById('endereco').value.trim();
     const resultados = document.getElementById('resultados');
@@ -27,11 +96,13 @@ async function buscarEscolinhas() {
     resultados.innerHTML = '<li>Buscando...</li>';
 
     try {
-        const geoResp = await fetch(`https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${encodeURIComponent(endereco)}&format=json`);
+        const geoResp = await fetch(
+            `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${encodeURIComponent(endereco)}&format=json&countrycodes=br`
+        );
         const geoData = await geoResp.json();
 
         if (!geoData.length) {
-            resultados.innerHTML = '<li>Endereço não encontrado.</li>';
+            resultados.innerHTML = '<li>Endereço não encontrado no Brasil.</li>';
             return;
         }
 
@@ -105,20 +176,17 @@ async function buscarEscolinhas() {
                 enderecoDiv.textContent = 'Carregando endereço...';
 
                 try {
-                    const resp = await fetch(`https://us1.locationiq.com/v1/reverse.php?key=${API_KEY}&lat=${loc.lat}&lon=${loc.lon}&format=json`);
+                    const resp = await fetch(
+                        `https://us1.locationiq.com/v1/reverse.php?key=${API_KEY}&lat=${loc.lat}&lon=${loc.lon}&format=json`
+                    );
                     const data = await resp.json();
 
-                    const enderecoFormatado =
-                        `${data.address.road || ''}` +
-                        (data.address.house_number ? `, ${data.address.house_number}` : '') +
-                        (data.address.suburb ? `, ${data.address.suburb}` : '') +
-                        (data.address.postcode ? `, ${data.address.postcode}` : '');
+                    const enderecoFormatado = limparEndereco(data.display_name);
 
                     enderecoDiv.textContent = `Endereço: ${enderecoFormatado}`;
                 } catch (error) {
                     enderecoDiv.textContent = 'Erro ao obter o endereço.';
                 }
-
             });
 
             li.appendChild(button);
@@ -130,6 +198,7 @@ async function buscarEscolinhas() {
     }
 }
 
+// ---------------- CONFIGURAÇÕES INICIAIS ----------------
 document.addEventListener('DOMContentLoaded', () => {
     const esporte = localStorage.getItem('esporteSelecionado') || '';
     if (esporte) {
@@ -174,11 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 enderecoDiv.textContent = 'Carregando endereço...';
 
                 try {
-                    const resp = await fetch(`https://us1.locationiq.com/v1/reverse.php?key=${API_KEY}&lat=${loc.lat}&lon=${loc.lon}&format=json`);
+                    const resp = await fetch(
+                        `https://us1.locationiq.com/v1/reverse.php?key=${API_KEY}&lat=${loc.lat}&lon=${loc.lon}&format=json`
+                    );
                     const data = await resp.json();
 
-                    const enderecoFormatado = data.display_name ||
-                        `${data.address.road || ''}, ${data.address.city || data.address.town || ''}, ${data.address.state || ''}`;
+                    const enderecoFormatado = limparEndereco(data.display_name);
 
                     enderecoDiv.textContent = `Endereço: ${enderecoFormatado}`;
                 } catch (error) {
@@ -192,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ---------------- INPUT ----------------
 const input = document.getElementById('endereco');
 const clearBtn = document.querySelector('.icon.clear');
 
@@ -205,6 +276,7 @@ function toggleClear() {
 
 function clearInput() {
     input.value = '';
+    document.getElementById('resultados').innerHTML = '';
     toggleClear();
     input.focus();
 }
