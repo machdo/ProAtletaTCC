@@ -1,26 +1,3 @@
-/* ========================= */
-/* 🔹 Barra de navegação */
-.top-nav2 {
-  display: flex;
-  align-items: center;
-  background: #f26522;
-  color: #fff;
-  padding: 12px;
-}
-
-.top-nav2 .title-logo2 {
-  font-size: 18px;
-  flex: 1;
-  text-align: center;
-  margin: 0;
-}
-
-.top-nav2 .btn-voltar {
-  color: #fff;
-  font-size: 20px;
-}
-
-/* ========================= */
 /* 🔹 Caixa de busca */
 .search-container {
   display: flex;

@@ -1,3 +1,11 @@
+:root {
+  --branco: #fff;
+  --gelo: #f1f1f1;
+  --preto: #2a2a2a;
+  --laranja: #f86100;
+  --transparente: #ffffff00;
+}
+
 .page-content {
   display: flex;
   justify-content: center;
@@ -26,10 +34,6 @@
   line-height: 1.4;
 }
 
-.list {
-  margin: 0 0 20px 0;
-}
-
 .title-input {
   font-size: 20px;
   text-align: left;
@@ -54,14 +58,8 @@
 .list ul:before,
 .list ul:after,
 .list .item-inner:after,
-.list:before,
-.list:after {
+.list .item-content:after  {
   display: none !important;
-}
-
-/* Nosso estilo customizado para input */
-.list .item-input-wrap {
-  margin-bottom: 16px;
 }
 
 .list .item-input-wrap input {
@@ -72,36 +70,6 @@
   border-radius: 8px;
   border: none;
   font-size: 16px;
-}
-
-/* Remover qualquer outro estilo que o Framework7 possa adicionar */
-.list * {
-  box-shadow: none !important;
-}
-
-.item-input {
-  background: #f3f3f3;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.item-input .item-inner {
-  padding: 0;
-  min-height: 44px;
-}
-
-.item-input .item-inner:after {
-  display: none;
-}
-
-.item-input .item-input-wrap {
-  padding: 0 15px;
-}
-
-.item-input input {
-  height: 44px;
-  color: #000;
-  font-size: 14px;
 }
 
 .item-input input::placeholder {
@@ -165,50 +133,6 @@
   color: #000;
 }
 
-/* Remover todos os estilos do Framework7 para inputs */
-.list .item-content.item-input,
-.list .item-inner,
-.list .item-input .item-inner,
-.list .item-content {
-  margin: 0 !important;
-  padding: 0 !important;
-  min-height: 0 !important;
-  background: transparent !important;
-  border: none !important;
-}
-
-.list ul:before,
-.list ul:after,
-.list .item-inner:after,
-.list .item-content:after {
-  display: none !important;
-}
-
-/* Nossos estilos personalizados para input */
-.list .item-input-wrap {
-  margin-bottom: 16px;
-}
-
-.list .item-input-wrap input {
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-}
-
-/* Remover qualquer outro estilo do Framework7 */
-.list .item-input-wrap:after,
-.list .item-input-wrap:before {
-  display: none !important;
-}
-
-.item-input-wrap {
-  position: relative;
-}
-
 .password-toggle-icon {
   position: absolute;
   right: 16px;
@@ -217,4 +141,17 @@
   color: #666;
   font-size: 20px;
   cursor: pointer;
+}
+
+.top-nav2 {
+  background-color: var(--gelo);
+  padding: 15px !important;
+  height: 40px !important;
+  text-align: center;
+}
+
+.title-logo2 {
+  color: #333;
+  font-size: 18px;
+  margin: 0;
 }

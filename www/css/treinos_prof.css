@@ -7,8 +7,10 @@
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 20px;
-    margin-bottom: 24px;
+    margin: 0 auto 24px auto;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 600px;
+    width: 100%;
 }
 
 .search-box {
@@ -56,7 +58,9 @@
     align-items: center;
     gap: 12px;
     width: 100%;
-    padding: 0 20px;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .aluno-card {
@@ -73,6 +77,7 @@
     width: 100%;
     max-width: 600px;
     margin-bottom: 8px;
+    gap: 16px;
 }
 
 .aluno-card:hover {
@@ -81,9 +86,36 @@
     background: rgba(255, 255, 255, 1);
 }
 
+.aluno-foto {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #f86100;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+}
+
+.aluno-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.aluno-card:hover .aluno-foto {
+    transform: scale(1.05);
+    border-color: #3b82f6;
+}
+
+.aluno-card:hover .aluno-foto img {
+    transform: scale(1.1);
+}
+
 .aluno-info {
     flex: 1;
-    text-align: center;
+    text-align: left;
 }
 
 .aluno-nome {
@@ -275,36 +307,50 @@
         padding: 16px;
     }
     
+    .search-container {
+        max-width: 400px;
+    }
+    
     #listaAlunos {
-        padding: 0 10px;
+        max-width: 400px;
+        padding: 0;
     }
     
     .aluno-card {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         gap: 12px;
-        text-align: center;
+        text-align: left;
         padding: 16px;
         max-width: 400px;
     }
     
+    .aluno-foto {
+        width: 50px;
+        height: 50px;
+        margin-right: 12px;
+        margin-bottom: 0;
+    }
+    
     .aluno-info {
-        text-align: center;
-        width: 100%;
+        text-align: left;
+        width: auto;
+        flex: 1;
     }
     
     .aluno-actions {
         justify-content: center;
         flex-wrap: wrap;
         gap: 8px;
-        width: 100%;
+        width: auto;
     }
     
     .btn-action {
-        flex: 1;
-        min-width: 100px;
+        flex: 0;
+        min-width: 80px;
         justify-content: center;
-        padding: 10px 16px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
     
     .page-title {
@@ -321,18 +367,52 @@
         padding: 12px;
     }
     
+    .search-container {
+        max-width: 100%;
+        margin: 0 auto 20px auto;
+    }
+    
+    #listaAlunos {
+        max-width: 100%;
+    }
+    
     .page-header,
     .search-container {
         padding: 16px;
     }
     
     .aluno-card {
-        padding: 16px;
+        padding: 12px;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .aluno-foto {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+    
+    .aluno-info {
+        flex: 1;
+        text-align: left;
+    }
+    
+    .aluno-nome {
+        font-size: 1rem;
+        margin-bottom: 2px;
+    }
+    
+    .aluno-actions {
+        flex-direction: column;
+        gap: 6px;
+        width: auto;
     }
     
     .btn-action {
-        padding: 10px 14px;
-        font-size: 0.85rem;
+        padding: 8px 10px;
+        font-size: 0.75rem;
+        min-width: 70px;
     }
 }
 

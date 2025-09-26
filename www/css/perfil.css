@@ -1,4 +1,4 @@
-:root { 
+:root {
     --branco: #fff;
     --gelo: #f1f1f1;
     --preto: #2a2a2a;
@@ -10,15 +10,14 @@ body {
     background-color: var(--gelo);
     margin: 0;
     padding: 0;
-    padding-bottom: env(safe-area-inset-bottom); /* protege notch iOS */
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .page-content {
-    padding: 16px;
-    padding-top: 100px;   /* espaço para topo fixo */
-    padding-bottom: 90px; /* espaço para tab-bar fixa */
     box-sizing: border-box;
-    overflow-y: auto;      /* garante scroll */
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* topo fixo */
@@ -50,20 +49,27 @@ body {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin: 10px auto 10px auto; /* ajustei margem inferior para 10px */
+    margin: 10px auto 10px auto;
     max-width: 400px;
     width: 100%;
     box-sizing: border-box;
     position: relative;
+    margin-top: 7%;
 }
 
 /* bloco Buscar Aluno */
 .page[data-name="perfil_prof"] .block.buscar-aluno {
-    padding: 20px 16px;
-    margin: 3% auto 10px auto !important; /* margem inferior reduzida */
+    padding: 10px 8px;
+    margin: 3% auto 10px auto !important;
     max-width: 400px;
-    width: 100%;        
+    width: 100%;
     box-sizing: border-box;
+    min-height: 195px;
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1% !important;
 }
 
 .page[data-name="perfil_prof"] .block.buscar-aluno h3 {
@@ -78,7 +84,7 @@ body {
 }
 
 .page[data-name="perfil_prof"] .block.buscar-aluno .button-fill {
-    margin-top: -20px;
+    margin-top: 10px;
     padding: 10px 16px;
 }
 
@@ -126,7 +132,7 @@ body {
     right: 0;
     width: 32px;
     height: 32px;
-    background-color: #2196f3;
+    background-color: var(--laranja);
     color: white;
     font-size: 18px;
     border-radius: 50%;
@@ -136,15 +142,12 @@ body {
     z-index: 1;
 }
 
-/* botões principais */
-#uploadFotoForm button,
-#uploadFotoprofForm button,
-.button.button-fill {
+#uploadFotoprofForm button {
     margin: 12px auto 0 auto;
     padding: 12px 16px;
-    width: 100%;
+    width: 50%;
     max-width: 400px;
-    background-color: #2196f3;
+    background-color: var(--laranja);
     color: white;
     border: none;
     border-radius: 8px;
@@ -153,19 +156,44 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     transition: background-color 0.3s ease;
+}
+
+/* botões principais */
+#uploadFotoForm button,
+.button.button-fill {
+    margin: 12px auto 0 auto;
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--laranja);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.button.button-fill i {
+    font-size: 20px;
 }
 
 #uploadFotoForm button:hover,
 #uploadFotoprofForm button:hover,
 .button.button-fill:hover {
-    background-color: #1976d2;
+    background-color: #e75000;
 }
 
 #uploadFotoForm button:active,
 #uploadFotoprofForm button:active,
 .button.button-fill:active {
-    background-color: #1565c0;
+    background-color: #d64500;
 }
 
 /* input de busca */
@@ -179,7 +207,7 @@ body {
 /* divisória */
 .divisoria {
     border-top: 2px solid #e4e3e3;
-    margin-bottom: 2px; /* diminui espaço abaixo da divisória */
+    margin-bottom: 2px;
     margin-top: 30px !important;
 }
 
@@ -188,19 +216,24 @@ body {
     .title-logo2 {
         font-size: 18px;
     }
+
     .block h2 {
         font-size: 18px;
     }
+
     .block p {
         font-size: 14px;
     }
+
     .page[data-name="perfil_prof"] .block.buscar-aluno h3 {
         font-size: 15px;
     }
+
     .page[data-name="perfil_prof"] .block.buscar-aluno input {
         font-size: 13px;
         padding: 5px;
     }
+
     .page[data-name="perfil_prof"] .block.buscar-aluno .button-fill {
         padding: 10px;
     }
@@ -235,7 +268,7 @@ body {
 /* css swiper */
 .mySwiper_prof {
     width: 100%;
-    height: auto; /* altura ajusta ao conteúdo */
+    height: auto;
     padding-bottom: 0;
     margin-bottom: 20px;
 }
@@ -246,7 +279,7 @@ body {
     background: transparent;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
 }
 
 .mySwiper_prof .swiper-slide img {
@@ -257,13 +290,174 @@ body {
 }
 
 .mySwiper_prof .swiper-slide .block {
-    margin-bottom: 20px; /* margem menor para reduzir espaço */
+    margin-bottom: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 400px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 15px;
 }
 
-.mySwiper_prof .swiper-pagination {
-    margin-top: 20px; /* aproxima a paginação do slide */
+/* Bloco-botão com imagem e hover */
+.block.botao-aluno {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    min-height: 195px;
+    height: 195px;
+    max-width: 400px;
+    width: 100%;
+    padding: 8px 0;
+    transition: box-shadow 0.2s;
+    border: 2px solid transparent;
+    background: #fff;
+    box-sizing: border-box;
+    margin-top: 1% !important;
+}
+
+.block.botao-aluno img {
+    width: 100px;
+    height: 100px;
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.block.botao-aluno .hover-aluno {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background: rgba(44, 44, 44, 0.92);
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none !important;
+    transition: opacity 0.2s;
+    border-radius: 12px;
+    z-index: 2;
+}
+
+.block.botao-aluno:active .hover-aluno,
+.block.botao-aluno:hover .hover-aluno {
+    opacity: 30;
+}
+
+.block.botao-aluno:active,
+.block.botao-aluno:hover {
+    box-shadow: 0 0 0 2px var(--laranja);
+    border-color: var(--laranja);
 }
 
 .img-fluid {
     max-width: 100%;
+}
+
+/* Botão deletar */
+.alunos-botoes .btn-deletar {
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--laranja);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    margin-left: 8px;
+}
+
+.alunos-botoes .btn-deletar:hover {
+    background: #e75000;
+    transform: scale(1.1);
+}
+
+.alunos-botoes .btn-deletar i {
+    font-size: 22px;
+    pointer-events: none;
+}
+
+.list,
+.list ul,
+.list li,
+.list .item-content,
+.list .item-inner,
+.list .item-input,
+.list .item-input-wrap {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    border: none !important;
+}
+
+.list ul:before,
+.list ul:after,
+.list .item-inner:after,
+.list .item-content:after {
+    display: none !important;
+}
+
+.list .item-input-wrap input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.list .item-input-wrap select {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.list .item-input-wrap textarea {
+    width: 100%;
+    height: 100px;
+    padding: 0 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.item-input input::placeholder {
+    color: #999;
+}
+
+.item-input select::placeholder {
+    color: #999;
+}
+
+.item-input textarea::placeholder {
+    color: #999;
+}
+
+.title-input {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #333;
 }

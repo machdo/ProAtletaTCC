@@ -58,7 +58,7 @@
 
 /* Itens de solicitação */
 .solicitacao-item {
-  width: 80% ;         /* itens continuam com 85% */
+  width: 90% ;         /* itens continuam com 85% */
   margin: 0 auto;     /* centraliza cada item */
   background: #fff;
   border: 1px solid #ddd;
