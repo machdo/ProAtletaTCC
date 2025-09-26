@@ -37,9 +37,17 @@ if ($profId <= 0) {
 }
 
 // Consulta para buscar os alunos associados
-$sql = "SELECT u.id, u.nome as nome_aluno, u.email, u.foto as foto
-        FROM usuarios u
-        INNER JOIN aluno_professor a ON a.Aluno_ID = u.id
+$sql = "SELECT 
+            a.ID as associacao_id, 
+            a.Aluno_ID, 
+            a.Professor_ID, 
+            a.data_vinculo, 
+            u.id as id, 
+            u.nome as nome_aluno, 
+            u.email, 
+            u.foto as foto
+        FROM aluno_professor a
+        INNER JOIN usuarios u ON a.Aluno_ID = u.id
         WHERE a.Professor_ID = ? AND u.categoria = 'aluno'";
 
 $stmt = $conn->prepare($sql);
@@ -58,6 +66,7 @@ while ($row = $result->fetch_assoc()) {
     $alunos[] = $row;
 }
 
+// Retorna os dados em formato JSON
 echo json_encode([
     "success" => true,
     "alunos" => $alunos

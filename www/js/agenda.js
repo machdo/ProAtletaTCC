@@ -1,13 +1,22 @@
 // =================================================================
-// AGENDA.JS - Para uso com Framework7 Routes
+// AGENDA.JS - AGENDA PESSOAL DO ALUNO LOGADO
 // =================================================================
 
 console.log('=== AGENDA.JS CARREGADO ===');
 
-// Classe principal do calendário
-class Calendario {
+// Classe principal do calendário do aluno
+class CalendarioAluno {
     constructor() {
-        console.log('Inicializando classe Calendario...');
+        console.log('Inicializando CalendarioAluno...');
+
+        // Loading state management
+        this.isLoading = true;
+        this.loadingSteps = {
+            dadosAluno: false,
+            calendario: false,
+            eventos: false,
+            interface: false
+        };
 
         this.hoje = new Date();
         this.mesAtual = this.hoje.getMonth();
@@ -19,30 +28,90 @@ class Calendario {
             'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'
         ];
 
-        // Sistema de eventos - exemplo com alguns eventos
-        this.eventos = {
-            [`${this.hoje.getFullYear()}-${(this.hoje.getMonth() + 1).toString().padStart(2, '0')}-${this.hoje.getDate().toString().padStart(2, '0')}`]: [
-                {
-                    titulo: 'Treino de Futebol',
-                    horario: '18:00 - 20:00',
-                    local: 'Campo da Escola'
-                }
-            ]
-        };
-
-        console.log('Calendário configurado:', {
-            hoje: this.hoje,
-            mesAtual: this.mesAtual,
-            anoAtual: this.anoAtual,
-            diaSelecionado: this.diaSelecionado
+        // Dados do aluno logado
+        this.emailAluno = localStorage.getItem('userEmail') || '';
+        this.nomeAluno = localStorage.getItem('userNome') || 'Aluno';
+        
+        // NÃO DEPENDER MAIS DO PROFESSOR_ID - buscar todos os eventos do aluno
+        console.log('Dados do aluno logado:', {
+            email: this.emailAluno,
+            nome: this.nomeAluno
         });
 
-        // Inicializar após um pequeno delay para garantir DOM
-        setTimeout(() => this.init(), 50);
+        // Sistema de eventos do aluno
+        this.eventos = {};
+        this.eventosCarregados = {};
+
+        // Inicializar com loading
+        this.mostrarLoading();
+        setTimeout(() => this.init(), 100);
+    }
+
+    mostrarLoading() {
+        const overlay = document.getElementById('loadingOverlay');
+        const pageContent = document.getElementById('pageContent');
+        
+        if (overlay) overlay.style.display = 'flex';
+        if (pageContent) pageContent.style.display = 'none';
+        
+        this.atualizarProgresso(10);
+    }
+
+    atualizarProgresso(percent) {
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            progressBar.style.width = `${percent}%`;
+        }
+    }
+
+    verificarCarregamentoCompleto() {
+        const todosCarregados = Object.values(this.loadingSteps).every(step => step === true);
+        
+        if (todosCarregados && this.isLoading) {
+            this.isLoading = false;
+            this.esconderLoading();
+        }
+    }
+
+    esconderLoading() {
+        this.atualizarProgresso(100);
+        
+        setTimeout(() => {
+            const overlay = document.getElementById('loadingOverlay');
+            const pageContent = document.getElementById('pageContent');
+            
+            if (overlay) {
+                overlay.classList.add('hide');
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 500);
+            }
+            
+            if (pageContent) {
+                pageContent.classList.add('show');
+            }
+            
+            console.log('✅ Agenda totalmente carregada');
+        }, 500);
     }
 
     init() {
-        console.log('Inicializando calendário...');
+        console.log('Inicializando calendário do aluno...');
+
+        // Verificar se dados necessários existem
+        if (!this.emailAluno) {
+            console.error('Email do aluno não encontrado');
+            this.mostrarErroCarregamento('Dados do usuário não encontrados. Faça login novamente.');
+            return;
+        }
+
+        this.atualizarProgresso(20);
+
+        // Atualizar informações do aluno na interface
+        this.atualizarInfoAluno();
+        this.loadingSteps.dadosAluno = true;
+
+        this.atualizarProgresso(40);
 
         // Verificar se elementos essenciais existem
         const elementos = ['diaAtual', 'mesAtual', 'anoAtual', 'diasGrid', 'eventosContainer'];
@@ -62,12 +131,58 @@ class Calendario {
 
         console.log('✅ Todos elementos encontrados, inicializando...');
 
+        this.atualizarProgresso(60);
+
         // Inicializar componentes
         this.atualizarDisplay();
         this.gerarCalendario();
-        this.mostrarEventos();
+        this.loadingSteps.calendario = true;
+        this.loadingSteps.interface = true;
 
-        console.log('✅ Calendário inicializado com sucesso');
+        this.atualizarProgresso(80);
+
+        // Carregar eventos (async)
+        this.carregarEventosAluno();
+
+        console.log('✅ Calendário do aluno inicializado com sucesso');
+    }
+
+    mostrarErroCarregamento(mensagem) {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="loading-spinner" style="color: #ff4444;">
+                        <i class="ri-error-warning-line"></i>
+                    </div>
+                    <h3>Erro ao Carregar</h3>
+                    <p>${mensagem}</p>
+                    <button onclick="location.reload()" style="background: white; color: var(--laranja); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                        Tentar Novamente
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    atualizarInfoAluno() {
+        const nomeElement = document.getElementById('nomeAlunoLogado');
+        const emailElement = document.getElementById('emailAlunoLogado');
+
+        if (nomeElement) nomeElement.textContent = `Minha Agenda - ${this.nomeAluno.split(' ')[0]}`;
+        if (emailElement) emailElement.textContent = this.emailAluno;
+    }
+
+    mostrarErro(mensagem) {
+        const container = document.getElementById('eventosContainer');
+        if (container) {
+            container.innerHTML = `
+                <div class="sem-eventos" style="color: #e53e3e;">
+                    <i class="ri-error-warning-line"></i>
+                    ${mensagem}
+                </div>
+            `;
+        }
     }
 
     atualizarDisplay() {
@@ -119,6 +234,7 @@ class Calendario {
 
         this.atualizarDisplay();
         this.gerarCalendario();
+        this.carregarEventosAluno();
         this.mostrarEventos();
     }
 
@@ -148,6 +264,7 @@ class Calendario {
         // Dias do mês atual
         for (let dia = 1; dia <= diasNoMes; dia++) {
             const classes = [];
+            const dataKey = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
 
             // Verificar se é hoje
             if (dia === this.hoje.getDate() &&
@@ -159,6 +276,11 @@ class Calendario {
             // Verificar se está selecionado
             if (dia === this.diaSelecionado) {
                 classes.push('selecionado');
+            }
+
+            // Verificar se tem eventos
+            if (this.eventos[dataKey] && this.eventos[dataKey].length > 0) {
+                classes.push('com-evento');
             }
 
             const diaElement = this.criarDia(dia, classes.join(' '));
@@ -204,12 +326,112 @@ class Calendario {
         this.mostrarEventos();
     }
 
+    carregarEventosAluno() {
+        if (!this.emailAluno) {
+            console.warn('Email do aluno não encontrado para carregar eventos');
+            this.loadingSteps.eventos = true;
+            this.verificarCarregamentoCompleto();
+            return;
+        }
+
+        const mesChave = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}`;
+        
+        // Verificar se já carregamos este mês
+        if (this.eventosCarregados[mesChave]) {
+            this.mostrarEventos();
+            this.loadingSteps.eventos = true;
+            this.verificarCarregamentoCompleto();
+            return;
+        }
+
+        console.log('Carregando TODOS os eventos para:', this.emailAluno, 'mês:', mesChave);
+
+        // BUSCAR TODOS OS EVENTOS DO ALUNO - SEM FILTRO DE PROFESSOR
+        const url = `https://proatleta.site/get_eventos_aluno.php?aluno_email=${encodeURIComponent(this.emailAluno)}&mes=${mesChave}`;
+
+        console.log('URL da requisição:', url);
+
+        fetch(url)
+            .then(response => {
+                console.log('Status da resposta:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resposta do servidor:', data);
+
+                if (data.success) {
+                    // Limpar eventos do mês atual
+                    Object.keys(this.eventos).forEach(key => {
+                        if (key.startsWith(mesChave)) {
+                            delete this.eventos[key];
+                        }
+                    });
+
+                    // Organizar eventos por data
+                    if (data.eventos && data.eventos.length > 0) {
+                        console.log(`✅ Encontrados ${data.eventos.length} eventos para o mês ${mesChave}`);
+                        
+                        data.eventos.forEach(evento => {
+                            console.log('Processando evento:', evento);
+                            if (!this.eventos[evento.data]) {
+                                this.eventos[evento.data] = [];
+                            }
+                            this.eventos[evento.data].push(evento);
+                        });
+                    } else {
+                        console.log('📅 Nenhum evento encontrado para este mês');
+                    }
+
+                    // Marcar como carregado
+                    this.eventosCarregados[mesChave] = true;
+
+                    // Atualizar interface
+                    this.gerarCalendario(); // Regerar para mostrar dias com eventos
+                    this.mostrarEventos();
+                    
+                    console.log('✅ Eventos carregados e interface atualizada');
+                } else {
+                    console.warn('Resposta não bem-sucedida:', data.message);
+                    this.mostrarSemEventos();
+                }
+                
+                this.loadingSteps.eventos = true;
+                this.verificarCarregamentoCompleto();
+            })
+            .catch(error => {
+                console.error('❌ Erro ao carregar eventos:', error);
+                this.mostrarSemEventos();
+                this.loadingSteps.eventos = true;
+                this.verificarCarregamentoCompleto();
+            });
+    }
+
+    mostrarSemEventos() {
+        const container = document.getElementById('eventosContainer');
+        if (container) {
+            container.innerHTML = `
+                <div class="sem-eventos">
+                    <i class="ri-calendar-line"></i>
+                    <p>Você ainda não possui eventos agendados.</p>
+                    <p style="font-size: 14px; margin-top: 10px; opacity: 0.7;">
+                        Seus treinos e atividades aparecerão aqui quando forem agendados pelo seu professor.
+                    </p>
+                </div>
+            `;
+        }
+    }
+
     mostrarEventos() {
         const container = document.getElementById('eventosContainer');
         if (!container) return;
 
         const dataKey = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${this.diaSelecionado.toString().padStart(2, '0')}`;
         const eventosDoDia = this.eventos[dataKey] || [];
+
+        console.log(`Mostrando eventos para ${dataKey}:`, eventosDoDia);
 
         if (eventosDoDia.length === 0) {
             container.innerHTML = `
@@ -235,34 +457,10 @@ class Calendario {
                             <span>${evento.local}</span>
                         </div>
                     </div>
+                    ${evento.descricao ? `<div class="evento-descricao">${evento.descricao}</div>` : ''}
                 </div>
             </div>
         `).join('');
-    }
-
-    adicionarEvento(titulo, horario, local) {
-        const dataKey = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${this.diaSelecionado.toString().padStart(2, '0')}`;
-
-        if (!this.eventos[dataKey]) {
-            this.eventos[dataKey] = [];
-        }
-
-        this.eventos[dataKey].push({
-            titulo: titulo || 'Novo Evento',
-            horario: horario || '10:00 - 11:00',
-            local: local || 'Local do evento'
-        });
-
-        this.mostrarEventos();
-
-        // Feedback visual
-        const btn = document.querySelector('.add-evento-btn');
-        if (btn) {
-            btn.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                btn.style.transform = 'scale(1)';
-            }, 200);
-        }
     }
 }
 
@@ -306,41 +504,19 @@ function mudarMes(direcao) {
 
 function toggleFiltros() {
     console.log('Toggle filtros');
-    // Implementar modal de filtros aqui
     if (typeof app !== 'undefined' && app.dialog) {
-        app.dialog.alert('Filtros serão implementados em breve!', 'Filtros');
+        app.dialog.alert('Filtros estão disponíveis apenas na versão do professor!', 'Info');
     } else {
-        alert('Filtros serão implementados em breve!');
+        alert('Filtros estão disponíveis apenas na versão do professor!');
     }
 }
 
 function adicionarEvento() {
-    console.log('Adicionar evento');
-
+    console.log('Adicionar evento - apenas professor pode adicionar');
     if (typeof app !== 'undefined' && app.dialog) {
-        // Usando Framework7 dialog
-        app.dialog.prompt('Nome do evento:', 'Novo Evento', function (titulo) {
-            if (titulo) {
-                app.dialog.prompt('Horário (ex: 10:00 - 11:00):', 'Horário', function (horario) {
-                    if (horario) {
-                        app.dialog.prompt('Local:', 'Local', function (local) {
-                            if (local && calendarioInstance) {
-                                calendarioInstance.adicionarEvento(titulo, horario, local);
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        app.dialog.alert('Apenas seu professor pode adicionar eventos à sua agenda!', 'Informação');
     } else {
-        // Fallback para prompt nativo
-        const titulo = prompt('Nome do evento:') || 'Novo Evento';
-        const horario = prompt('Horário (ex: 10:00 - 11:00):') || '10:00 - 11:00';
-        const local = prompt('Local:') || 'A definir';
-
-        if (calendarioInstance) {
-            calendarioInstance.adicionarEvento(titulo, horario, local);
-        }
+        alert('Apenas seu professor pode adicionar eventos à sua agenda!');
     }
 }
 
@@ -358,44 +534,37 @@ function irPara(rota) {
 // =================================================================
 
 function initCalendario() {
-    console.log('=== INIT CALENDÁRIO CHAMADO ===');
+    console.log('=== INIT CALENDÁRIO ALUNO CHAMADO ===');
 
     try {
         // Limpar instância anterior se existir
         calendarioInstance = null;
 
-        // Verificar se elementos essenciais existem
-        const elementosEssenciais = ['diaAtual', 'mesAtual', 'anoAtual', 'diasGrid'];
-        const todosExistem = elementosEssenciais.every(id => {
-            const elemento = document.getElementById(id);
-            console.log(`Verificando elemento ${id}:`, elemento ? 'OK' : 'NÃO ENCONTRADO');
-            return elemento;
-        });
-
-        if (!todosExistem) {
-            console.log('❌ Elementos não encontrados, tentando novamente em 100ms...');
-            setTimeout(initCalendario, 100);
-            return;
-        }
-
         // Criar nova instância do calendário
-        console.log('✅ Criando nova instância do calendário...');
-        calendarioInstance = new Calendario();
+        console.log('✅ Criando nova instância do calendário do aluno...');
+        calendarioInstance = new CalendarioAluno();
 
-        console.log('✅ Calendário inicializado com sucesso!');
+        console.log('✅ Calendário do aluno inicializado com sucesso!');
 
     } catch (error) {
         console.error('❌ Erro ao inicializar calendário:', error);
 
-        // Tentar novamente após um delay
-        setTimeout(() => {
-            console.log('🔄 Tentativa de recuperação...');
-            try {
-                calendarioInstance = new Calendario();
-            } catch (e) {
-                console.error('❌ Erro persistente:', e);
-            }
-        }, 1000);
+        // Mostrar erro de carregamento
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="loading-spinner" style="color: #ff4444;">
+                        <i class="ri-error-warning-line"></i>
+                    </div>
+                    <h3>Erro ao Carregar</h3>
+                    <p>Ocorreu um erro ao inicializar o calendário</p>
+                    <button onclick="location.reload()" style="background: white; color: var(--laranja); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                        Tentar Novamente
+                    </button>
+                </div>
+            `;
+        }
     }
 }
 
@@ -437,33 +606,37 @@ window.toggleFiltros = toggleFiltros;
 window.adicionarEvento = adicionarEvento;
 window.irPara = irPara;
 
-
 // =================================================================
-// AUTO-INICIALIZAÇÃO (MODIFICAÇÃO)
+// AUTO-INICIALIZAÇÃO COM FORÇA
 // =================================================================
 
-// Verificar se está sendo carregado via rota ou diretamente
-function shouldAutoInit() {
-    // Se existe Framework7 app e estamos na rota agenda, não auto-inicializar
-    if (typeof app !== 'undefined' && app.views && app.views.main) {
-        const currentRoute = app.views.main.router.currentRoute;
-        if (currentRoute && currentRoute.path === '/agenda/') {
-            console.log('Script carregado via rota, aguardando inicialização manual...');
-            return false;
-        }
-    }
-    return true;
-}
+console.log('🚀 Script agenda.js (versão aluno independente) carregado...');
 
-// Inicializar automaticamente apenas se apropriado
-console.log('🚀 Script agenda.js carregado...');
-if (shouldAutoInit()) {
-    console.log('Auto-inicializando calendário...');
+// FORÇAR INICIALIZAÇÃO INDEPENDENTE DE ROTAS
+setTimeout(() => {
+    console.log('🚀 Auto-inicializando calendário do aluno (forçado)...');
+    initCalendario();
+}, 200);
+
+// TAMBÉM TENTAR QUANDO DOCUMENT READY
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM Ready - Tentando inicializar calendário...');
     setTimeout(() => {
-        initCalendario();
-    }, 100);
-} else {
-    console.log('Aguardando inicialização manual via rota...');
-}
+        if (!calendarioInstance) {
+            console.log('📄 Inicializando via DOMContentLoaded...');
+            initCalendario();
+        }
+    }, 300);
+});
+
+// ESCUTAR EVENTO DE PÁGINA MOSTRADA (FRAMEWORK7)
+document.addEventListener('page:init', function (e) {
+    if (e.detail.name === 'agenda') {
+        console.log('📱 Página agenda inicializada via Framework7');
+        setTimeout(() => {
+            initCalendario();
+        }, 100);
+    }
+});
 
 console.log('=== FIM AGENDA.JS ===');

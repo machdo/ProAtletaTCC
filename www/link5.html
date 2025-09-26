@@ -25,8 +25,19 @@
             <div data-name="link5" class="page">
 
                 <!-- Top Navbar -->
-                <div class="top-nav2">
-                    <h1 class="title-logo2">Perfil</h1>
+               <div class="top-nav">
+                    <div class="logo-titulo">
+                        <img src="img/logo_letrero.png">
+
+                    </div>
+                    <div class="navbar-btn">
+                        <a href="/config/" class="btn-config link">
+                            <i class="ri-settings-5-fill"></i>
+                        </a>
+                        <a href="#" class="btn-noti" datacount="0">
+                            <i class="mdi mdi-bell"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Conteúdo da página -->
@@ -41,7 +52,7 @@
                         </div>
 
                         <form id="uploadFotoForm" enctype="multipart/form-data">
-                            <button type="submit">Trocar Foto</button>
+                            <button type="submit">Salvar Foto</button>
                         </form>
 
                         <h2>Olá, <span id="nomeUsuario"></span></h2>
@@ -51,11 +62,13 @@
                     <div class="divisoria"></div><br>
 
                     <div class="block espacamento">
-                        <button type="button" class="button button-fill" id="btnProfessores">Solicitações</button>
+                        <button type="button" class="button button-fill orange"
+                            id="btnProfessores">Solicitações</button>
                     </div>
 
                     <div class="block espacamento">
-                        <button type="button" class="button button-fill" id="btnAssociados">Meus professores</button>
+                        <button type="button" class="button button-fill orange" id="btnAssociados">Meus
+                            professores</button>
                     </div>
 
                     <!-- Sheet Modal -->

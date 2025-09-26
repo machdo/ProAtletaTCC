@@ -37,8 +37,11 @@
                 console.log(`[${type}]`, message);
             },
 
+            getContainer() {
+                return document.querySelector('[data-name="treinos_prof"] #listaAlunos');
+            },
             mostrarErro: (mensagem) => {
-                const container = document.getElementById('listaAlunos');
+                const container = window.SistemaTreinos.utils.getContainer();
                 if (container) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -48,13 +51,11 @@
                             <button class="button button-outline" onclick="window.SistemaTreinos.actions.carregarAlunos()">
                                 Tentar Novamente
                             </button>
-                        </div>
-                    `;
+                        </div>`;
                 }
             },
-
             mostrarListaVazia: () => {
-                const container = document.getElementById('listaAlunos');
+                const container = window.SistemaTreinos.utils.getContainer();
                 if (container) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -64,8 +65,7 @@
                             <button class="button button-fill" onclick="window.SistemaTreinos.actions.irParaPerfil()">
                                 Ir para Perfil
                             </button>
-                        </div>
-                    `;
+                        </div>`;
                 }
             },
 
@@ -74,10 +74,15 @@
                 div.classList.add("aluno-card");
                 div.setAttribute("data-email", aluno.email || '');
 
+                // Define a foto do aluno, usando uma padrão se não tiver
+                const fotoAluno = aluno.foto || 'img/user.jpg';
+
                 div.innerHTML = `
+                    <div class="aluno-foto">
+                        <img src="${fotoAluno}" alt="Foto do aluno" onerror="this.src='img/user.jpg'">
+                    </div>
                     <div class="aluno-info">
                         <div class="aluno-nome">${aluno.nome || 'Nome não disponível'}</div>
-                        <div class="aluno-email" >${aluno.email || 'Email não disponível'}</div>
                         <small style="color: #666;">Treinos: ${aluno.total_treinos || 0}</small>
                     </div>
                     <div class="aluno-actions">
@@ -97,6 +102,11 @@
         actions: {
             carregarAlunos: () => {
                 const sistema = window.SistemaTreinos;
+                const container = sistema.utils.getContainer();
+                if (!container) {
+                    console.log('Container treinos não presente (fora da página).');
+                    return;
+                }
                 console.log("Iniciando carregamento de alunos...");
 
                 // Verificar se é professor
@@ -125,12 +135,6 @@
                     })
                     .then(data => {
                         console.log("Resposta recebida:", data);
-
-                        const container = document.getElementById('listaAlunos');
-                        if (!container) {
-                            console.error("Container #listaAlunos não encontrado");
-                            return;
-                        }
 
                         // Limpar container
                         container.innerHTML = "";
@@ -195,15 +199,16 @@
             },
 
             filtrarAlunos: (busca) => {
-                const cards = document.querySelectorAll('.aluno-card');
+                const container = window.SistemaTreinos.utils.getContainer();
+                if (!container) return;
+                const cards = container.querySelectorAll('.aluno-card');
                 const termoBusca = busca.toLowerCase();
                 let encontrados = 0;
 
                 cards.forEach(card => {
                     const nome = card.querySelector('.aluno-nome').textContent.toLowerCase();
-                    const email = card.querySelector('.aluno-email').textContent.toLowerCase();
 
-                    if (nome.includes(termoBusca) || email.includes(termoBusca)) {
+                    if (nome.includes(termoBusca)) {
                         card.style.display = 'flex';
                         encontrados++;
                     } else {
@@ -213,7 +218,7 @@
 
                 // Atualizar status
                 if (busca && encontrados === 0) {
-                    window.SistemaTreinos.utils.updateStatus('Nenhum aluno encontrado com esse termo', 'warning');
+                    window.SistemaTreinos.utils.updateStatus('Nenhum aluno encontrado com esse nome', 'warning');
                 } else if (busca) {
                     window.SistemaTreinos.utils.updateStatus(`${encontrados} aluno(s) encontrado(s)`, 'info');
                 }
@@ -222,25 +227,15 @@
 
         inicializar: () => {
             const sistema = window.SistemaTreinos;
-            console.log('Inicializando sistema de treinos...');
-
-            // Configurar elementos
-            sistema.config.statusInfo = document.getElementById('statusInfo');
-
-            // Configurar busca
-            const buscarInput = document.getElementById('buscarAluno');
+            if (sistema.config.inicializado) return;
+            const container = sistema.utils.getContainer();
+            if (!container) return;
+            const buscarInput = document.querySelector('[data-name="treinos_prof"] #buscarAluno');
             if (buscarInput && !buscarInput.hasAttribute('data-listener-added')) {
-                buscarInput.addEventListener('input', (e) => {
-                    sistema.actions.filtrarAlunos(e.target.value);
-                });
+                buscarInput.addEventListener('input', (e) => sistema.actions.filtrarAlunos(e.target.value));
                 buscarInput.setAttribute('data-listener-added', 'true');
             }
-
-            // Carregar alunos automaticamente
-            setTimeout(() => {
-                sistema.actions.carregarAlunos();
-            }, 100);
-
+            setTimeout(() => sistema.actions.carregarAlunos(), 100);
             sistema.config.inicializado = true;
         },
 
@@ -265,23 +260,17 @@
         // Monitorar mudanças de página
         monitorarPagina: () => {
             const sistema = window.SistemaTreinos;
-
             const intervaloMonitoramento = setInterval(() => {
-                const listaAlunos = document.getElementById('listaAlunos');
-                const buscarInput = document.getElementById('buscarAluno');
-
-                // Se os elementos existem mas o sistema não está inicializado
-                if (listaAlunos && buscarInput && !sistema.config.inicializado) {
+                const container = sistema.utils.getContainer();
+                const buscarInput = document.querySelector('[data-name="treinos_prof"] #buscarAluno');
+                if (container && buscarInput && !sistema.config.inicializado) {
                     console.log('Detectada página de treinos, inicializando...');
                     sistema.inicializar();
-                }
-                // Se não existem mais os elementos, marcar como não inicializado
-                else if (!listaAlunos && sistema.config.inicializado) {
+                } else if (!container && sistema.config.inicializado) {
                     console.log('Saiu da página de treinos');
                     sistema.config.inicializado = false;
                 }
             }, 1000);
-
             sistema.config.intervalos.push(intervaloMonitoramento);
         }
     };

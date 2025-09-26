@@ -38,51 +38,58 @@
                     </div>
 
                     <div class="block">
-                        
+
                         <!-- Formulário de Treino -->
                         <form id="formTreino">
-                            <div class="list no-hairlines-md">
+                            <div class="list no-hairlines">
                                 <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Nome do Treino</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" id="nomeTreino" name="nomeTreino"
-                                                    placeholder="Ex: Treino A - Peito e Tríceps" required>
+                                    <li>
+                                        <h2 class="title-input">Nome do Treino</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="text" id="nomeTreino" name="nomeTreino"
+                                                        placeholder="Ex: Treino A - Peito e Tríceps" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
 
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Tipo de Treino</div>
-                                            <div class="item-input-wrap">
-                                                <select id="tipoTreino" name="tipoTreino">
-                                                    <option value="musculacao">Musculação</option>
-                                                    <option value="cardio">Cardio</option>
-                                                    <option value="funcional">Funcional</option>
-                                                    <option value="esporte">Esporte Específico</option>
-                                                    <option value="outro">Outro</option>
-                                                </select>
+                                    <li>
+                                        <h2 class="title-input">Tipo de Treino</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <select id="tipoTreino" name="tipoTreino">
+                                                        <option value="musculacao">Musculação</option>
+                                                        <option value="cardio">Cardio</option>
+                                                        <option value="funcional">Funcional</option>
+                                                        <option value="esporte">Esporte Específico</option>
+                                                        <option value="outro">Outro</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
 
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Data do Treino</div>
-                                            <div class="item-input-wrap">
-                                                <input type="date" id="dataTreino" name="dataTreino" required>
+                                    <li>
+                                        <h2 class="title-input">Data do Treino</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <input type="date" id="dataTreino" name="dataTreino" required>
+                                                </div>
                                             </div>
-                                        </div>
                                     </li>
 
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Observações</div>
-                                            <div class="item-input-wrap">
-                                                <textarea id="observacoes" name="observacoes"
-                                                    placeholder="Instruções gerais, aquecimento, etc..."></textarea>
+                                    <li>
+                                        <h2 class="title-input">Observações</h2>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-input-wrap">
+                                                    <textarea id="observacoes" name="observacoes"
+                                                        placeholder="Instruções gerais, aquecimento, etc..."></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -105,7 +112,8 @@
                             <!-- Botão de Salvar -->
                             <div class="block">
                                 <button type="submit" class="button button-fill color-blue">
-                                    <i class="mdi mdi-content-save"></i><p> Salvar Treino</p>
+                                    <i class="mdi mdi-content-save"></i>
+                                    <p> Salvar Treino</p>
                                 </button>
                             </div>
                         </form>

@@ -17,7 +17,7 @@
 <body>
     <div id="app">
         <div class="view view-main">
-            <div data-name="adicionar-evento" class="page">
+            <div data-name="agenda-alunos" class="page">
                 <!-- Top Navbar -->
                 <div class="top-nav">
                     <div class="logo-titulo">
@@ -33,33 +33,24 @@
                     </div>
                 </div>
                 <div class="page-content">
-                    <form id="formAdicionarEvento">
-                        <div class="list">
-                            <ul>
-                                <li>
-                                    <div class="item-title">Título</div>
-                                    <div class="item-input-row">
-                                        <input type="text" name="titulo" placeholder="Título do evento" required>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-title">Data</div>
-                                    <div class="item-input-row">
-                                        <input type="date" name="data" id="inputData" required>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-title">Hora</div>
-                                    <div class="item-input-row">
-                                        <input type="time" name="hora" id="inputHora" required>
-                                    </div>
-                                </li>
-                            </ul>
+                    <!-- Lista de Alunos -->
+                    <div class="block">
+                        <div class="search-container">
+                            <div class="search-box">
+                                <!-- ID alterado -->
+                                <input class="search-input" type="text" id="buscarAlunoAgenda" placeholder="Buscar aluno...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
                         </div>
-                        <div class="block">
-                            <button type="submit" class="button-fill">Adicionar Evento</button>
+
+                        <!-- ID alterado -->
+                        <div id="listaAlunosAgenda">
+                            <div class="empty-state">
+                                <i class="mdi mdi-loading mdi-spin"></i>
+                                <p>Carregando alunos...</p>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,15 +58,6 @@
     <script src="lib/framework7-bundle.min.js"></script>
     <script src="lib/jquery-3.7.0.min.js"></script>
     <script src="js/agenda_prof.js"></script>
-    <script>
-        function focusInput(id) {
-            const input = document.getElementById(id);
-            if (input) {
-                input.focus();
-                if (input.showPicker) input.showPicker();
-            }
-        }
-    </script>
 </body>
 
 </html>

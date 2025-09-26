@@ -37,12 +37,29 @@ if (!finalIdAss) {
                             <img src="${professor.foto}" alt="Foto de ${professor.nome_prof}" class="prof-foto" />
                             <span class="prof-nome">${professor.nome_prof}</span>
                             <button class="infos-prof">
-                                <div class="hamburger-bar"></div>
+                                <i class="ri-chat-3-line"></i>
                             </button>
                         </div>
                     `;
 
                     container_prof.appendChild(div);
+
+                    var infosButton = div.querySelector(".infos-prof");
+                    infosButton.addEventListener("click", function () {
+                        // Fecha o sheet modal antes de navegar
+                        const sheet = document.getElementById('sheetAssociado');
+                        if (sheet) {
+                            app.sheet.close(sheet);
+                        }
+
+                        // Salva os dados do professor no localStorage
+                        localStorage.setItem('profNome', professor.nome_prof);
+                        localStorage.setItem('profEmail', professor.email);
+                        localStorage.setItem('profFoto', professor.foto);
+
+                        // Navega para a página de informações do professor
+                        app.views.main.router.navigate('/chat_aluno/');
+                    });
                 });
             }
 

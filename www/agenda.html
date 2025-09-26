@@ -10,7 +10,7 @@
     <!-- Color theme for statusbar (Android only) -->
     <meta name="theme-color" content="#2196f3">
     <!-- Your app title -->
-    <title>Agenda</title>
+    <title>Minha Agenda</title>
     <!-- Path to Framework7 Library Bundle CSS -->
     <link rel="stylesheet" href="lib/framework7-bundle.min.css">
     <!-- CSS PERSONALIZADO PARA MENU-->
@@ -19,18 +19,28 @@
     <link rel="stylesheet" href="css/materialdesignicons.min.css">
     <!-- Ícones Remix Icons -->
     <link rel="stylesheet" href="css/remixicon/remixicon.css">
-
-
 </head>
 
 <body>
     <!-- App root element -->
     <div id="app">
-
         <!-- Your main view, should have "view-main" class -->
         <div class="view view-main">
             <!-- Initial Page, "data-name" contains page name -->
             <div data-name="agenda" class="page">
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loading-content">
+                        <div class="loading-spinner">
+                            <i class="ri-loader-4-line"></i>
+                        </div>
+                        <h3>Carregando Agenda</h3>
+                        <p>Preparando seu calendário pessoal...</p>
+                        <div class="loading-progress">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Top Navbar -->
                 <div class="top-nav">
@@ -49,7 +59,9 @@
                 </div>
 
                 <!-- Page Content -->
-                <div class="page-content">
+                <div class="page-content" id="pageContent" style="display: none;">
+                    <!-- Info do Aluno Logado -->
+
                     <!-- Calendário -->
                     <div class="calendario-container">
                         <div class="mes-ano">
@@ -86,16 +98,11 @@
                     <!-- Lista de Eventos -->
                     <div class="eventos-container" id="eventosContainer">
                         <div class="sem-eventos">
-                            <i class="ri-calendar-line"></i>
-                            Nenhum evento agendado para este dia
+                            <i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i>
+                            Carregando meus eventos...
                         </div>
                     </div>
                 </div>
-
-                <!-- Botão adicionar evento -->
-                <button class="add-evento-btn" onclick="adicionarEvento()">
-                    <i class="ri-add-line"></i>
-                </button>
             </div>
         </div>
     </div>
@@ -106,9 +113,7 @@
     <!-- Roteamento do app-->
     <script type="text/javascript" src="js/routes.js"></script>
     <script src="cordova.js"></script>
-
     <script type="text/javascript" src="js/agenda.js"></script>
-
 </body>
 
 </html>

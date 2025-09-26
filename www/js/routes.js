@@ -1,5 +1,60 @@
 //INICIALIZAÇÃO DO F7 QUANDO DISPOSITIVO ESTÁ PRONTO
 document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady() {
+	let initialUrl = '/inicio/';
+	if (localStorage.getItem('loggedIn') === 'true') {
+		initialUrl = '/index/';
+	}
+
+	window.mainView = app.views.create('.view-main', { url: initialUrl });
+
+	document.addEventListener("backbutton", function (e) {
+		if (mainView.router.currentRoute.path === '/index/') {
+			e.preventDefault();
+			app.dialog.create({
+				title: 'Sair do ProAtleta',
+				text: 'Quer mesmo sair do ProAtleta?',
+				buttons: [
+					{
+						text: 'Não',
+						close: true
+					},
+					{
+						text: 'Sim',
+						onClick: function () {
+							navigator.app.exitApp();
+						}
+					}
+				]
+			}).open();
+
+		} else {
+			e.preventDefault();
+			mainView.router.back({ force: true });
+		}
+	}, false);
+
+	// Adicionar tratamento especial para a rota da agenda
+	app.views.main.router.on('routeChange', function (newRoute, previousRoute, router) {
+		console.log('Mudança de rota detectada:', newRoute.path);
+
+		if (newRoute.path === '/agenda/') {
+			console.log('🗓️ Navegando para agenda - preparando inicialização...');
+
+			// Aguardar um pouco para garantir que a página foi carregada
+			setTimeout(() => {
+				if (typeof window.initCalendario === 'function') {
+					console.log('🗓️ Forçando inicialização do calendário via rota...');
+					window.initCalendario();
+				} else {
+					console.warn('⚠️ Função initCalendario não encontrada');
+				}
+			}, 500);
+		}
+	});
+}
+
 window.app = new Framework7({
 	// App root element
 	el: '#app',
@@ -203,9 +258,9 @@ window.app = new Framework7({
 					// Limpa cache se mudou o tipo de usuário
 					const currentUserType = localStorage.getItem('userType');
 					const lastUserType = localStorage.getItem('lastUserType');
-					
+
 					console.log('pageBeforeIn /index/ - userType atual:', currentUserType, 'anterior:', lastUserType);
-					
+
 					if (currentUserType !== lastUserType) {
 						limparCacheUsuario();
 						localStorage.setItem('lastUserType', currentUserType);
@@ -241,14 +296,44 @@ window.app = new Framework7({
 						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
 					}
 
-					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					const oldPerfilCss = document.getElementById('perfil-aluno-css');
 					if (oldPerfilCss) {
 						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
+					if (oldPopupSolicitacoesCss) {
+						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
+					}
+
+					const oldPopupProfCss = document.getElementById('popup-prof-css');
+					if (oldPopupProfCss) {
+						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
 					}
 
 					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
 					if (oldProAtletaPlusCss) {
 						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
+
+					const oldConfigCss = document.getElementById('config-css');
+					if (oldConfigCss) {
+						oldConfigCss.parentNode.removeChild(oldConfigCss);
+					}
+
+					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
+					if (oldChatAlunoCss) {
+						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
+					}
+
+					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
+					if (oldVerTreinosProfCss) {
+						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
+					}
+
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
 					}
 
 					const cssId = 'index-css';
@@ -331,9 +416,39 @@ window.app = new Framework7({
 						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
 					}
 
-					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					const oldPerfilCss = document.getElementById('perfil-aluno-css');
 					if (oldPerfilCss) {
 						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
+					if (oldPopupSolicitacoesCss) {
+						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
+					}
+
+					const oldPopupProfCss = document.getElementById('popup-prof-css');
+					if (oldPopupProfCss) {
+						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
+					}
+
+					const oldConfigCss = document.getElementById('config-css');
+					if (oldConfigCss) {
+						oldConfigCss.parentNode.removeChild(oldConfigCss);
+					}
+
+					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
+					if (oldChatAlunoCss) {
+						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
+					}
+
+					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
+					if (oldVerTreinosProfCss) {
+						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
+					}
+
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
 					}
 
 					const cssId = 'proatleta-plus-css';
@@ -385,6 +500,16 @@ window.app = new Framework7({
 					const oldPerfilCss = document.getElementById('perfil_aluno-css');
 					if (oldPerfilCss) {
 						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldConfigCss = document.getElementById('config-css');
+					if (oldConfigCss) {
+						oldConfigCss.parentNode.removeChild(oldConfigCss);
+					}
+
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
 					}
 
 					const cssId = 'treinos-aluno-css';
@@ -457,18 +582,25 @@ window.app = new Framework7({
 			animate: false,
 			on: {
 				pageBeforeIn: function (event, page) {
+					// Apenas log, sem inicialização aqui
+					console.log('📱 Preparando página da agenda...');
+					
+					// Limpar variáveis globais para permitir nova inicialização
+					if (typeof window.calendarioInstance !== 'undefined') {
+						window.calendarioInstance = null;
+					}
 				},
 				pageAfterIn: function (event, page) {
-					// Garantir que o calendário seja inicializado após a página estar visível
+					// ÚNICA inicialização controlada após página estar visível
+					console.log('📱 Página agenda totalmente carregada');
 					setTimeout(() => {
-						if (typeof initCalendario === 'function') {
-							console.log('Reinicializando calendário...');
-							initCalendario();
-						} else if (typeof window.initCalendario === 'function') {
-							console.log('Reinicializando calendário (window)...');
+						if (typeof window.initCalendario === 'function') {
+							console.log('🗓️ Inicializando calendário via pageAfterIn...');
 							window.initCalendario();
+						} else {
+							console.warn('⚠️ Função initCalendario não encontrada');
 						}
-					}, 100);
+					}, 300);
 				},
 				pageInit: function (event, page) {
 					// Remove CSS antigo da agenda se existir
@@ -477,24 +609,29 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
-					const oldInicioCss = document.getElementById('inicio-css');
-					if (oldInicioCss) {
-						oldInicioCss.parentNode.removeChild(oldInicioCss);
-					}
-
-					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
-					if (oldProAtletaPlusCss) {
-						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
-					}
-
-					const oldTreinoCss = document.getElementById('treino-css');
-					if (oldTreinoCss) {
-						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
-					}
-
-					const oldPerfilCss = document.getElementById('perfil_aluno-css');
+					const oldPerfilCss = document.getElementById('perfil-aluno-css');
 					if (oldPerfilCss) {
 						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
+					if (oldPopupSolicitacoesCss) {
+						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
+					}
+
+					const oldPopupProfCss = document.getElementById('popup-prof-css');
+					if (oldPopupProfCss) {
+						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
+					}
+
+					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
+					if (oldVerTreinosProfCss) {
+						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
+					}
+
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
 					}
 
 					const cssId = 'agenda-css';
@@ -511,30 +648,15 @@ window.app = new Framework7({
 
 					// Verificar se o script já foi carregado anteriormente
 					if (typeof window.initCalendario === 'function') {
-						console.log('Script agenda.js já existe, reinicializando...');
-						// Aguardar um pouco para garantir que o CSS foi aplicado
-						setTimeout(() => {
-							try {
-								window.initCalendario();
-							} catch (error) {
-								console.error('Erro ao reinicializar calendário:', error);
-							}
-						}, 150);
+						console.log('Script agenda.js já existe, aguardando pageAfterIn...');
+						// NÃO inicializar aqui, deixar para pageAfterIn
 					} else {
 						console.log('Carregando script agenda.js...');
 						// Carrega JavaScript da agenda com callback
 						$.getScript('js/agenda.js')
 							.done(function (script, textStatus) {
 								console.log('Script agenda.js carregado com sucesso:', textStatus);
-								// Aguardar um pouco para garantir inicialização
-								setTimeout(() => {
-									if (typeof window.initCalendario === 'function') {
-										console.log('Inicializando calendário após carregamento...');
-										window.initCalendario();
-									} else {
-										console.warn('initCalendario não encontrado após carregamento');
-									}
-								}, 200);
+								// NÃO inicializar aqui, deixar para pageAfterIn
 							})
 							.fail(function (jqxhr, settings, exception) {
 								console.error('Erro ao carregar agenda.js:', exception);
@@ -542,11 +664,16 @@ window.app = new Framework7({
 					}
 				},
 				pageBeforeRemove: function (event, page) {
-					console.log('Agenda: pageBeforeRemove');
+					console.log('Agenda: pageBeforeRemove - Limpando recursos...');
 
-					// Limpar instância do calendário
+					// Limpar completamente todas as instâncias e flags
 					if (typeof window.calendarioInstance !== 'undefined') {
 						window.calendarioInstance = null;
+					}
+					
+					// Limpar flag de inicialização (se existir globalmente)
+					if (typeof window.isInitializing !== 'undefined') {
+						window.isInitializing = false;
 					}
 
 					// Remover apenas o CSS da agenda
@@ -571,6 +698,16 @@ window.app = new Framework7({
 					const oldIndexCss = document.getElementById('index-prof-css');
 					if (oldIndexCss) {
 						oldIndexCss.parentNode.removeChild(oldIndexCss);
+					}
+
+					const oldAgendaAlunoCss = document.getElementById('agenda-aluno-css');
+					if (oldAgendaAlunoCss) {
+						oldAgendaAlunoCss.parentNode.removeChild(oldAgendaAlunoCss);
+					}
+
+					const oldPerfilCss = document.getElementById('perfil-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
 					}
 
 
@@ -598,8 +735,7 @@ window.app = new Framework7({
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove o CSS da agenda_prof ao sair da página
-					const css = document.getElementById('agenda-prof-css');
-					if (css) css.remove();
+
 				},
 			}
 		},
@@ -608,21 +744,16 @@ window.app = new Framework7({
 			url: 'link5.html',
 			animate: false,
 			on: {
+				pageBeforeIn: function (event, page) {
+					// Reaplica o CSS da página
+					
+				},
 				pageInit: function (event, page) {
-					// Adiciona CSS da página
-					const oldInicioCss = document.getElementById('inicio-css');
-					if (oldInicioCss) {
-						oldInicioCss.parentNode.removeChild(oldInicioCss);
-					}
 
-					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
-					if (oldProAtletaPlusCss) {
-						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
-					}
-
-					const oldTreinoCss = document.getElementById('treino-css');
-					if (oldTreinoCss) {
-						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
+					// Remove CSS antigo da agenda se existir
+					const oldConfigCss = document.getElementById('config-css');
+					if (oldConfigCss) {
+						oldConfigCss.parentNode.removeChild(oldConfigCss);
 					}
 
 					const oldAgendaCss = document.getElementById('agenda-css');
@@ -630,9 +761,37 @@ window.app = new Framework7({
 						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
 					}
 
+					const oldTreinosCss = document.getElementById('treinos-aluno-css');
+					if (oldTreinosCss) {
+						oldTreinosCss.parentNode.removeChild(oldTreinosCss);
+					}
 
+					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
+					if (oldProAtletaPlusCss) {
+						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
+					}
 
-					const cssId = 'perfil_aluno-css';
+					const oldIndexCss = document.getElementById('index-css');
+					if (oldIndexCss) {
+						oldIndexCss.parentNode.removeChild(oldIndexCss);
+					}
+
+					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
+					if (oldChatAlunoCss) {
+						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
+					}
+
+					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
+					if (oldVerTreinosProfCss) {
+						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
+					}
+
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
+					}
+
+					const cssId = 'perfil-aluno-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
 						const link = document.createElement('link');
@@ -644,8 +803,7 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
-					// Adiciona CSS do Sheet Modal
-					const cssPopupId = 'popup_solicitacoes-css';
+					const cssPopupId = 'popup-solicitacoes-css';
 					if (!document.getElementById(cssPopupId)) {
 						const head = document.head;
 						const link = document.createElement('link');
@@ -657,7 +815,7 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
-					const cssPopupprof = 'popup_prof-css';
+					const cssPopupprof = 'popup-prof-css';
 					if (!document.getElementById(cssPopupprof)) {
 						const head = document.head;
 						const link = document.createElement('link');
@@ -668,6 +826,7 @@ window.app = new Framework7({
 						link.media = 'all';
 						head.appendChild(link);
 					}
+
 
 					// Scripts gerais da página
 					$.getScript('js/config.js');
@@ -704,12 +863,28 @@ window.app = new Framework7({
 							app.sheet.close(sheet2);
 						});
 					}
-
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove CSS da página e do Sheet Modal
-					const css = document.getElementById('perfil_aluno-css');
+					const css = document.getElementById('perfil-aluno-css');
 					if (css) css.remove();
+
+					const popup_profcss = document.getElementById('popup-prof-css');
+					if (popup_profcss) popup_profcss.remove();
+
+					const popup_solicitacoes_css = document.getElementById('popup-solicitacoes-css');
+					if (popup_solicitacoes_css) popup_solicitacoes_css.remove();
+
+					// Remove any other CSS that might be lingering
+					const perfilCss = document.getElementById('perfil-css');
+					if (perfilCss) perfilCss.remove();
+
+					// Clean up any inline styles that might have been added
+					document.querySelectorAll('link[href*="perfil"]').forEach(link => {
+						if (link.id && (link.id.includes('perfil') || link.id.includes('popup'))) {
+							link.remove();
+						}
+					});
 				},
 			},
 		},
@@ -733,9 +908,24 @@ window.app = new Framework7({
 					// fazer algo quando a página for inicializada
 
 					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
+					const oldAgendaProfCss = document.getElementById('agenda-css');
+					if (oldAgendaProfCss) {
+						oldAgendaProfCss.parentNode.removeChild(oldAgendaProfCss);
+					}
+
+					const oldPerfilProfCss = document.getElementById('perfil-css');
+					if (oldPerfilProfCss) {
+						oldPerfilProfCss.parentNode.removeChild(oldPerfilProfCss);
+					}
+
+					const oldTreinoProfCss = document.getElementById('treino-prof-css');
+					if (oldTreinoProfCss) {
+						oldTreinoProfCss.parentNode.removeChild(oldTreinoProfCss);
+					}
+
+					const oldIndexProfCss = document.getElementById('index-prof-css');
+					if (oldIndexProfCss) {
+						oldIndexProfCss.parentNode.removeChild(oldIndexProfCss);
 					}
 
 					const cssId = 'index-css';
@@ -862,6 +1052,11 @@ window.app = new Framework7({
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
+					const oldEscolinhasCss = document.getElementById('escolinhas-css');
+					if (oldEscolinhasCss) {
+						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
+					}
+
 					const cssId = 'esporte-escolinha-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -929,9 +1124,9 @@ window.app = new Framework7({
 					// Limpa cache se mudou o tipo de usuário
 					const currentUserType = localStorage.getItem('userType');
 					const lastUserType = localStorage.getItem('lastUserType');
-					
+
 					console.log('pageBeforeIn /prof/ - userType atual:', currentUserType, 'anterior:', lastUserType);
-					
+
 					if (currentUserType !== lastUserType) {
 						limparCacheUsuario();
 						localStorage.setItem('lastUserType', currentUserType);
@@ -984,11 +1179,12 @@ window.app = new Framework7({
 
 					$.getScript('js/index_prof.js');
 
-					
+
 
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+					
 				},
 			}
 		},
@@ -1018,6 +1214,37 @@ window.app = new Framework7({
 			on: {
 				pageBeforeIn: function (event, page) {
 					// fazer algo antes da página ser exibida
+
+					const cssId = 'perfil-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/perfil.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					const cssPopupAluno = 'popup_alunos-css';
+					if (!document.getElementById(cssPopupAluno)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssPopupAluno;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/popup_alunos.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					const css = document.getElementById('agenda-prof-css');
+					if (css) css.remove();
+
+					const cssChatProf = document.getElementById('chat-prof-css');
+					if (cssChatProf) cssChatProf.remove();
+
 				},
 				pageAfterIn: function (event, page) {
 					// fazer algo depois da página ser exibida
@@ -1047,10 +1274,13 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
+					// Inicializa os scripts necessários
 					$.getScript('js/config.js');
 					$.getScript('js/foto_prof.js');
 					$.getScript('js/solicitacao.js');
+					$.getScript('js/popup_alunos.js');
 
+					// Inicializa o Swiper
 					var swiper1 = new Swiper(".mySwiper_prof", {
 						slidesPerView: 1,
 						spaceBetween: 30,
@@ -1059,12 +1289,36 @@ window.app = new Framework7({
 							el: ".swiper-pagination",
 							clickable: true,
 						},
+						navigation: {
+							nextEl: ".swiper-button-next",
+							prevEl: ".swiper-button-prev",
+						},
 					});
+
+					// Configura o botão para abrir o Sheet Modal
+					const btnAlunos = page.el.querySelector("#btnAlunos");
+					const sheetAlunos = page.el.querySelector("#sheetAlunos");
+					const closeAlunos = sheetAlunos ? sheetAlunos.querySelector(".close-sheet2") : null;
+
+					if (btnAlunos && sheetAlunos && closeAlunos) {
+						btnAlunos.addEventListener("click", function (e) {
+							e.preventDefault();
+							app.sheet.open(sheetAlunos);
+						});
+
+						closeAlunos.addEventListener("click", function () {
+							app.sheet.close(sheetAlunos);
+						});
+					}
 
 
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
 				},
 			}
 		},
@@ -1187,9 +1441,29 @@ window.app = new Framework7({
 						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
 					}
 
-					const oldPerfilCss = document.getElementById('perfil-css');
+					const oldPerfilCss = document.getElementById('perfil-aluno-css');
 					if (oldPerfilCss) {
 						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
+					if (oldPopupSolicitacoesCss) {
+						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
+					}
+
+					const oldPopupProfCss = document.getElementById('popup-prof-css');
+					if (oldPopupProfCss) {
+						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
+					}
+
+					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
+					if (oldChatAlunoCss) {
+						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
+					}
+
+					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
+					if (oldVerTreinosProfCss) {
+						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
 					}
 
 					$.getScript('js/ver_treinos_aluno.js')
@@ -1220,6 +1494,182 @@ window.app = new Framework7({
 				}
 			}
 		},
+		{
+			path: '/agenda_aluno/',
+			url: 'agenda_aluno.html',
+			animate: false,
+			on: {
+				pageBeforeIn: function (event, page) {
+					console.log('Preparando para carregar agenda do aluno...');
+				},
+				pageAfterIn: function (event, page) {
+					// Não inicializar imediatamente, deixar o loading screen aparecer primeiro
+					console.log('Página agenda do aluno carregada, iniciando em 200ms...');
+				},
+				pageInit: function (event, page) {
+					console.log('Inicializando página agenda_aluno...');
+
+					// Remove CSS antigo se existir
+					const oldCss = document.getElementById('agenda-aluno-css');
+					if (oldCss) {
+						oldCss.parentNode.removeChild(oldCss);
+					}
+
+					const oldAgendaProfCss = document.getElementById('agenda-prof-css');
+					if (oldAgendaProfCss) {
+						oldAgendaProfCss.parentNode.removeChild(oldAgendaProfCss);
+					}
+
+					const oldAgendaCss = document.getElementById('agenda-css');
+					if (oldAgendaCss) {
+						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
+					}
+
+					// Adiciona o CSS específico da agenda do aluno
+					const cssId = 'agenda-aluno-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/agenda_aluno.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					// Aguardar CSS carregar e então carregar o JS
+					setTimeout(() => {
+						$.getScript('js/agenda_aluno.js')
+							.done(function () {
+								console.log('agenda_aluno.js carregado com sucesso');
+								
+								// Aguardar mais um pouco para garantir que tudo está pronto
+								setTimeout(() => {
+									if (typeof initAgendaAluno === 'function') {
+										console.log('Inicializando agenda do aluno...');
+										initAgendaAluno();
+									} else {
+										console.error('Função initAgendaAluno não encontrada');
+									}
+								}, 100);
+							})
+							.fail(function (jqxhr, settings, exception) {
+								console.error('Erro ao carregar agenda_aluno.js:', exception);
+								
+								// Mostrar erro de carregamento
+								const overlay = document.getElementById('loadingOverlay');
+								if (overlay) {
+									overlay.innerHTML = `
+										<div class="loading-content">
+											<div class="loading-spinner" style="color: #ff4444;">
+												<i class="ri-error-warning-line"></i>
+											</div>
+											<h3>Erro ao Carregar</h3>
+											<p>Não foi possível carregar os recursos necessários</p>
+											<button onclick="location.reload()" style="background: white; color: var(--laranja); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+												Tentar Novamente
+											</button>
+										</div>
+									`;
+								}
+							});
+					}, 200);
+				},
+				pageBeforeRemove: function (event, page) {
+					console.log('Agenda Aluno: pageBeforeRemove');
+
+					// Limpar instância
+					if (typeof window.agendaAlunoInstance !== 'undefined') {
+						window.agendaAlunoInstance = null;
+					}
+
+					// Remover CSS
+					const css = document.getElementById('agenda-aluno-css');
+					if (css) css.remove();
+				},
+			}
+		},
+		{
+			path: '/chat_aluno/',
+			url: 'chat_aluno.html',
+			animate: true,
+			on: {
+				pageBeforeIn: function (event, page) {
+					// fazer algo antes da página ser exibida
+				},
+				pageInit: function (event, page) {
+					// Adiciona o CSS da página
+
+					const css = document.getElementById('perfil_aluno-css');
+					if (css) css.remove();
+
+					const oldPerfilCss = document.getElementById('perfil-aluno-css');
+					if (oldPerfilCss) {
+						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
+					}
+
+					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
+					if (oldPopupSolicitacoesCss) {
+						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
+					}
+
+					const oldPopupProfCss = document.getElementById('popup-prof-css');
+					if (oldPopupProfCss) {
+						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
+					}
+
+					const cssChatAluno = 'chat-aluno-css';
+					if (!document.getElementById(cssChatAluno)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssChatAluno;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/chat_aluno.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					// Carrega o script da página
+					$.getScript('js/chat_aluno.js');
+				},
+				pageBeforeRemove: function (event, page) {
+					// Remove o CSS da página ao sair dela
+				},
+			}
+		},
+
+		{
+			path: '/chat_prof/',
+			url: 'chat_prof.html',
+			animate: true,
+			on: {
+				pageInit: function (event, page) {
+
+					const css = document.getElementById('perfil-css');
+					if (css) css.remove();
+
+					const cssId = 'chat-prof-css';
+					if (!document.getElementById(cssId)) {
+						const head = document.head;
+						const link = document.createElement('link');
+						link.id = cssId;
+						link.rel = 'stylesheet';
+						link.type = 'text/css';
+						link.href = 'css/chat_aluno.css';
+						link.media = 'all';
+						head.appendChild(link);
+					}
+
+					$.getScript('js/chat_prof.js');
+				},
+				pageBeforeRemove: function () {
+					const css = document.getElementById('chat-prof-css');
+					if (css) css.remove();
+				},
+			},
+		},
 	],
 
 });
@@ -1242,7 +1692,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/inicio/' });
+//var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -1264,10 +1714,10 @@ app.on('routeChange', function (route) {
 // Guarda a última rota que não seja /config/
 window.lastNonConfigRoute = '/index/';
 app.on('routeChange', function (route) {
-    // Já existem outros listeners; este só cuida da última rota útil
-    if (route.url && route.url !== '/config/' && !route.url.startsWith('http')) {
-        window.lastNonConfigRoute = route.url;
-    }
+	// Já existem outros listeners; este só cuida da última rota útil
+	if (route.url && route.url !== '/config/' && !route.url.startsWith('http')) {
+		window.lastNonConfigRoute = route.url;
+	}
 });
 
 function onDeviceReady() {
@@ -1303,6 +1753,25 @@ function onDeviceReady() {
 			mainView.router.back({ force: true });
 		}
 	}, false);
+
+	// Adicionar tratamento especial para a rota da agenda
+	app.views.main.router.on('routeChange', function (newRoute, previousRoute, router) {
+		console.log('Mudança de rota detectada:', newRoute.path);
+
+		if (newRoute.path === '/agenda/') {
+			console.log('🗓️ Navegando para agenda - preparando inicialização...');
+
+			// Aguardar um pouco para garantir que a página foi carregada
+			setTimeout(() => {
+				if (typeof window.initCalendario === 'function') {
+					console.log('🗓️ Forçando inicialização do calendário via rota...');
+					window.initCalendario();
+				} else {
+					console.warn('⚠️ Função initCalendario não encontrada');
+				}
+			}, 500);
+		}
+	});
 }
 
 function protegerRotas(route) {
@@ -1310,6 +1779,7 @@ function protegerRotas(route) {
 		'/adicionar_treino/',
 		'/agenda_prof/',
 		'/agenda/',
+		'/agenda_aluno/',
 		'/cadastro/',
 		'/config/',
 		'/escolinhas/',
@@ -1371,17 +1841,17 @@ function carregarDadosUsuarioFresh(userType) {
 				// Atualiza localStorage com dados frescos
 				localStorage.setItem('userNome', data.usuario.nome);
 				localStorage.setItem('userFoto', data.usuario.foto || 'img/user.jpg');
-				
+
 				console.log('Dados atualizados:', data.usuario.nome, data.usuario.foto);
-				
+
 				// Força atualização da UI após 100ms para garantir que elementos existam
 				setTimeout(() => {
 					const nameEl = document.getElementById('welcomeUserName');
 					const photoEl = document.getElementById('welcomeUserPhoto');
-					
+
 					if (nameEl) nameEl.textContent = data.usuario.nome;
 					if (photoEl) photoEl.src = data.usuario.foto || 'img/user.jpg';
-					
+
 					console.log('UI atualizada com dados frescos');
 				}, 100);
 			}

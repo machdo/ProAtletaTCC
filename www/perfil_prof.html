@@ -10,6 +10,7 @@
     <title>Perfil</title>
     <link rel="stylesheet" href="lib/framework7-bundle.min.css">
     <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/popup_alunos.css">
     <link rel="stylesheet" href="css/materialdesignicons.min.css">
 </head>
 
@@ -19,8 +20,18 @@
             <div data-name="perfil_prof" class="page">
 
                 <!-- Top Navbar -->
-                <div class="top-nav2">
-                    <h1 class="title-logo2">Perfil</h1>
+                <div class="top-nav">
+                    <div class="logo-titulo">
+                        <img src="img/logo_letrero.png">
+                    </div>
+                    <div class="navbar-btn">
+                        <a href="/config/" class="btn-config link">
+                            <i class="ri-settings-5-fill"></i>
+                        </a>
+                        <a href="#" class="btn-noti" datacount="1">
+                            <i class="mdi mdi-bell"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Scrollable page content -->
@@ -35,7 +46,7 @@
                         </div>
 
                         <form id="uploadFotoprofForm" enctype="multipart/form-data">
-                            <button type="submit">Trocar Foto</button>
+                            <button type="submit">Salvar Foto</button>
                         </form>
 
                         <h2>Olá, <span id="nomeProf"></span></h2>
@@ -45,21 +56,24 @@
                     <div class="divisoria"></div><br>
 
                     <!-- Bloco Buscar Aluno (mais compacto) -->
-                   <div class="swiper mySwiper_prof">
+                    <div class="swiper mySwiper_prof">
                         <div class="swiper-wrapper">
 
                             <!-- Slide 1: Buscar Aluno -->
                             <div class="swiper-slide">
                                 <div class="block buscar-aluno">
-                                    <h3>Buscar Aluno</h3>
-                                    <form id="buscarAlunoForm" action="https://proatleta.site/solicitacao.php" method="POST">
-                                        <div class="list no-hairlines-md">
+                                    <form id="buscarAlunoForm" action="https://proatleta.site/solicitacao.php"
+                                        method="POST">
+                                        <div class="list no-hairlines">
                                             <ul>
-                                                <li class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-input-wrap">
-                                                            <input type="email" id="busca_email" name="busca_email"
-                                                                placeholder="Digite o email do aluno" required>
+                                                <li>
+                                                    <h2 class="title-input">Buscar Aluno</h2>
+                                                    <div class="item-content item-input">
+                                                        <div class="item-inner">
+                                                            <div class="item-input-wrap">
+                                                                <input type="email" id="busca_email" name="busca_email"
+                                                                    placeholder="Digite o email do aluno" required>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -73,15 +87,23 @@
 
                             <!-- Slide 2: Teste -->
                             <div class="swiper-slide">
-                                <div class="block buscar-aluno">
-                                    <h3>Bloco de Teste</h3>
-                                    <p>Este é um bloco similar ao Buscar Aluno, para teste de Swiper.</p>
-                                    <button class="button button-fill">Botão de Teste</button>
+                                <div class="block botao-aluno" tabindex="0" id="btnAlunos">
+                                    <img src="img/aluno.png" alt="Aluno" />
+                                    <div class="hover-aluno">alunos</div>
                                 </div>
                             </div>
                         </div><br>
                         <div class="swiper-pagination"></div>
                     </div>
+
+                    <div class="sheet-modal" id="sheetAlunos">
+                        <div class="sheet-modal-inner">
+                            <button class="close-sheet2 button">Fechar</button>
+                            <h3>Seus Alunos</h3>
+                            <div class="container_prof" id="prof-container"></div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -93,6 +115,7 @@
     <script type="text/javascript" src="js/routes.js"></script>
     <script src="js/foto_prof.js"></script>
     <script src="js/solicitacao.js"></script>
+    <script src="js/popup_alunos.js"></script>
     <script src="cordova.js"></script>
 </body>
 

@@ -2,8 +2,8 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-if (!isset($_GET['email'])) {
-    echo json_encode(['success' => false, 'message' => 'Email não informado']);
+if (!isset($_GET['email']) && !isset($_GET['id'])) {
+    echo json_encode(['success' => false, 'message' => 'Email ou ID não informado']);
     exit;
 }
 
@@ -12,13 +12,19 @@ $usuario = "u339248760_proatleta1";
 $senha = "Vini@#07alves";
 $banco = "u339248760_proatleta";
 
-$email = $_GET['email'];
-
 // conexão com o banco (use as credenciais corretas)
 $pdo = new PDO("mysql:host=$host;dbname=$banco;charset=utf8", $usuario, $senha);
 
-$stmt = $pdo->prepare("SELECT nome, email, foto FROM usuarios WHERE email = ?");
-$stmt->execute([$email]);
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+    $stmt = $pdo->prepare("SELECT id, nome, email, foto FROM usuarios WHERE email = ?");
+    $stmt->execute([$email]);
+} else {
+    $id = intval($_GET['id']);
+    $stmt = $pdo->prepare("SELECT id, nome, email, foto FROM usuarios WHERE id = ?");
+    $stmt->execute([$id]);
+}
+
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($usuario) {

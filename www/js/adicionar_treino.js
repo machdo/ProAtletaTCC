@@ -45,52 +45,62 @@
                         
                         <div class="list no-hairlines-md">
                             <ul>
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Nome do Exercício</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="exercicio_nome_${count}" 
-                                                   placeholder="Ex: Supino Reto" required>
+                                <li>
+                                    <h2 class="title-input">Nome do Exercício</h2>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="exercicio_nome_${count}" 
+                                                    placeholder="Ex: Supino Reto" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                                 
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Séries</div>
-                                        <div class="item-input-wrap">
-                                            <input type="number" name="exercicio_series_${count}" 
-                                                   placeholder="Ex: 3" min="1" required>
+                                <li>
+                                    <h2 class="title-input">Séries</h2>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-input-wrap">
+                                                <input type="number" name="exercicio_series_${count}" 
+                                                       placeholder="Ex: 3" min="1" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                                 
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Repetições</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="exercicio_repeticoes_${count}" 
+                                <li>
+                                    <h2 class="title-input">Repetições</h2>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="exercicio_repeticoes_${count}" 
                                                    placeholder="Ex: 10-12" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                                 
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Descanso (segundos)</div>
-                                        <div class="item-input-wrap">
-                                            <input type="number" name="exercicio_descanso_${count}" 
-                                                   placeholder="Ex: 60" min="0">
+                                <li>
+                                    <h2 class="title-input">Descanso (segundos)</h2>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-input-wrap">
+                                                <input type="number" name="exercicio_descanso_${count}" 
+                                                       placeholder="Ex: 60" min="0">
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
                                 
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Observações</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="exercicio_obs_${count}" 
-                                                   placeholder="Ex: Manter postura reta">
+                                <li>
+                                    <h2 class="title-input">Observações</h2>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="exercicio_obs_${count}" 
+                                                       placeholder="Ex: Manter postura reta">
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
