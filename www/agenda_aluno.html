@@ -95,7 +95,63 @@
                         </div>
                     </div>
 
+                    <!-- Formulário para Adicionar Evento -->
+                    <div class="form-adicionar-evento">
+                        <div class="form-header">
+                            <h3>
+                                <i class="ri-calendar-event-line"></i>
+                                Adicionar Evento
+                            </h3>
+                            <div class="data-selecionada" id="dataSelecionada">
+                                Dia selecionado
+                            </div>
+                        </div>
+
+                        <form id="formEvento">
+                            <div class="form-group">
+                                <label for="eventoTitulo">Título do Evento *</label>
+                                <input type="text" id="eventoTitulo" class="form-input" 
+                                       placeholder="Ex: Treino de força, Avaliação física..." required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="eventoHorarioInicio">Horário Início *</label>
+                                    <input type="time" id="eventoHorarioInicio" class="form-input" required>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="eventoHorarioFim">Horário Fim *</label>
+                                    <input type="time" id="eventoHorarioFim" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventoLocal">Local *</label>
+                                <input type="text" id="eventoLocal" class="form-input" 
+                                       placeholder="Ex: Academia Central, Campo de futebol..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventoDescricao">Descrição (opcional)</label>
+                                <textarea id="eventoDescricao" class="form-input form-textarea" 
+                                          placeholder="Observações adicionais sobre o evento..."></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn-limpar" onclick="limparFormulario()">
+                                    <i class="ri-refresh-line"></i>
+                                    Limpar
+                                </button>
+                                <button type="submit" class="btn-salvar" id="btnSalvar">
+                                    <span id="btnTexto">
+                                        <i class="ri-save-line"></i>
+                                        Salvar Evento
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
