@@ -1801,7 +1801,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-//var mainView = app.views.create('.view-main', { url: '/inicio/' });
+var mainView = app.views.create('.view-main', { url: '/inicio/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {

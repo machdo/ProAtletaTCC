@@ -28,12 +28,13 @@ class CalendarioAluno {
             'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'
         ];
 
-        // Dados do aluno logado
+        // Dados do aluno logado - USAR ID DO ALUNO
+        this.alunoId = localStorage.getItem('userId') || ''; // Usar userId como alunoId
         this.emailAluno = localStorage.getItem('userEmail') || '';
         this.nomeAluno = localStorage.getItem('userNome') || 'Aluno';
         
-        // NÃO DEPENDER MAIS DO PROFESSOR_ID - buscar todos os eventos do aluno
         console.log('Dados do aluno logado:', {
+            alunoId: this.alunoId,
             email: this.emailAluno,
             nome: this.nomeAluno
         });
@@ -99,8 +100,8 @@ class CalendarioAluno {
         console.log('Inicializando calendário do aluno...');
 
         // Verificar se dados necessários existem
-        if (!this.emailAluno) {
-            console.error('Email do aluno não encontrado');
+        if (!this.alunoId) {
+            console.error('ID do aluno não encontrado');
             this.mostrarErroCarregamento('Dados do usuário não encontrados. Faça login novamente.');
             return;
         }
@@ -327,8 +328,8 @@ class CalendarioAluno {
     }
 
     carregarEventosAluno() {
-        if (!this.emailAluno) {
-            console.warn('Email do aluno não encontrado para carregar eventos');
+        if (!this.alunoId) {
+            console.warn('ID do aluno não encontrado para carregar eventos');
             this.loadingSteps.eventos = true;
             this.verificarCarregamentoCompleto();
             return;
@@ -344,10 +345,10 @@ class CalendarioAluno {
             return;
         }
 
-        console.log('Carregando TODOS os eventos para:', this.emailAluno, 'mês:', mesChave);
+        console.log('Carregando TODOS os eventos para aluno ID:', this.alunoId, 'mês:', mesChave);
 
-        // BUSCAR TODOS OS EVENTOS DO ALUNO - SEM FILTRO DE PROFESSOR
-        const url = `https://proatleta.site/get_eventos_aluno.php?aluno_email=${encodeURIComponent(this.emailAluno)}&mes=${mesChave}`;
+        // BUSCAR TODOS OS EVENTOS DO ALUNO - USANDO ALUNO_ID
+        const url = `https://proatleta.site/get_eventos_aluno.php?aluno_id=${encodeURIComponent(this.alunoId)}&mes=${mesChave}`;
 
         console.log('URL da requisição:', url);
 
@@ -415,10 +416,8 @@ class CalendarioAluno {
             container.innerHTML = `
                 <div class="sem-eventos">
                     <i class="ri-calendar-line"></i>
-                    <p>Você ainda não possui eventos agendados.</p>
-                    <p style="font-size: 14px; margin-top: 10px; opacity: 0.7;">
-                        Seus treinos e atividades aparecerão aqui quando forem agendados pelo seu professor.
-                    </p>
+                    <h3>Nenhum evento hoje</h3>
+                    <p>Você não possui eventos agendados para este dia.</p>
                 </div>
             `;
         }
@@ -437,7 +436,8 @@ class CalendarioAluno {
             container.innerHTML = `
                 <div class="sem-eventos">
                     <i class="ri-calendar-line"></i>
-                    Nenhum evento agendado para este dia
+                    <h3>Nenhum evento hoje</h3>
+                    <p>Você não possui eventos agendados para este dia.</p>
                 </div>
             `;
             return;
