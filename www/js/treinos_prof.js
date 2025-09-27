@@ -253,7 +253,22 @@
             // Verificar se está na página correta
             const listaAlunos = document.getElementById('listaAlunos');
             if (listaAlunos) {
-                sistema.inicializar();
+                // Forçar recarregamento do CSS se necessário
+                setTimeout(() => {
+                    const cssElement = document.getElementById('treinos-prof-css');
+                    if (!cssElement) {
+                        const head = document.head;
+                        const link = document.createElement('link');
+                        link.id = 'treinos-prof-css';
+                        link.rel = 'stylesheet';
+                        link.type = 'text/css';
+                        link.href = 'css/treinos_prof.css?v=' + Date.now();
+                        link.media = 'all';
+                        head.appendChild(link);
+                        console.log('CSS treinos_prof recarregado via reinicializar');
+                    }
+                    sistema.inicializar();
+                }, 100);
             }
         },
 

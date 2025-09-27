@@ -34,7 +34,7 @@ if (empty($email_aluno)) {
 }
 
 // Busca o ID do aluno pelo email
-$stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ? AND categoria = 'aluno'");
+$stmt = $conn->prepare("SELECT id, nome, email, foto FROM usuarios WHERE email = ? AND categoria = 'aluno'");
 $stmt->bind_param("s", $email_aluno);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -93,7 +93,10 @@ while ($row = $result->fetch_assoc()) {
             'repeticoes' => $ex['repeticoes'],
             'descanso' => $ex['descanso'],
             'observacoes' => $ex['observacoes'],
-            'ordem' => $ex['ordem']
+            'video_arquivo' => $ex['video_arquivo'],
+            'ordem' => $ex['ordem'],
+            'concluido' => (bool)$ex['concluido'],
+            'concluido_em' => $ex['concluido_em']
         ];
     }
     
@@ -114,6 +117,12 @@ while ($row = $result->fetch_assoc()) {
 
 echo json_encode([
     "success" => true,
+    "aluno" => [
+        "id" => $aluno['id'],
+        "nome" => $aluno['nome'],
+        "email" => $aluno['email'],
+        "foto" => $aluno['foto']
+    ],
     "treinos" => $treinos,
     "total" => count($treinos)
 ]);

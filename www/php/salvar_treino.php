@@ -6,7 +6,7 @@ ob_start();
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8');
 
 // Responde a preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -40,7 +40,29 @@ $nome_treino = $_POST['nome_treino'] ?? null;
 $tipo_treino = $_POST['tipo_treino'] ?? null;
 $data_treino = $_POST['data_treino'] ?? null;
 $observacoes = $_POST['observacoes'] ?? '';
-$exercicios = isset($_POST['exercicios']) ? json_decode($_POST['exercicios'], true) : [];
+
+// Processar exercícios do JSON
+$exercicios = [];
+if (isset($_POST['exercicios'])) {
+    $exerciciosJson = $_POST['exercicios'];
+    $exerciciosArray = json_decode($exerciciosJson, true);
+    
+    if (json_last_error() === JSON_ERROR_NONE && is_array($exerciciosArray)) {
+        foreach ($exerciciosArray as $ordem => $exercicio) {
+            if (!empty($exercicio['nome']) && !empty($exercicio['series']) && !empty($exercicio['repeticoes'])) {
+                $exercicios[] = [
+                    'nome' => trim($exercicio['nome']),
+                    'series' => intval($exercicio['series']),
+                    'repeticoes' => trim($exercicio['repeticoes']),
+                    'descanso' => intval($exercicio['descanso'] ?? 60),
+                    'observacoes' => trim($exercicio['observacoes'] ?? ''),
+                    'video_arquivo' => trim($exercicio['video_arquivo'] ?? ''),
+                    'ordem' => intval($ordem)
+                ];
+            }
+        }
+    }
+}
 
 // Valida parâmetros obrigatórios
 if (!$professor_id || !$email_aluno || !$nome_treino) {
@@ -88,7 +110,7 @@ $conn->begin_transaction();
 
 try {
     // Insere o treino na tabela
-    $stmt = $conn->prepare("INSERT INTO treinos (professor_id, aluno_id, nome_treino, tipo_treino, data_treino, observacoes, criado_em) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    $stmt = $conn->prepare("INSERT INTO treinos (professor_id, aluno_id, nome_treino, tipo_treino, data_treino, observacoes, criado_em, atualizado_em, ativo) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 1)");
     $stmt->bind_param("iissss", $professor_id, $aluno_id, $nome_treino, $tipo_treino, $data_treino, $observacoes);
     
     if (!$stmt->execute()) {
@@ -99,22 +121,44 @@ try {
     
     // Insere os exercícios
     if (!empty($exercicios)) {
-        $stmt = $conn->prepare("INSERT INTO exercicios (treino_id, nome, series, repeticoes, descanso, observacoes, ordem) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        
-        foreach ($exercicios as $index => $exercicio) {
-            $ordem = $index + 1;
-            $nome_ex = $exercicio['nome'] ?? '';
-            $series = $exercicio['series'] ?? 0;
-            $repeticoes = $exercicio['repeticoes'] ?? '';
-            $descanso = $exercicio['descanso'] ?? 60;
-            $obs_ex = $exercicio['observacoes'] ?? '';
+        foreach ($exercicios as $exercicio) {
+            $stmt_exercicio = $conn->prepare("
+                INSERT INTO exercicios (treino_id, nome, series, repeticoes, descanso, observacoes, video_arquivo, ordem) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
             
-            $stmt->bind_param("isisisi", $treino_id, $nome_ex, $series, $repeticoes, $descanso, $obs_ex, $ordem);
+            $nome_exercicio = $exercicio['nome'];
+            $series = $exercicio['series'];
+            $repeticoes = $exercicio['repeticoes'];
+            $descanso = $exercicio['descanso'];
+            $observacoes_exercicio = $exercicio['observacoes'];
+            $video_arquivo = !empty($exercicio['video_arquivo']) ? $exercicio['video_arquivo'] : NULL;
+            $ordem_exercicio = $exercicio['ordem'];
             
-            if (!$stmt->execute()) {
-                throw new Exception("Erro ao salvar exercício: " . $stmt->error);
+            // Validar URL do vídeo se fornecida
+            if ($video_arquivo && !filter_var($video_arquivo, FILTER_VALIDATE_URL)) {
+                $video_arquivo = NULL; // Remove URL inválida
             }
+            
+            $stmt_exercicio->bind_param("ississsi", 
+                $treino_id, 
+                $nome_exercicio, 
+                $series, 
+                $repeticoes, 
+                $descanso, 
+                $observacoes_exercicio, 
+                $video_arquivo, 
+                $ordem_exercicio
+            );
+            
+            if (!$stmt_exercicio->execute()) {
+                throw new Exception("Erro ao inserir exercício: " . $stmt_exercicio->error);
+            }
+            
+            $stmt_exercicio->close();
         }
+    } else {
+        throw new Exception("Pelo menos um exercício é obrigatório");
     }
     
     // Confirma a transação

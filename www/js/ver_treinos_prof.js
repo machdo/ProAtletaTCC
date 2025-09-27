@@ -94,6 +94,7 @@
                                 <span class="tipo-badge ${tipoClass}">${treino.tipo_treino || 'Geral'}</span>
                                 <span><i class="ri-calendar-line"></i> ${dataFormatada}</span>
                                 <span><i class="ri-file-list-line"></i> ${treino.exercicios ? treino.exercicios.length : 0} exercícios</span>
+                                ${treino.exercicios ? `<span><i class="ri-checkbox-circle-line"></i> ${treino.exercicios.filter(ex => ex.concluido).length} concluídos</span>` : ''}
                             </div>
                         </div>
                         
@@ -105,8 +106,16 @@
                         
                         <div class="exercicios-container" id="exercicios-${index}">
                             ${treino.exercicios ? treino.exercicios.map(ex => `
-                                <div class="exercicio-item">
-                                    <div class="exercicio-nome">${ex.ordem}. ${ex.nome}</div>
+                                <div class="exercicio-item ${ex.concluido ? 'concluido' : ''}" data-exercicio-id="${ex.id}">
+                                    <div class="exercicio-header">
+                                        <label class="exercicio-checkbox">
+                                            <input type="checkbox" 
+                                                   ${ex.concluido ? 'checked' : ''} 
+                                                   onchange="window.SistemaVerTreinosProfessor.actions.marcarExercicio(${ex.id}, this.checked)">
+                                            <span class="checkbox-custom"></span>
+                                        </label>
+                                        <div class="exercicio-nome">${ex.ordem}. ${ex.nome}</div>
+                                    </div>
                                     <div class="exercicio-details">
                                         <span class="exercicio-detail">
                                             <i class="ri-repeat-line"></i> ${ex.series} séries
@@ -118,7 +127,20 @@
                                             <i class="ri-timer-line"></i> ${ex.descanso}s
                                         </span>
                                     </div>
+                                    ${ex.concluido && ex.concluido_em ? `
+                                        <div class="exercicio-concluido-info">
+                                            ✓ Concluído em ${new Date(ex.concluido_em).toLocaleString('pt-BR')}
+                                        </div>
+                                    ` : ''}
                                     ${ex.observacoes ? `<div class="exercicio-obs">${ex.observacoes}</div>` : ''}
+                                    ${ex.video_arquivo ? `
+                                        <div class="exercicio-video">
+                                            <video controls width="100%" height="200" preload="metadata">
+                                                <source src="${ex.video_arquivo}" type="video/mp4">
+                                                Seu navegador não suporta a reprodução de vídeos.
+                                            </video>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('') : '<div class="exercicio-item">Nenhum exercício encontrado</div>'}
                         </div>
@@ -245,7 +267,186 @@
                     });
                     searchInput.setAttribute('data-listener-added', 'true');
                 }
+            },
+
+            marcarExercicio: (exercicioId, concluido) => {
+                const sistema = window.SistemaVerTreinosProfessor;
+                const userEmail = localStorage.getItem('userEmail');
+                
+                if (!userEmail) {
+                    console.error('Email do usuário não encontrado');
+                    if (typeof app !== 'undefined') {
+                        app.toast.create({
+                            text: 'Email do usuário não encontrado',
+                            position: 'bottom',
+                            closeTimeout: 3000
+                        }).open();
+                    }
+                    return;
+                }
+
+                // Encontrar o checkbox para mostrar loading
+                const checkbox = document.querySelector(`input[onchange*="${exercicioId}"]`);
+                const checkboxContainer = checkbox?.parentElement;
+                
+                if (checkboxContainer) {
+                    checkboxContainer.classList.add('loading');
+                }
+
+                const payload = {
+                    exercicio_id: exercicioId,
+                    concluido: concluido ? 1 : 0,
+                    aluno_email: userEmail
+                };
+
+                console.log('Enviando dados:', payload);
+
+                fetch('https://proatleta.site/marcar_exercicio_concluido.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    console.log('Status da resposta:', response.status);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return response.text(); // Primeiro pegar como texto para debug
+                })
+                .then(responseText => {
+                    console.log('Resposta do servidor (texto):', responseText);
+                    
+                    let data;
+                    try {
+                        data = JSON.parse(responseText);
+                    } catch (e) {
+                        console.error('Erro ao fazer parse do JSON:', e);
+                        console.error('Resposta recebida:', responseText);
+                        throw new Error('Resposta inválida do servidor');
+                    }
+                    
+                    console.log('Dados parseados:', data);
+                    
+                    if (data.success) {
+                        // Atualizar o estado no objeto de dados
+                        sistema.config.treinosData.forEach(treino => {
+                            if (treino.exercicios) {
+                                const exercicio = treino.exercicios.find(ex => ex.id === exercicioId);
+                                if (exercicio) {
+                                    exercicio.concluido = concluido;
+                                    exercicio.concluido_em = data.concluido_em;
+                                }
+                            }
+                        });
+
+                        // Atualizar visualmente
+                        const exercicioItem = document.querySelector(`[data-exercicio-id="${exercicioId}"]`);
+                        if (exercicioItem) {
+                            if (concluido) {
+                                exercicioItem.classList.add('concluido');
+                                
+                                // Adicionar info de conclusão se não existir
+                                let infoElement = exercicioItem.querySelector('.exercicio-concluido-info');
+                                if (!infoElement && data.concluido_em) {
+                                    const detailsElement = exercicioItem.querySelector('.exercicio-details');
+                                    const infoHtml = `
+                                        <div class="exercicio-concluido-info">
+                                            ✓ Concluído em ${new Date(data.concluido_em).toLocaleString('pt-BR')}
+                                        </div>
+                                    `;
+                                    detailsElement.insertAdjacentHTML('afterend', infoHtml);
+                                }
+                            } else {
+                                exercicioItem.classList.remove('concluido');
+                                // Remover info de conclusão
+                                const infoElement = exercicioItem.querySelector('.exercicio-concluido-info');
+                                if (infoElement) {
+                                    infoElement.remove();
+                                }
+                            }
+                        }
+
+                        // Atualizar contador de exercícios concluídos
+                        sistema.actions.atualizarContadores();
+                        
+                        // Mostrar feedback de sucesso
+                        if (typeof app !== 'undefined') {
+                            app.toast.create({
+                                text: data.message,
+                                position: 'bottom',
+                                closeTimeout: 2000
+                            }).open();
+                        }
+                    } else {
+                        console.error('Erro retornado pela API:', data.message);
+                        
+                        // Reverter checkbox em caso de erro
+                        if (checkbox) {
+                            checkbox.checked = !concluido;
+                        }
+                        
+                        // Mostrar erro ao usuário
+                        if (typeof app !== 'undefined') {
+                            app.toast.create({
+                                text: data.message || 'Erro ao marcar exercício',
+                                position: 'bottom',
+                                closeTimeout: 3000
+                            }).open();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    
+                    // Reverter checkbox em caso de erro
+                    if (checkbox) {
+                        checkbox.checked = !concluido;
+                    }
+                    
+                    // Mostrar erro ao usuário
+                    let errorMessage = 'Erro ao conectar com o servidor';
+                    if (error.message) {
+                        errorMessage = error.message;
+                    }
+                    
+                    if (typeof app !== 'undefined') {
+                        app.toast.create({
+                            text: errorMessage,
+                            position: 'bottom',
+                            closeTimeout: 4000
+                        }).open();
+                    }
+                })
+                .finally(() => {
+                    // Remover loading
+                    if (checkboxContainer) {
+                        checkboxContainer.classList.remove('loading');
+                    }
+                });
+            },
+
+            atualizarContadores: () => {
+                // Atualizar contadores nos cards de treino
+                document.querySelectorAll('.treino-card').forEach((card, index) => {
+                    const treino = window.SistemaVerTreinosProfessor.config.treinosFiltrados[index];
+                    if (treino && treino.exercicios) {
+                        const concluidos = treino.exercicios.filter(ex => ex.concluido).length;
+                        const total = treino.exercicios.length;
+                        const metaElement = card.querySelector('.treino-meta');
+                        
+                        // Atualizar contador existente
+                        const contadorExistente = metaElement.querySelector('span:last-child');
+                        if (contadorExistente && contadorExistente.innerHTML.includes('concluídos')) {
+                            contadorExistente.innerHTML = `<i class="ri-checkbox-circle-line"></i> ${concluidos} concluídos`;
+                        }
+                    }
+                });
             }
+
         },
 
         inicializar: () => {

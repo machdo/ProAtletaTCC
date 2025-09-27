@@ -1,6 +1,57 @@
 //INICIALIZAÇÃO DO F7 QUANDO DISPOSITIVO ESTÁ PRONTO
 document.addEventListener('deviceready', onDeviceReady, false);
 
+// Navigation history tracker
+window.navigationHistory = [];
+window.maxHistorySize = 10;
+
+function addToHistory(route) {
+	if (route && route !== window.navigationHistory[window.navigationHistory.length - 1]) {
+		window.navigationHistory.push(route);
+		if (window.navigationHistory.length > window.maxHistorySize) {
+			window.navigationHistory.shift();
+		}
+	}
+}
+
+function getPreviousRoute() {
+	// Remove current route if it's the last in history
+	if (window.navigationHistory.length > 1) {
+		return window.navigationHistory[window.navigationHistory.length - 2];
+	}
+	return '/index/'; // Default fallback
+}
+
+function handleUniversalBackButton(e) {
+	const currentRoute = mainView.router.currentRoute.path;
+	
+	// Special handling for main pages
+	if (currentRoute === '/index/' || currentRoute === '/prof/') {
+		e.preventDefault();
+		app.dialog.create({
+			title: 'Sair do ProAtleta',
+			text: 'Quer mesmo sair do ProAtleta?',
+			buttons: [
+				{
+					text: 'Não',
+					close: true
+				},
+				{
+					text: 'Sim',
+					onClick: function () {
+						navigator.app.exitApp();
+					}
+				}
+			]
+		}).open();
+	} else {
+		e.preventDefault();
+		const previousRoute = getPreviousRoute();
+		console.log('Going back from', currentRoute, 'to', previousRoute);
+		mainView.router.navigate(previousRoute, { force: true });
+	}
+}
+
 function onDeviceReady() {
 	let initialUrl = '/inicio/';
 	if (localStorage.getItem('loggedIn') === 'true') {
@@ -9,31 +60,11 @@ function onDeviceReady() {
 
 	window.mainView = app.views.create('.view-main', { url: initialUrl });
 
-	document.addEventListener("backbutton", function (e) {
-		if (mainView.router.currentRoute.path === '/index/') {
-			e.preventDefault();
-			app.dialog.create({
-				title: 'Sair do ProAtleta',
-				text: 'Quer mesmo sair do ProAtleta?',
-				buttons: [
-					{
-						text: 'Não',
-						close: true
-					},
-					{
-						text: 'Sim',
-						onClick: function () {
-							navigator.app.exitApp();
-						}
-					}
-				]
-			}).open();
+	// Remove this duplicate line - the universal handler is already added in each page's pageInit
+	// document.addEventListener("backbutton", handleUniversalBackButton, false);
 
-		} else {
-			e.preventDefault();
-			mainView.router.back({ force: true });
-		}
-	}, false);
+	// Remove this duplicate deviceready listener
+	// document.addEventListener("deviceready", onDeviceReady, false);
 
 	// Adicionar tratamento especial para a rota da agenda
 	app.views.main.router.on('routeChange', function (newRoute, previousRoute, router) {
@@ -117,9 +148,21 @@ window.app = new Framework7({
 						link.media = 'all';
 						head.appendChild(link);
 					}
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 
 					const css = document.getElementById('inicio-css');
 					if (css) css.remove();
@@ -190,11 +233,20 @@ window.app = new Framework7({
 
 					$.getScript('js/login.js');
 
-
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
 
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -239,10 +291,22 @@ window.app = new Framework7({
 
 					$.getScript('js/cadastro.js')
 					$.getScript('js/mascara_cadastro.js')
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 
 					removeCSS('css/cadastro.css');
 				},
@@ -272,69 +336,30 @@ window.app = new Framework7({
 					setTimeout(() => carregarDadosUsuarioFresh('aluno'), 200);
 				},
 				pageInit: function (event, page) {
-					// fazer algo quando a página for inicializada
 
-					// Remove CSS antigo da agenda se existir
-
-					const oldLoginCss = document.getElementById('login-css');
-					if (oldLoginCss) {
-						oldLoginCss.parentNode.removeChild(oldLoginCss);
-					}
-
-					const oldCadastroCss = document.getElementById('cadastro-css');
-					if (oldCadastroCss) {
-						oldCadastroCss.parentNode.removeChild(oldCadastroCss);
-					}
-
-					const oldTreinoCss = document.getElementById('treino-css');
-					if (oldTreinoCss) {
-						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
-					}
-
-					const oldAgendaCss = document.getElementById('agenda-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
-
-					const oldPerfilCss = document.getElementById('perfil-aluno-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
-
-					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
-					if (oldPopupSolicitacoesCss) {
-						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
-					}
-
-					const oldPopupProfCss = document.getElementById('popup-prof-css');
-					if (oldPopupProfCss) {
-						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
-					}
-
-					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
-					if (oldProAtletaPlusCss) {
-						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
-					}
-
-					const oldConfigCss = document.getElementById('config-css');
-					if (oldConfigCss) {
-						oldConfigCss.parentNode.removeChild(oldConfigCss);
-					}
-
-					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
-					if (oldChatAlunoCss) {
-						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
-					}
-
-					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
-					if (oldVerTreinosProfCss) {
-						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
-					}
-
-					const oldEscolinhasCss = document.getElementById('escolinhas-css');
-					if (oldEscolinhasCss) {
-						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
-					}
+					const cssToRemove = [
+						'login-css',
+						'cadastro-css',
+						'treino-css',
+						'agenda-css',
+						'perfil-aluno-css',
+						'popup-solicitacoes-css',
+						'popup-prof-css',
+						'proatleta-plus-css',
+						'popup-prof-css',
+						'config-css',
+						'chat-aluno-css',
+						'ver-treinos-prof-css',
+						'escolinhas-css',
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'index-css';
 					if (!document.getElementById(cssId)) {
@@ -381,9 +406,18 @@ window.app = new Framework7({
 						}
 					});
 
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -399,57 +433,27 @@ window.app = new Framework7({
 					// fazer algo depois da página ser exibida
 				},
 				pageInit: function (event, page) {
-					// fazer algo quando a página for inicializada
 
-					const oldInicioCss = document.getElementById('inicio-css');
-					if (oldInicioCss) {
-						oldInicioCss.parentNode.removeChild(oldInicioCss);
-					}
-
-					const oldTreinoCss = document.getElementById('treino-css');
-					if (oldTreinoCss) {
-						oldTreinoCss.parentNode.removeChild(oldTreinoCss);
-					}
-
-					const oldAgendaCss = document.getElementById('agenda-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
-
-					const oldPerfilCss = document.getElementById('perfil-aluno-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
-
-					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
-					if (oldPopupSolicitacoesCss) {
-						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
-					}
-
-					const oldPopupProfCss = document.getElementById('popup-prof-css');
-					if (oldPopupProfCss) {
-						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
-					}
-
-					const oldConfigCss = document.getElementById('config-css');
-					if (oldConfigCss) {
-						oldConfigCss.parentNode.removeChild(oldConfigCss);
-					}
-
-					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
-					if (oldChatAlunoCss) {
-						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
-					}
-
-					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
-					if (oldVerTreinosProfCss) {
-						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
-					}
-
-					const oldEscolinhasCss = document.getElementById('escolinhas-css');
-					if (oldEscolinhasCss) {
-						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
-					}
+					const cssToRemove = [
+						'inicio-css',
+						'treino-css',
+						'agenda-css',
+						'perfil-aluno-css',
+						'config-css',
+						'escolinhas-css',
+						'chat-aluno-css',
+						'popup-solicitacoes-css',
+						'popup-prof-css',
+						'ver-treinos-prof-css',
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'proatleta-plus-css';
 					if (!document.getElementById(cssId)) {
@@ -463,9 +467,18 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -481,36 +494,27 @@ window.app = new Framework7({
 					// fazer algo depois da página ser exibida
 				},
 				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldInicioCss = document.getElementById('inicio-css');
-					if (oldInicioCss) {
-						oldInicioCss.parentNode.removeChild(oldInicioCss);
-					}
 
-					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
-					if (oldProAtletaPlusCss) {
-						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
-					}
-
-					const oldAgendaCss = document.getElementById('agenda-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
-
-					const oldPerfilCss = document.getElementById('perfil_aluno-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
-
-					const oldConfigCss = document.getElementById('config-css');
-					if (oldConfigCss) {
-						oldConfigCss.parentNode.removeChild(oldConfigCss);
-					}
-
-					const oldEscolinhasCss = document.getElementById('escolinhas-css');
-					if (oldEscolinhasCss) {
-						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
-					}
+					const cssToRemove = [
+						'inicio-css',
+						'proatleta-plus-css',
+						'agenda-css',
+						'perfil-aluno-css',
+						'config-css',
+						'escolinhas-css',
+						'chat-aluno-css',
+						'popup-solicitacoes-css',
+						'popup-prof-css',
+						'ver-treinos-prof-css',
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'treinos-aluno-css';
 					if (!document.getElementById(cssId)) {
@@ -526,9 +530,18 @@ window.app = new Framework7({
 
 					$.getScript('js/treinos_aluno.js');
 
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// Remove o CSS da página sport-treino
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -572,7 +585,10 @@ window.app = new Framework7({
 					$.getScript('js/ver_treinos_prof.js');
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -603,36 +619,25 @@ window.app = new Framework7({
 					}, 300);
 				},
 				pageInit: function (event, page) {
-					// Remove CSS antigo da agenda se existir
-					const oldCss = document.getElementById('agenda-css');
-					if (oldCss) {
-						oldCss.parentNode.removeChild(oldCss);
-					}
 
-					const oldPerfilCss = document.getElementById('perfil-aluno-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
-
-					const oldPopupSolicitacoesCss = document.getElementById('popup-solicitacoes-css');
-					if (oldPopupSolicitacoesCss) {
-						oldPopupSolicitacoesCss.parentNode.removeChild(oldPopupSolicitacoesCss);
-					}
-
-					const oldPopupProfCss = document.getElementById('popup-prof-css');
-					if (oldPopupProfCss) {
-						oldPopupProfCss.parentNode.removeChild(oldPopupProfCss);
-					}
-
-					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
-					if (oldVerTreinosProfCss) {
-						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
-					}
-
-					const oldEscolinhasCss = document.getElementById('escolinhas-css');
-					if (oldEscolinhasCss) {
-						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
-					}
+					const cssToRemove = [
+						'config-css',
+						'agenda-css',
+						'perfil-aluno-css',
+						'popup-solicitacoes-css',
+						'popup-prof-css',
+						'popup-prof-css',
+						'ver-treinos-prof-css',
+						'escolinhas-css',
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'agenda-css';
 					if (!document.getElementById(cssId)) {
@@ -662,6 +667,13 @@ window.app = new Framework7({
 								console.error('Erro ao carregar agenda.js:', exception);
 							});
 					}
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					console.log('Agenda: pageBeforeRemove - Limpando recursos...');
@@ -680,6 +692,11 @@ window.app = new Framework7({
 					const agendaCss = document.getElementById('agenda-css');
 					if (agendaCss) {
 						agendaCss.parentNode.removeChild(agendaCss);
+					}
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
 					}
 				},
 			}
@@ -732,10 +749,21 @@ window.app = new Framework7({
 						.fail(function (jqxhr, settings, exception) {
 							console.error('Erro ao carregar agenda_prof.js:', exception);
 						});
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove o CSS da agenda_prof ao sair da página
 
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -750,46 +778,24 @@ window.app = new Framework7({
 				},
 				pageInit: function (event, page) {
 
-					// Remove CSS antigo da agenda se existir
-					const oldConfigCss = document.getElementById('config-css');
-					if (oldConfigCss) {
-						oldConfigCss.parentNode.removeChild(oldConfigCss);
-					}
-
-					const oldAgendaCss = document.getElementById('agenda-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
-
-					const oldTreinosCss = document.getElementById('treinos-aluno-css');
-					if (oldTreinosCss) {
-						oldTreinosCss.parentNode.removeChild(oldTreinosCss);
-					}
-
-					const oldProAtletaPlusCss = document.getElementById('proatleta-plus-css');
-					if (oldProAtletaPlusCss) {
-						oldProAtletaPlusCss.parentNode.removeChild(oldProAtletaPlusCss);
-					}
-
-					const oldIndexCss = document.getElementById('index-css');
-					if (oldIndexCss) {
-						oldIndexCss.parentNode.removeChild(oldIndexCss);
-					}
-
-					const oldChatAlunoCss = document.getElementById('chat-aluno-css');
-					if (oldChatAlunoCss) {
-						oldChatAlunoCss.parentNode.removeChild(oldChatAlunoCss);
-					}
-
-					const oldVerTreinosProfCss = document.getElementById('ver-treinos-prof-css');
-					if (oldVerTreinosProfCss) {
-						oldVerTreinosProfCss.parentNode.removeChild(oldVerTreinosProfCss);
-					}
-
-					const oldEscolinhasCss = document.getElementById('escolinhas-css');
-					if (oldEscolinhasCss) {
-						oldEscolinhasCss.parentNode.removeChild(oldEscolinhasCss);
-					}
+					const cssToRemove = [
+						'config-css',
+						'agenda-css',
+						'treinos-aluno-css',
+						'proatleta-plus-css',
+						'index-css',
+						'chat-aluno-css',
+						'ver-treinos-prof-css',
+						'escolinhas-css',
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'perfil-aluno-css';
 					if (!document.getElementById(cssId)) {
@@ -863,28 +869,26 @@ window.app = new Framework7({
 							app.sheet.close(sheet2);
 						});
 					}
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// Remove CSS da página e do Sheet Modal
-					const css = document.getElementById('perfil-aluno-css');
-					if (css) css.remove();
-
-					const popup_profcss = document.getElementById('popup-prof-css');
-					if (popup_profcss) popup_profcss.remove();
-
-					const popup_solicitacoes_css = document.getElementById('popup-solicitacoes-css');
-					if (popup_solicitacoes_css) popup_solicitacoes_css.remove();
-
-					// Remove any other CSS that might be lingering
-					const perfilCss = document.getElementById('perfil-css');
-					if (perfilCss) perfilCss.remove();
-
 					// Clean up any inline styles that might have been added
 					document.querySelectorAll('link[href*="perfil"]').forEach(link => {
 						if (link.id && (link.id.includes('perfil') || link.id.includes('popup'))) {
 							link.remove();
 						}
 					});
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			},
 		},
@@ -899,34 +903,26 @@ window.app = new Framework7({
 					// fazer algo antes da página ser exibida
 
 					$.getScript('js/config.js');
-
 				},
 				pageAfterIn: function (event, page) {
 					// fazer algo depois da página ser exibida
 				},
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
-
-					// Remove CSS antigo da agenda se existir
-					const oldAgendaProfCss = document.getElementById('agenda-css');
-					if (oldAgendaProfCss) {
-						oldAgendaProfCss.parentNode.removeChild(oldAgendaProfCss);
-					}
-
-					const oldPerfilProfCss = document.getElementById('perfil-css');
-					if (oldPerfilProfCss) {
-						oldPerfilProfCss.parentNode.removeChild(oldPerfilProfCss);
-					}
-
-					const oldTreinoProfCss = document.getElementById('treino-prof-css');
-					if (oldTreinoProfCss) {
-						oldTreinoProfCss.parentNode.removeChild(oldTreinoProfCss);
-					}
-
-					const oldIndexProfCss = document.getElementById('index-prof-css');
-					if (oldIndexProfCss) {
-						oldIndexProfCss.parentNode.removeChild(oldIndexProfCss);
-					}
+					const cssToRemove = [
+						'index-prof-css',
+						'treino-prof-css',
+						'perfil-css',
+						'agenda-css'
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
 					const cssId = 'index-css';
 					if (!document.getElementById(cssId)) {
@@ -948,6 +944,12 @@ window.app = new Framework7({
 					document.getElementById('nomeUsuario').textContent = localStorage.getItem('userNome') || 'Usuário';
 					document.getElementById('emailUsuario').textContent = localStorage.getItem('userEmail') || '';
 
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -955,6 +957,10 @@ window.app = new Framework7({
 					const css = document.getElementById('index-css');
 					if (css) css.remove();
 
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1024,6 +1030,13 @@ window.app = new Framework7({
 					btnBuscar.addEventListener('click', () => {
 						buscarEscolinhas(page);
 					});
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// fazer algo antes da página ser removida do DOM
@@ -1031,6 +1044,10 @@ window.app = new Framework7({
 					const css = document.getElementById('inicio-css');
 					if (css) css.remove();
 
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1082,6 +1099,13 @@ window.app = new Framework7({
 							linkContainer.style.display = 'block';
 						});
 					});
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function () {
 					// Remove o CSS da página ao sair dela
@@ -1140,30 +1164,22 @@ window.app = new Framework7({
 				pageInit: function (event, page) {
 					// fazer algo quando a página for inicializada
 
-					const oldLoginCss = document.getElementById('login-css');
-					if (oldLoginCss) {
-						oldLoginCss.parentNode.removeChild(oldLoginCss);
-					}
+					const cssToRemove = [
+						'login-css',
+						'cadastro-css',
+						'inicio-css',
+						'perfil-css',
+						'agenda-prof-css'
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
-					const oldCadastroCss = document.getElementById('cadastro-css');
-					if (oldCadastroCss) {
-						oldCadastroCss.parentNode.removeChild(oldCadastroCss);
-					}
-
-					const oldInicioCss = document.getElementById('inicio-css');
-					if (oldInicioCss) {
-						oldInicioCss.parentNode.removeChild(oldInicioCss);
-					}
-
-					const oldPerfilCss = document.getElementById('perfil-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
-
-					const oldAgendaCss = document.getElementById('agenda-prof-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
 
 					const cssId = 'index-prof-css';
 					if (!document.getElementById(cssId)) {
@@ -1179,12 +1195,18 @@ window.app = new Framework7({
 
 					$.getScript('js/index_prof.js');
 
-
-
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-					
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1311,14 +1333,18 @@ window.app = new Framework7({
 						});
 					}
 
-
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-
-					const css = document.getElementById('perfil-css');
-					if (css) css.remove();
-
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1328,29 +1354,32 @@ window.app = new Framework7({
 			animate: true,
 			on: {
 				pageBeforeIn: function (event, page) {
-					// fazer algo antes da página ser exibida
+					
 				},
 				pageAfterIn: function (event, page) {
-					// fazer algo depois da página ser exibida
+					
 				},
 				pageInit: function (event, page) {
 					console.log('Página treinos_prof inicializando...');
 
-					// Remove CSS antigo da agenda se existir
-					const oldAgendaCss = document.getElementById('agenda-prof-css');
-					if (oldAgendaCss) {
-						oldAgendaCss.parentNode.removeChild(oldAgendaCss);
-					}
-					const oldPerfilCss = document.getElementById('perfil-css');
-					if (oldPerfilCss) {
-						oldPerfilCss.parentNode.removeChild(oldPerfilCss);
-					}
+					// Remove CSS antigo da agenda se existir - com mais CSS para limpar
+					const cssToRemove = [
+						'agenda-prof-css',
+						'perfil-css',
+						'adicionar-treino-css',
+						'ver-treinos-aluno-css',
+						'agenda-css'
+					];
+					
+					cssToRemove.forEach(cssId => {
+						const oldCss = document.getElementById(cssId);
+						if (oldCss) {
+							oldCss.parentNode.removeChild(oldCss);
+							console.log(`Removido CSS antigo: ${cssId}`);
+						}
+					});
 
-					const oldAddTreinoCss = document.getElementById('adicionar-treino-css');
-					if (oldAddTreinoCss) {
-						oldAddTreinoCss.parentNode.removeChild(oldAddTreinoCss);
-					}
-
+					// Garantir que o CSS correto está carregado
 					const cssId = 'treinos-prof-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -1361,6 +1390,7 @@ window.app = new Framework7({
 						link.href = 'css/treinos_prof.css';
 						link.media = 'all';
 						head.appendChild(link);
+						console.log('CSS treinos_prof adicionado');
 					}
 
 					// Carregar o script treinos_prof.js
@@ -1376,10 +1406,21 @@ window.app = new Framework7({
 								carregarAlunosFallback();
 							}, 500);
 						});
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
-					// fazer algo antes da página ser removida do DOM
-					console.log('Saindo da página treinos_prof');
+					// NÃO remover o CSS aqui para evitar problemas quando voltando
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1389,15 +1430,38 @@ window.app = new Framework7({
 			url: 'adicionar_treinos.html',
 			animate: true,
 			on: {
+				pageBeforeIn: function (event, page) {
+					console.log('adicionar_treino: pageBeforeIn');
+					
+					// Limpar CSS conflitantes antes de carregar a página
+					const conflictingCss = [
+						'treinos-prof-css',
+						'ver-treinos-aluno-css', 
+						'ver-treinos-prof-css',
+						'agenda-css',
+						'perfil-css'
+					];
+					
+					conflictingCss.forEach(cssId => {
+						const element = document.getElementById(cssId);
+						if (element) {
+							element.parentNode.removeChild(element);
+						}
+					});
+				},
 				pageInit: function (event, page) {
+					console.log('adicionar_treino: pageInit');
+					
 					// Carrega o script de adicionar treino
 					$.getScript('js/adicionar_treino.js');
 
+					// Remove CSS conflitantes
 					const oldCss = document.getElementById('treinos-prof-css');
 					if (oldCss) {
 						oldCss.parentNode.removeChild(oldCss);
 					}
 
+					// Adiciona CSS específico
 					const cssId = 'adicionar-treino-css';
 					if (!document.getElementById(cssId)) {
 						const head = document.head;
@@ -1408,6 +1472,26 @@ window.app = new Framework7({
 						link.href = 'css/adicionar_treino.css';
 						link.media = 'all';
 						head.appendChild(link);
+					}
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
+				},
+				pageBeforeRemove: function (event, page) {
+					console.log('adicionar_treino: pageBeforeRemove');
+					// Limpar CSS específico ao sair
+					const css = document.getElementById('adicionar-treino-css');
+					if (css) {
+						css.parentNode.removeChild(css);
+					}
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
 					}
 				}
 			}
@@ -1480,6 +1564,12 @@ window.app = new Framework7({
 						head.appendChild(link);
 					}
 
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				}
 			}
 		},
@@ -1587,6 +1677,11 @@ window.app = new Framework7({
 					// Remover CSS
 					const css = document.getElementById('agenda-aluno-css');
 					if (css) css.remove();
+
+					// Remove back button listener
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
 				},
 			}
 		},
@@ -1633,6 +1728,13 @@ window.app = new Framework7({
 
 					// Carrega o script da página
 					$.getScript('js/chat_aluno.js');
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function (event, page) {
 					// Remove o CSS da página ao sair dela
@@ -1663,6 +1765,13 @@ window.app = new Framework7({
 					}
 
 					$.getScript('js/chat_prof.js');
+
+					// Add back button listener for this page
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					
+					// Store reference to remove later
+					page.backButtonHandler = handleBackButton;
 				},
 				pageBeforeRemove: function () {
 					const css = document.getElementById('chat-prof-css');
@@ -1696,7 +1805,9 @@ app.on('routeChange', function (route) {
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
-
+	// Add to navigation history
+	addToHistory(route.url);
+	
 	protegerRotas(route);
 
 	var currentRoute = route.url;
@@ -1727,32 +1838,12 @@ function onDeviceReady() {
 	}
 
 	window.mainView = app.views.create('.view-main', { url: initialUrl });
+	
+	// Remove this duplicate line - the universal handler is already added in each page's pageInit
+	// document.addEventListener("backbutton", handleUniversalBackButton, false);
 
-	document.addEventListener("backbutton", function (e) {
-		if (mainView.router.currentRoute.path === '/index/') {
-			e.preventDefault();
-			app.dialog.create({
-				title: 'Sair do ProAtleta',
-				text: 'Quer mesmo sair do ProAtleta?',
-				buttons: [
-					{
-						text: 'Não',
-						close: true
-					},
-					{
-						text: 'Sim',
-						onClick: function () {
-							navigator.app.exitApp();
-						}
-					}
-				]
-			}).open();
-
-		} else {
-			e.preventDefault();
-			mainView.router.back({ force: true });
-		}
-	}, false);
+	// Remove this duplicate deviceready listener
+	// document.addEventListener("deviceready", onDeviceReady, false);
 
 	// Adicionar tratamento especial para a rota da agenda
 	app.views.main.router.on('routeChange', function (newRoute, previousRoute, router) {
@@ -1796,6 +1887,8 @@ function protegerRotas(route) {
 		'/treinos_prof/',
 		'/ver_treinos_aluno/',
 		'/ver_treinos_prof/',
+		'/chat_aluno/',
+		'/chat_prof/'
 	];
 
 	const estaLogado = localStorage.getItem('loggedIn') === 'true';

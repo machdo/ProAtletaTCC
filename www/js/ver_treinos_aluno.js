@@ -14,7 +14,12 @@
             userId: localStorage.getItem("userId"),
             professorId: localStorage.getItem("professor_id"),
             treinosData: [],
-            inicializado: false
+            inicializado: false,
+            // Dados do aluno - usar email como fonte principal
+            emailAluno: localStorage.getItem('alunoSelecionado') || '',
+            nomeAluno: localStorage.getItem('nomeAlunoSelecionado') || 'Aluno',
+            alunoId: '',
+            fotoAluno: null
         },
 
         utils: {
@@ -99,6 +104,14 @@
                                             </span>
                                         </div>
                                         ${ex.observacoes ? `<div style="margin-top: 8px; font-size: 13px; color: #888;">${ex.observacoes}</div>` : ''}
+                                        ${ex.video_arquivo ? `
+                                            <div class="exercicio-video">
+                                                <video controls width="100%" height="200" preload="metadata">
+                                                    <source src="${ex.video_arquivo}" type="video/mp4">
+                                                    Seu navegador não suporta a reprodução de vídeos.
+                                                </video>
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 `).join('')}
                             </div>
@@ -107,12 +120,83 @@
                 });
                 
                 container.innerHTML = html;
+            },
+
+            atualizarInfoAluno: () => {
+                const nomeElement = document.getElementById('nomeAlunoTreinos');
+                const avatarElement = document.getElementById('alunoAvatarTreinos');
+
+                if (nomeElement) {
+                    nomeElement.textContent = window.SistemaVerTreinos.config.nomeAluno;
+                }
+                
+                // Atualizar avatar
+                if (avatarElement && window.SistemaVerTreinos.config.fotoAluno) {
+                    avatarElement.innerHTML = `<img src="${window.SistemaVerTreinos.config.fotoAluno}" alt="Foto do ${window.SistemaVerTreinos.config.nomeAluno}" onerror="this.src='img/user.jpg'">`;
+                } else if (avatarElement) {
+                    avatarElement.innerHTML = '<i class="ri-user-line"></i>';
+                }
+
+                console.log('Interface do aluno atualizada:', {
+                    nome: window.SistemaVerTreinos.config.nomeAluno,
+                    email: window.SistemaVerTreinos.config.emailAluno
+                });
+            },
+
+            carregarDadosCompletosAluno: () => {
+                const emailAluno = window.SistemaVerTreinos.config.emailAluno;
+                
+                if (!emailAluno) {
+                    console.warn('Email do aluno não encontrado');
+                    window.SistemaVerTreinos.utils.atualizarInfoAluno();
+                    return;
+                }
+
+                console.log('Buscando dados completos do aluno por email:', emailAluno);
+
+                fetch(`https://proatleta.site/get_usuario.php?email=${encodeURIComponent(emailAluno)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.usuario) {
+                            // Atualizar todos os dados do aluno
+                            window.SistemaVerTreinos.config.alunoId = data.usuario.id;
+                            window.SistemaVerTreinos.config.nomeAluno = data.usuario.nome || window.SistemaVerTreinos.config.nomeAluno;
+                            window.SistemaVerTreinos.config.emailAluno = data.usuario.email || window.SistemaVerTreinos.config.emailAluno;
+                            window.SistemaVerTreinos.config.fotoAluno = data.usuario.foto || 'img/user.jpg';
+                            
+                            // Salvar dados atualizados no localStorage para consistência
+                            localStorage.setItem('alunoSelecionadoId', data.usuario.id);
+                            localStorage.setItem('nomeAlunoSelecionado', data.usuario.nome);
+                            
+                            console.log('Dados completos do aluno carregados:', {
+                                id: window.SistemaVerTreinos.config.alunoId,
+                                nome: window.SistemaVerTreinos.config.nomeAluno,
+                                email: window.SistemaVerTreinos.config.emailAluno,
+                                foto: window.SistemaVerTreinos.config.fotoAluno
+                            });
+                        } else {
+                            console.warn('Não foi possível carregar dados completos do aluno');
+                            window.SistemaVerTreinos.config.fotoAluno = 'img/user.jpg';
+                        }
+                        
+                        window.SistemaVerTreinos.utils.atualizarInfoAluno();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar dados completos do aluno:', error);
+                        window.SistemaVerTreinos.config.fotoAluno = 'img/user.jpg';
+                        window.SistemaVerTreinos.utils.atualizarInfoAluno();
+                    });
             }
         },
 
         actions: {
             carregarTreinos: () => {
-                const emailAluno = localStorage.getItem('alunoSelecionado');
+                const emailAluno = window.SistemaVerTreinos.config.emailAluno;
                 const professorId = localStorage.getItem('professor_id');
                 
                 if (!emailAluno) {
@@ -120,18 +204,10 @@
                     return;
                 }
                 
-                // Atualiza header
-                document.getElementById('emailAlunoHeader').textContent = emailAluno;
+                console.log('Carregando treinos para aluno:', emailAluno);
                 
-                // Busca informações do aluno
-                fetch(`https://proatleta.site/get_aluno_info.php?email=${encodeURIComponent(emailAluno)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('nomeAlunoHeader').textContent = data.nome;
-                        }
-                    })
-                    .catch(error => console.error('Erro ao buscar info do aluno:', error));
+                // Carregar dados completos do aluno primeiro
+                window.SistemaVerTreinos.utils.carregarDadosCompletosAluno();
                 
                 // Busca treinos
                 fetch(`https://proatleta.site/get_treinos_aluno.php?email_aluno=${encodeURIComponent(emailAluno)}&professor_id=${professorId}`)
@@ -248,6 +324,13 @@
             const sistema = window.SistemaVerTreinos;
             sistema.config.inicializado = false;
             sistema.config.treinosData = [];
+            
+            // Resetar dados do aluno usando email como fonte principal
+            sistema.config.emailAluno = localStorage.getItem('alunoSelecionado') || '';
+            sistema.config.nomeAluno = localStorage.getItem('nomeAlunoSelecionado') || 'Aluno';
+            sistema.config.alunoId = '';
+            sistema.config.fotoAluno = null;
+            
             sistema.inicializar();
         }
     };
