@@ -53,12 +53,22 @@ function handleUniversalBackButton(e) {
 }
 
 function onDeviceReady() {
-	let initialUrl = '/inicio/';
-	if (localStorage.getItem('loggedIn') === 'true') {
-		initialUrl = '/index/';
-	}
+    let initialUrl = '/index/'; // URL padrão para alunos
 
-	window.mainView = app.views.create('.view-main', { url: initialUrl });
+    // Verifica se o usuário está logado
+    if (localStorage.getItem('loggedIn') === 'true') {
+        const userType = localStorage.getItem('userType'); // Obtém o tipo de usuário do localStorage
+
+        // Define a URL inicial com base no tipo de usuário
+        if (userType === 'prof') {
+            initialUrl = '/prof/';
+        }
+    }
+
+    // Cria a view principal com a URL inicial
+    window.mainView = app.views.create('.view-main', { url: initialUrl });
+
+    console.log(`Aplicativo inicializado com a URL: ${initialUrl}`);
 
 	// Remove this duplicate line - the universal handler is already added in each page's pageInit
 	// document.addEventListener("backbutton", handleUniversalBackButton, false);
@@ -1454,7 +1464,7 @@ window.app = new Framework7({
 					
 					// Carrega o script de adicionar treino
 					$.getScript('js/adicionar_treino.js');
-
+			
 					// Remove CSS conflitantes
 					const oldCss = document.getElementById('treinos-prof-css');
 					if (oldCss) {
@@ -1801,7 +1811,7 @@ app.on('routeChange', function (route) {
 
 
 //Para testes direto no navegador
-var mainView = app.views.create('.view-main', { url: '/inicio/' });
+//var mainView = app.views.create('.view-main', { url: '/index/' });
 
 //EVENTO PARA SABER O ITEM DO MENU ATUAL
 app.on('routeChange', function (route) {
@@ -1832,19 +1842,23 @@ app.on('routeChange', function (route) {
 });
 
 function onDeviceReady() {
-	let initialUrl = '/inicio/';
-	if (localStorage.getItem('loggedIn') === 'true') {
-		initialUrl = '/index/';
-	}
+    let initialUrl = '/inicio/'; // URL padrão para usuários não logados
 
-	window.mainView = app.views.create('.view-main', { url: initialUrl });
+    // Verifica se o usuário está logado
+    if (localStorage.getItem('loggedIn') === 'true') {
+        const userType = localStorage.getItem('userType'); // Obtém o tipo de usuário do localStorage
+
+        // Define a URL inicial com base no tipo de usuário
+        if (userType === 'prof') {
+            initialUrl = '/prof/'; // Página inicial para professores
+        } else {
+            initialUrl = '/index/'; // Página inicial para alunos
+        }
+    }
+
+    // Cria a view principal com a URL inicial
+    window.mainView = app.views.create('.view-main', { url: initialUrl });
 	
-	// Remove this duplicate line - the universal handler is already added in each page's pageInit
-	// document.addEventListener("backbutton", handleUniversalBackButton, false);
-
-	// Remove this duplicate deviceready listener
-	// document.addEventListener("deviceready", onDeviceReady, false);
-
 	// Adicionar tratamento especial para a rota da agenda
 	app.views.main.router.on('routeChange', function (newRoute, previousRoute, router) {
 		console.log('Mudança de rota detectada:', newRoute.path);
