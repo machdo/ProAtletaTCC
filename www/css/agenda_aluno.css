@@ -223,24 +223,71 @@ body {
 }
 
 .evento-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 20px;
-    border-bottom: 1px solid var(--gelo);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--laranja);
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 .evento-item:hover {
-    background-color: var(--gelo);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
-.evento-item:last-child {
-    border-bottom: none;
+.evento-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
 }
 
 .evento-info {
     flex: 1;
+}
+
+.evento-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-deletar-evento {
+    background: #ff4757;
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.btn-deletar-evento:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    background: #ff3838;
+}
+
+.btn-deletar-evento:active {
+    transform: scale(0.95);
+}
+
+.btn-deletar-evento.carregando {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.btn-deletar-evento.carregando i {
+    animation: spin 1s linear infinite;
 }
 
 .evento-titulo {
