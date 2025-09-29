@@ -216,16 +216,30 @@ class AgendaAluno {
 
     configurarFormulario() {
         const form = document.getElementById('formEvento');
-        if (form && !form.hasAttribute('data-listener-added')) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.salvarEvento();
-            });
-            form.setAttribute('data-listener-added', 'true');
+        if (!form) {
+            console.warn('Formulário não encontrado');
+            return;
         }
+
+        console.log('Configurando formulário de eventos...');
+
+        // Remover listeners anteriores para evitar duplicação
+        form.removeEventListener('submit', this.handleFormSubmit);
+        
+        // Adicionar listener para o formulário
+        this.handleFormSubmit = (e) => {
+            e.preventDefault();
+            this.salvarEvento();
+        };
+        
+        form.addEventListener('submit', this.handleFormSubmit);
 
         // Definir horários padrão
         this.definirHorariosDefault();
+        
+        this.loadingSteps.formulario = true;
+        this.verificarCarregamentoCompleto();
+        console.log('Formulário configurado com sucesso');
     }
 
     definirHorariosDefault() {
@@ -233,6 +247,7 @@ class AgendaAluno {
         const horaAtual = agora.getHours().toString().padStart(2, '0');
         const minutoAtual = agora.getMinutes().toString().padStart(2, '0');
         
+        // IDs corretos dos inputs de horário
         const inicioInput = document.getElementById('eventoHorarioInicio');
         const fimInput = document.getElementById('eventoHorarioFim');
         
@@ -491,132 +506,202 @@ class AgendaAluno {
 
         container.innerHTML = eventosDoDia.map(evento => `
             <div class="evento-item">
-                <div class="evento-info">
-                    <div class="evento-titulo">${evento.titulo}</div>
-                    <div class="evento-detalhes">
-                        <div class="evento-horario">
-                            <i class="ri-time-line"></i>
-                            <span>${evento.horario}</span>
+                <div class="evento-header">
+                    <div class="evento-info">
+                        <div class="evento-titulo">${evento.titulo}</div>
+                        <div class="evento-detalhes">
+                            <div class="evento-horario">
+                                <i class="ri-time-line"></i>
+                                <span>${evento.horario}</span>
+                            </div>
+                            <div class="evento-local">
+                                <i class="ri-map-pin-line"></i>
+                                <span>${evento.local}</span>
+                            </div>
                         </div>
-                        <div class="evento-local">
-                            <i class="ri-map-pin-line"></i>
-                            <span>${evento.local}</span>
-                        </div>
+                        ${evento.descricao ? `<div class="evento-descricao">${evento.descricao}</div>` : ''}
                     </div>
-                    ${evento.descricao ? `<div class="evento-descricao">${evento.descricao}</div>` : ''}
+                    <div class="evento-actions">
+                        <button class="btn-deletar-evento" onclick="agendaAlunoInstance.deletarEvento(${evento.id}, '${evento.titulo}')" title="Deletar evento">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         `).join('');
     }
 
-    salvarEvento() {
-        const titulo = document.getElementById('eventoTitulo').value.trim();
-        const horarioInicio = document.getElementById('eventoHorarioInicio').value;
-        const horarioFim = document.getElementById('eventoHorarioFim').value;
-        const local = document.getElementById('eventoLocal').value.trim();
-        const descricao = document.getElementById('eventoDescricao').value.trim();
+    deletarEvento(eventoId, tituloEvento) {
+        // Confirmação antes de deletar
+        const confirmar = confirm(`Tem certeza que deseja deletar o evento "${tituloEvento}"?`);
+        if (!confirmar) return;
 
-        // Validações
-        if (!titulo || !horarioInicio || !horarioFim || !local) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
+        console.log('Deletando evento ID:', eventoId);
+
+        // Encontrar o botão e mostrar loading
+        const btnDeletar = document.querySelector(`button[onclick*="${eventoId}"]`);
+        if (btnDeletar) {
+            btnDeletar.innerHTML = '<i class="ri-loader-4-line"></i>';
+            btnDeletar.classList.add('carregando');
+            btnDeletar.disabled = true;
         }
-
-        // Validar horários
-        if (horarioInicio >= horarioFim) {
-            alert('O horário de início deve ser anterior ao horário de fim.');
-            return;
-        }
-
-        // Mostrar loading
-        const btnSalvar = document.getElementById('btnSalvar');
-        const btnTexto = document.getElementById('btnTexto');
-        if (btnSalvar && btnTexto) {
-            btnTexto.innerHTML = '<i class="ri-loader-4-line"></i> Salvando...';
-            btnSalvar.disabled = true;
-            btnSalvar.classList.add('btn-carregando');
-        }
-
-        const dataEvento = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${this.diaSelecionado.toString().padStart(2, '0')}`;
 
         const dados = {
+            evento_id: eventoId,
             aluno_id: this.alunoId,
-            professor_id: this.professorId,
-            titulo: titulo,
-            descricao: descricao,
-            data_evento: dataEvento,
-            horario_inicio: horarioInicio,
-            horario_fim: horarioFim,
-            local: local, // ← Este campo será mapeado para 'localizacao' no PHP
-            tipo: 'treino'
+            professor_id: this.professorId
         };
 
-        console.log('Salvando evento:', dados);
-
-        fetch('https://proatleta.site/salvar_evento_aluno.php', {
+        fetch('https://proatleta.site/deletar_evento_aluno.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dados)
         })
-            .then(response => {
-                console.log('Status da resposta:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+
+            if (data.success) {
+                // Remover evento da memória local
+                const dataKey = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${this.diaSelecionado.toString().padStart(2, '0')}`;
+                if (this.eventos[dataKey]) {
+                    this.eventos[dataKey] = this.eventos[dataKey].filter(evento => evento.id != eventoId);
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Resposta do servidor:', data);
 
-                if (data.success) {
-                    // Adicionar evento localmente
-                    const dataKey = dataEvento;
-                    if (!this.eventos[dataKey]) {
-                        this.eventos[dataKey] = [];
-                    }
-                    
-                    // Criar objeto do evento com formato consistente
-                    const novoEvento = {
-                        id: data.evento_id,
-                        titulo: titulo,
-                        descricao: descricao,
-                        data: dataEvento,
-                        horario: `${horarioInicio} - ${horarioFim}`,
-                        local: local,
-                        tipo: 'treino',
-                        horario_inicio: horarioInicio,
-                        horario_fim: horarioFim
-                    };
-                    
-                    this.eventos[dataKey].push(novoEvento);
+                // Atualizar interface
+                this.gerarCalendario(); // Regerar para atualizar dias com eventos
+                this.mostrarEventos();
 
-                    // Atualizar interface
-                    this.gerarCalendario();
-                    this.mostrarEventos();
+                // Mostrar sucesso
+                alert('Evento deletado com sucesso!');
+            } else {
+                throw new Error(data.message || 'Erro ao deletar evento');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao deletar evento:', error);
+            alert('Erro ao deletar evento: ' + error.message);
+            
+            // Restaurar botão em caso de erro
+            if (btnDeletar) {
+                btnDeletar.innerHTML = '<i class="ri-delete-bin-line"></i>';
+                btnDeletar.classList.remove('carregando');
+                btnDeletar.disabled = false;
+            }
+        });
+    }
 
-                    // Limpar formulário
-                    this.limparFormulario();
+    salvarEvento() {
+        console.log('Salvando evento...');
 
-                    // Mostrar sucesso
-                    alert('Evento adicionado com sucesso!');
-                } else {
-                    throw new Error(data.message || 'Erro ao salvar evento');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao salvar evento:', error);
-                alert('Erro ao salvar evento: ' + error.message);
-            })
-            .finally(() => {
-                // Restaurar botão
-                if (btnSalvar && btnTexto) {
-                    btnTexto.innerHTML = '<i class="ri-save-line"></i> Salvar Evento';
-                    btnSalvar.disabled = false;
-                    btnSalvar.classList.remove('btn-carregando');
-                }
-            });
+        // Buscar elementos do formulário com IDs corretos
+        const titulo = document.getElementById('eventoTitulo')?.value?.trim();
+        const descricao = document.getElementById('eventoDescricao')?.value?.trim();
+        const horaInicio = document.getElementById('eventoHorarioInicio')?.value;
+        const horaFim = document.getElementById('eventoHorarioFim')?.value;
+        const local = document.getElementById('eventoLocal')?.value?.trim();
+        const tipo = 'treino'; // Valor fixo já que não há select no HTML
+
+        // Validações
+        if (!titulo) {
+            this.mostrarErro('Título é obrigatório');
+            return;
+        }
+
+        if (!horaInicio || !horaFim) {
+            this.mostrarErro('Horários são obrigatórios');
+            return;
+        }
+
+        if (!local) {
+            this.mostrarErro('Local é obrigatório');
+            return;
+        }
+
+        // Verificar se hora de início é menor que hora de fim
+        if (horaInicio >= horaFim) {
+            this.mostrarErro('Hora de início deve ser menor que hora de fim');
+            return;
+        }
+
+        // Preparar data do evento
+        const dataEvento = `${this.anoAtual}-${(this.mesAtual + 1).toString().padStart(2, '0')}-${this.diaSelecionado.toString().padStart(2, '0')}`;
+
+        // Preparar dados para envio
+        const dadosEvento = {
+            aluno_id: parseInt(this.alunoId),
+            professor_id: parseInt(this.professorId),
+            titulo: titulo,
+            descricao: descricao || '',
+            data_evento: dataEvento,
+            horario_inicio: horaInicio,
+            horario_fim: horaFim,
+            local: local,
+            tipo: tipo
+        };
+
+        console.log('Dados do evento:', dadosEvento);
+
+        // Mostrar loading no botão
+        const btnSalvar = document.querySelector('#formEvento button[type="submit"]');
+        const textoOriginal = btnSalvar?.innerHTML;
+        if (btnSalvar) {
+            btnSalvar.innerHTML = '<i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i> Salvando...';
+            btnSalvar.disabled = true;
+        }
+
+        // Enviar para o servidor
+        fetch('https://proatleta.site/salvar_evento_aluno.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dadosEvento)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+
+            if (data.success) {
+                // Limpar formulário
+                this.limparFormulario();
+                
+                // Recarregar apenas os dados necessários
+                this.eventos = {}; // Limpar cache de eventos
+                this.eventosCarregados = {}; // Limpar controle de carregamento
+                this.carregarEventosAluno(); // Recarregar eventos
+                this.gerarCalendario(); // Atualizar calendário
+                
+                // Mostrar sucesso
+                alert('Evento salvo com sucesso!');
+                
+                console.log('Evento salvo e interface atualizada!');
+            } else {
+                throw new Error(data.message || 'Erro desconhecido');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao salvar evento:', error);
+            this.mostrarErro('Erro ao salvar evento: ' + error.message);
+            
+            // Restaurar botão em caso de erro
+            if (btnSalvar && textoOriginal) {
+                btnSalvar.innerHTML = textoOriginal;
+                btnSalvar.disabled = false;
+            }
+        });
     }
 
     limparFormulario() {
@@ -626,6 +711,7 @@ class AgendaAluno {
             this.definirHorariosDefault();
         }
     }
+
 }
 
 // =================================================================
@@ -644,9 +730,24 @@ function mudarMesAluno(direcao) {
     }
 }
 
+// Adicionar função global para compatibilidade
+function salvarEvento() {
+    if (agendaAlunoInstance) {
+        agendaAlunoInstance.salvarEvento();
+    } else {
+        console.error('Instância da agenda não encontrada');
+    }
+}
+
 function limparFormulario() {
     if (agendaAlunoInstance) {
         agendaAlunoInstance.limparFormulario();
+    }
+}
+
+function deletarEvento(eventoId, tituloEvento) {
+    if (agendaAlunoInstance) {
+        agendaAlunoInstance.deletarEvento(eventoId, tituloEvento);
     }
 }
 
@@ -665,6 +766,8 @@ window.agendaAlunoInstance = agendaAlunoInstance;
 window.voltar = voltar;
 window.mudarMesAluno = mudarMesAluno;
 window.limparFormulario = limparFormulario;
+window.salvarEvento = salvarEvento;
+window.deletarEvento = deletarEvento;
 
 // Auto-inicializar se elementos existirem
 if (document.readyState === 'loading') {
