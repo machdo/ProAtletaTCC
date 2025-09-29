@@ -98,55 +98,46 @@
                     <!-- Formulário para Adicionar Evento -->
                     <div class="form-adicionar-evento">
                         <div class="form-header">
-                            <h3>
-                                <i class="ri-calendar-event-line"></i>
-                                Adicionar Evento
-                            </h3>
+                            <h3>Adicionar Evento</h3>
                             <div class="data-selecionada" id="dataSelecionada">
-                                Dia selecionado
+                                Selecione um dia no calendário
                             </div>
                         </div>
 
                         <form id="formEvento">
                             <div class="form-group">
                                 <label for="eventoTitulo">Título do Evento *</label>
-                                <input type="text" id="eventoTitulo" class="form-input" 
-                                       placeholder="Ex: Treino de força, Avaliação física..." required>
+                                <input type="text" id="eventoTitulo" placeholder="Ex: Treino de Futebol" required>
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group half">
-                                    <label for="eventoHorarioInicio">Horário Início *</label>
+                                <div class="form-group">
+                                    <label for="eventoHorarioInicio">Hora Início *</label>
                                     <input type="time" id="eventoHorarioInicio" class="form-input" required>
                                 </div>
-                                <div class="form-group half">
-                                    <label for="eventoHorarioFim">Horário Fim *</label>
+                                <div class="form-group">
+                                    <label for="eventoHorarioFim">Hora Fim *</label>
                                     <input type="time" id="eventoHorarioFim" class="form-input" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="eventoLocal">Local *</label>
-                                <input type="text" id="eventoLocal" class="form-input" 
-                                       placeholder="Ex: Academia Central, Campo de futebol..." required>
+                                <input type="text" id="eventoLocal" placeholder="Ex: Campo de Futebol">
                             </div>
 
                             <div class="form-group">
                                 <label for="eventoDescricao">Descrição (opcional)</label>
-                                <textarea id="eventoDescricao" class="form-input form-textarea" 
-                                          placeholder="Observações adicionais sobre o evento..."></textarea>
+                                <textarea id="eventoDescricao" placeholder="Detalhes adicionais do evento..." rows="3"></textarea>
                             </div>
 
                             <div class="form-actions">
-                                <button type="button" class="btn-limpar" onclick="limparFormulario()">
-                                    <i class="ri-refresh-line"></i>
+                                <button type="button" onclick="limparFormulario()" class="btn-limpar">
                                     Limpar
                                 </button>
-                                <button type="submit" class="btn-salvar" id="btnSalvar">
-                                    <span id="btnTexto">
-                                        <i class="ri-save-line"></i>
-                                        Salvar Evento
-                                    </span>
+                                <button type="submit" class="btn-salvar">
+                                    <i class="ri-save-line"></i>
+                                    Salvar Evento
                                 </button>
                             </div>
                         </form>
