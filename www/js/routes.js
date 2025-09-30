@@ -1966,4 +1966,5 @@ function carregarDadosUsuarioFresh(userType) {
 		.catch(error => {
 			console.error('Erro ao carregar dados do usuário:', error);
 		});
+
 }
