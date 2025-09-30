@@ -1,12 +1,36 @@
 .page-content {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 150px; /* altura da tab-bar */
+    padding-bottom: 150px;
+    /* altura da tab-bar */
 }
 
 /* ========================================
    INFO DO ALUNO CARD
    ======================================== */
+
+.color-orange {
+    background-color: #f86100;
+}
+
+.empty-state .mdi-clipboard-text-outline {
+    font-size: 80px;
+    color: #2196f3;
+    margin-bottom: -10px;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%; 
+    margin-top: 50px; 
+}
 
 .aluno-info-card {
     background: white;
@@ -124,29 +148,29 @@
     text-transform: uppercase;
 }
 
-.tipo-musculacao { 
-    background: #e3f2fd; 
-    color: #1976d2; 
+.tipo-musculacao {
+    background: #e3f2fd;
+    color: #1976d2;
 }
 
-.tipo-cardio { 
-    background: #fce4ec; 
-    color: #c2185b; 
+.tipo-cardio {
+    background: #fce4ec;
+    color: #c2185b;
 }
 
-.tipo-funcional { 
-    background: #e8f5e9; 
-    color: #388e3c; 
+.tipo-funcional {
+    background: #e8f5e9;
+    color: #388e3c;
 }
 
-.tipo-esporte { 
-    background: #fff3e0; 
-    color: #f57c00; 
+.tipo-esporte {
+    background: #fff3e0;
+    color: #f57c00;
 }
 
-.tipo-outro { 
-    background: #f3e5f5; 
-    color: #7b1fa2; 
+.tipo-outro {
+    background: #f3e5f5;
+    color: #7b1fa2;
 }
 
 /* ========================================
@@ -357,6 +381,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -367,6 +392,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -374,8 +400,22 @@
 }
 
 /* Delay nas animações dos cards */
-.treino-card:nth-child(1) { animation-delay: 0.1s; }
-.treino-card:nth-child(2) { animation-delay: 0.2s; }
-.treino-card:nth-child(3) { animation-delay: 0.3s; }
-.treino-card:nth-child(4) { animation-delay: 0.4s; }
-.treino-card:nth-child(5) { animation-delay: 0.5s; }
+.treino-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.treino-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.treino-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.treino-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.treino-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
