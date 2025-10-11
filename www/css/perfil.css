@@ -51,7 +51,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin: 10px auto 10px auto;
     max-width: 400px;
-    width: 100%;
+    width: 90%;
     box-sizing: border-box;
     position: relative;
     margin-top: 7%;
@@ -62,7 +62,7 @@ body {
     padding: 10px 8px;
     margin: 3% auto 10px auto !important;
     max-width: 400px;
-    width: 100%;
+    width: 90%;
     box-sizing: border-box;
     min-height: 195px;
     height: 195px;
@@ -296,7 +296,7 @@ body {
     flex-direction: column;
     justify-content: center;
     max-width: 400px;
-    width: 100%;
+    width: 90%;
     padding: 15px;
     border-radius: 12px;
     font-size: 15px;

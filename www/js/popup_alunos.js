@@ -46,6 +46,23 @@ if (!finalIdProf) {
                         </div>`;
                     container.appendChild(div); // Adiciona a div ao container
 
+                    var infosButton = div.querySelector(".btn-chat");
+                    infosButton.addEventListener("click", function () {
+                        // Fecha o sheet modal antes de navegar
+                        const sheet = document.getElementById('sheetAlunos');
+                        if (sheet) {
+                            app.sheet.close(sheet);
+                        }
+
+                        // Salva os dados do aluno no localStorage
+                        localStorage.setItem('alunoNome', aluno.nome_aluno);
+                        localStorage.setItem('alunoEmail', aluno.email);
+                        localStorage.setItem('alunoFoto', aluno.foto);
+
+                        // Navega para a página de informações do professor
+                        app.views.main.router.navigate('/chat_prof/');
+                    });
+
                     // Função que executa a deleção
                     function executarDelecao(alunoIdLocal) {
                         fetch("https://proatleta.site/delete_aluno_professor.php", {
