@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#2196f3">
+    <title>Notificações</title>
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/notificacao.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="view view-main">
+            <div class="page">
+                <div class="top-nav2">
+                    <!-- exemplo: botão que mostra badge (classe btn-noti deve existir na sua barra) -->
+                    <a class="link back">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </a>
+                    <div class="page-title">Notificações</div>
+                </div>
+
+                <div class="page-content">
+                    <div class="block">
+                        <div id="notifsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="lib/framework7-bundle.min.js"></script>
+        <script src="lib/jquery-3.7.0.min.js"></script>
+        <script src="js/routes.js"></script>
+        <script src="js/push.js"></script>
+        <script src="js/notificacao.js"></script>
+</body>
+
+</html>
