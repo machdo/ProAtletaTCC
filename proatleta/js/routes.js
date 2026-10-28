@@ -2005,6 +2005,31 @@ window.app = new Framework7({
 			}
 		},
 		{
+			// Escolinhas, clubes e instituições: criar conta e publicar peneiras
+			path: '/instituicao/',
+			url: 'instituicao.html',
+			animate: true,
+			on: {
+				pageInit: function (event, page) {
+					page = page || event; // o Framework7 pode passar só a página
+					$.getScript('js/instituicao.js');
+
+					const handleBackButton = (e) => handleUniversalBackButton(e);
+					document.addEventListener("backbutton", handleBackButton, false);
+					page.backButtonHandler = handleBackButton;
+				},
+				pageAfterIn: function () {
+					if (typeof window.iniciarInstituicao === 'function') window.iniciarInstituicao();
+				},
+				pageBeforeRemove: function (event, page) {
+					page = page || event;
+					if (page.backButtonHandler) {
+						document.removeEventListener("backbutton", page.backButtonHandler, false);
+					}
+				},
+			}
+		},
+		{
 			path: '/prof/',
 			url: 'index_prof.html',
 			animate: true,

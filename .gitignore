@@ -1,0 +1,7 @@
+# Credenciais reais da API (copie api/config.exemplo.php)
+api/config.php
+Website/php/config.php
+# Banco local de desenvolvimento
+scripts/dev/*.sqlite
+node_modules/
+.DS_Store

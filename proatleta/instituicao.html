@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#f86100">
+    <title>Escolinha ou clube</title>
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css">
+    <link rel="stylesheet" href="css/remixicon/remixicon.css">
+    <link rel="stylesheet" href="css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="css/proatleta-ui.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="view view-main">
+            <div data-name="instituicao" class="page pa-pagina">
+
+                <div class="pa-topo">
+                    <a href="#" class="pa-icone back" aria-label="Voltar"><i class="ri-arrow-left-s-line"></i></a>
+                    <h1 class="pa-topo__titulo">Escolinha ou clube</h1>
+                </div>
+
+                <div class="page-content">
+                    <div class="pa-conteudo">
+
+                        <!-- Entrar ou criar conta -->
+                        <div id="inEntrada" class="pa-conteudo" style="padding:0">
+                            <div class="pa-hero pa-anima">
+                                <h2>Publique sua <em>peneira</em></h2>
+                                <p>Cadastro gratuito. Sua peneira aparece no app e no site, com o local no mapa.</p>
+                            </div>
+
+                            <div class="pa-abas pa-anima" role="tablist">
+                                <button type="button" role="tab" aria-selected="true" data-aba="inCriar">Criar conta</button>
+                                <button type="button" role="tab" aria-selected="false" data-aba="inEntrar">Já tenho conta</button>
+                            </div>
+
+                            <form class="pa-form pa-caixa pa-anima" id="inCriar" novalidate>
+                                <div class="pa-campo"><label for="inNome">Nome da instituição</label><input id="inNome" name="nome" maxlength="120" autocomplete="organization"><span class="pa-erro"></span></div>
+                                <div class="pa-campo"><label for="inTipo">Tipo</label>
+                                    <select id="inTipo" name="tipo"><option value="escolinha">Escolinha</option><option value="clube">Clube</option><option value="instituto">Instituto</option><option value="projeto social">Projeto social</option><option value="outro">Outro</option></select>
+                                </div>
+                                <div class="pa-duas">
+                                    <div class="pa-campo"><label for="inCidade">Cidade</label><input id="inCidade" name="cidade" autocomplete="address-level2"></div>
+                                    <div class="pa-campo"><label for="inTel">WhatsApp</label><input id="inTel" name="telefone" type="tel" inputmode="numeric"></div>
+                                </div>
+                                <div class="pa-campo"><label for="inEmail">E-mail</label><input id="inEmail" name="email" type="email" autocomplete="email"><span class="pa-erro"></span></div>
+                                <div class="pa-campo"><label for="inSenha">Senha</label><input id="inSenha" name="senha" type="password" autocomplete="new-password"><small>8 caracteres ou mais, com uma maiúscula e um número.</small><span class="pa-erro"></span></div>
+                                <p class="pa-aviso"></p>
+                                <button type="submit" class="pa-btn pa-btn--bloco">Criar conta</button>
+                            </form>
+
+                            <form class="pa-form pa-caixa" id="inEntrar" novalidate hidden>
+                                <div class="pa-campo"><label for="inEmail2">E-mail</label><input id="inEmail2" name="email" type="email" autocomplete="email"><span class="pa-erro"></span></div>
+                                <div class="pa-campo"><label for="inSenha2">Senha</label><input id="inSenha2" name="senha" type="password" autocomplete="current-password"><span class="pa-erro"></span></div>
+                                <p class="pa-aviso"></p>
+                                <button type="submit" class="pa-btn pa-btn--bloco">Entrar</button>
+                            </form>
+                        </div>
+
+                        <!-- Painel da instituição -->
+                        <div id="inPainel" class="pa-conteudo" style="padding:0" hidden>
+                            <div class="pa-hero">
+                                <h2 id="inOla">Olá</h2>
+                                <p>Publique e acompanhe suas peneiras.</p>
+                            </div>
+
+                            <form class="pa-form pa-caixa" id="inPeneira" novalidate>
+                                <div class="pa-secao-titulo" style="margin:0"><h2>Nova peneira</h2></div>
+                                <div class="pa-campo"><label for="pTitulo">Título</label><input id="pTitulo" name="titulo" maxlength="140" placeholder="Peneira de futebol Sub-13"><span class="pa-erro"></span></div>
+                                <div class="pa-campo"><label for="pEsporte">Esporte</label>
+                                    <select id="pEsporte" name="esporte"><option>Futebol</option><option>Futsal</option><option>Vôlei</option><option>Basquete</option><option>Handebol</option><option>Outro</option></select>
+                                </div>
+                                <div class="pa-duas">
+                                    <div class="pa-campo"><label for="pData">Data</label><input id="pData" name="data_peneira" type="date"><span class="pa-erro"></span></div>
+                                    <div class="pa-campo"><label for="pHora">Hora</label><input id="pHora" name="hora" type="time"></div>
+                                </div>
+                                <div class="pa-campo"><label for="pCategorias">Categorias</label><input id="pCategorias" name="categorias" placeholder="Sub-13, Sub-15"></div>
+                                <div class="pa-campo"><label for="pPosicoes">Posições (opcional)</label><input id="pPosicoes" name="posicoes" placeholder="Goleiro, Atacante"></div>
+                                <div class="pa-campo"><label for="pEndereco">Endereço do local</label><input id="pEndereco" name="endereco" placeholder="Rua, número e bairro"><span class="pa-erro"></span></div>
+                                <div class="pa-duas">
+                                    <div class="pa-campo"><label for="pCidade">Cidade</label><input id="pCidade" name="cidade"><span class="pa-erro"></span></div>
+                                    <div class="pa-campo"><label for="pEstado">Estado</label><input id="pEstado" name="estado" value="SP" maxlength="2"></div>
+                                </div>
+                                <button type="button" class="pa-btn pa-btn--contorno" id="pVerMapa"><i class="ri-map-pin-line"></i>Conferir no mapa</button>
+                                <div class="pa-campo"><label for="pLink">Link de inscrição (opcional)</label><input id="pLink" name="link_inscricao" type="url" placeholder="https://"><span class="pa-erro"></span></div>
+                                <div class="pa-campo"><label for="pDescricao">O que o atleta precisa saber</label><textarea id="pDescricao" name="descricao" placeholder="O que levar, documentos, autorização dos responsáveis..."></textarea></div>
+                                <p class="pa-aviso"></p>
+                                <button type="submit" class="pa-btn pa-btn--bloco">Publicar peneira</button>
+                            </form>
+
+                            <div class="pa-caixa">
+                                <div class="pa-secao-titulo" style="margin-top:0"><h2>Suas peneiras</h2></div>
+                                <div id="inMinhas"></div>
+                            </div>
+
+                            <button type="button" class="pa-btn pa-btn--contorno pa-btn--bloco" id="inSair">Sair da conta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="lib/framework7-bundle.min.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/instituicao.js"></script>
+</body>
+
+</html>

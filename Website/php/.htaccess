@@ -1,0 +1,3 @@
+<FilesMatch "^(config.*|_conexao)\.php$">
+    Require all denied
+</FilesMatch>

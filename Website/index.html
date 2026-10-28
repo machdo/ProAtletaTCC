@@ -1,295 +1,284 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- GOOGLE FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
-        rel="stylesheet">
-    <!-- FIM GOOGLE FONTS -->
-    <!--BOOTSTRAP-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!--FIM BOOTSTRAP-->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <script src="js/menumobile.js" defer></script>
-    <title>ProAtleta</title>
+    <title>ProAtleta | Peneiras e escolinhas esportivas</title>
+    <meta name="description" content="Encontre peneiras de futebol, futsal e vôlei perto de você, veja o local no mapa e treine com a sua escolinha pelo app ProAtleta.">
+    <meta name="theme-color" content="#f86100">
+    <link rel="icon" type="image/webp" href="images/logofooter.webp">
+    <link rel="preload" href="lib/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/site.css">
+    <script type="importmap">{ "imports": { "three": "./lib/three.module.min.js" } }</script>
 </head>
 
 <body>
-    <header class="header">
-        <div class="interface">
-            <div class="logo">
-                <a href="#">
-                    <img src="images/logo_branca.png" alt="Logo branca" class="logo-branca" width="320px" height="75px">
-                    <img src="images/logo_laranja.png" alt="Logo laranja" class="logo-laranja" width="320px"
-                        height="75px">
-                </a>
-            </div><!-- logo -->
+    <a class="pular" href="#main">Pular para o conteúdo</a>
 
-            <nav class="menu-desktop">
+    <header class="topo">
+        <div class="container topo__barra">
+            <a class="topo__logo" href="index.html" aria-label="ProAtleta, página inicial">
+                <img class="logo-laranja" src="images/logo_laranja.webp" alt="ProAtleta" width="640" height="143">
+                <img class="logo-branca" src="images/logo_branca.webp" alt="" width="640" height="143">
+            </a>
+            <nav class="nav" aria-label="Principal">
                 <ul>
-                    <li><a href="#inicio">Início</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#sobre">Sobre nós</a></li>
-                    <li><a href="#aplicacoes">Aplicações</a></li>
-                    <li><a href="#contato">Contate-nos</a></li>
+                    <li><a href="peneiras.html">Peneiras</a></li>
+                    <li><a href="#escolinhas">Para escolinhas</a></li>
+                    <li><a href="#app">O app</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#contato">Contato</a></li>
                 </ul>
             </nav>
-
-            <div class="btn-login">
-                <button class="login" onclick="abrirPopup()">Cadastrar</button>
-            </div><!-- btn-cadastrar -->
-
-            <div class="btn-abrir-menu" id="btn-menu">
-                <i class="bi bi-list"></i>
+            <div class="topo__acoes">
+                <a class="btn btn--pequeno btn--escuro" href="#" data-abrir-cadastro>Criar conta</a>
             </div>
-            <div class="menu-mobile" id="menu-mobile">
-                <div class="btn-fechar">
-                    <i class="bi bi-x-lg"></i>
-                </div>
+            <button class="btn-menu" type="button" aria-expanded="false" aria-controls="menu-movel" aria-label="Abrir menu"><span></span></button>
+        </div>
+    </header>
 
-                <nav>
+    <div class="menu-movel" id="menu-movel">
+        <ul>
+            <li><a class="grande" href="peneiras.html">Peneiras</a></li>
+            <li><a class="grande" href="#escolinhas">Para escolinhas</a></li>
+            <li><a class="grande" href="#app">O app</a></li>
+            <li><a class="grande" href="#sobre">Sobre</a></li>
+            <li><a class="grande" href="#contato">Contato</a></li>
+        </ul>
+        <a class="btn btn--escuro" href="#" data-abrir-cadastro>Criar conta de atleta</a>
+    </div>
+
+    <main id="main" tabindex="-1">
+        <section class="hero" id="inicio" aria-labelledby="hero-titulo">
+            <div class="container hero__grade">
+                <div>
+                    <p class="hero__ao-vivo rotulo" id="ao-vivo" hidden><b data-total>0</b> peneiras abertas agora</p>
+                    <h1 class="display hero__titulo" id="hero-titulo">
+                        <span class="linha"><span>Sua próxima</span></span>
+                        <span class="linha"><span class="destaque">peneira</span></span>
+                        <span class="linha"><span>está aqui.</span></span>
+                    </h1>
+                    <p class="lede hero__texto">Ache peneiras de futebol, futsal e vôlei perto de você, veja o local no mapa e treine com a sua escolinha pelo app.</p>
+                    <div class="hero__acoes">
+                        <a class="btn" href="peneiras.html">Ver peneiras <span class="seta" aria-hidden="true">→</span></a>
+                        <a class="btn btn--contorno" href="instituicoes.html">Sou escolinha ou clube</a>
+                    </div>
+                </div>
+                <div class="hero__palco" data-bola3d>
+                    <div class="hero__bola-estatica" aria-hidden="true"></div>
+                    <div class="hero__sombra" aria-hidden="true"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="faixa" aria-hidden="true">
+            <div class="faixa__trilho">
+                <span class="faixa__item">Futebol</span><span class="faixa__item">Futsal</span><span class="faixa__item">Vôlei</span><span class="faixa__item">Basquete</span><span class="faixa__item">Handebol</span><span class="faixa__item">Futebol feminino</span><span class="faixa__item">Futebol</span><span class="faixa__item">Futsal</span><span class="faixa__item">Vôlei</span><span class="faixa__item">Basquete</span>
+            </div>
+        </div>
+
+        <section class="secao secao-escura" id="destaques" aria-labelledby="destaques-titulo">
+            <div class="container">
+                <div class="cabeca-secao" data-revelar>
+                    <div>
+                        <p class="rotulo">Melhores peneiras</p>
+                        <h2 class="display titulo-secao" id="destaques-titulo">Em destaque <span class="destaque">agora</span></h2>
+                    </div>
+                    <a class="link-seta" href="peneiras.html">Ver todas as peneiras <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="trilho-destaques" id="destaques-lista" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="secao" id="como-funciona" aria-labelledby="como-titulo">
+            <div class="container">
+                <div class="cabeca-secao" data-revelar>
+                    <div>
+                        <p class="rotulo">Para atletas</p>
+                        <h2 class="display titulo-secao" id="como-titulo">Do sonho ao <span class="destaque">campo</span></h2>
+                    </div>
+                    <p class="lede">Tudo que você precisa para chegar na peneira preparado, num lugar só.</p>
+                </div>
+                <div class="passos" data-cal>
+                    <svg class="cal" viewBox="0 0 120 1000" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M60 0 C 110 120, 10 220, 60 340 S 110 560, 60 680 S 10 880, 60 1000" vector-effect="non-scaling-stroke" />
+                    </svg>
+                    <article class="passo">
+                        <div class="passo__texto" data-revelar>
+                            <span class="passo__num" aria-hidden="true">1</span>
+                            <h3>Ache a peneira certa</h3>
+                            <p>Filtre por cidade, esporte e categoria. As escolinhas e clubes publicam direto no ProAtleta, e a gente junta também as notícias de peneiras que saem na internet.</p>
+                        </div>
+                        <div class="passo__visual" data-revelar><img src="images/tela2.webp" alt="Tela do app ProAtleta com busca de escolinhas e botão de peneiras" width="560" height="1106" loading="lazy"></div>
+                    </article>
+                    <article class="passo">
+                        <div class="passo__texto" data-revelar>
+                            <span class="passo__num" aria-hidden="true">2</span>
+                            <h3>Chegue no lugar sem erro</h3>
+                            <p>Cada peneira mostra o local no Google Maps, o horário, as posições e o que levar. Um toque em "Como chegar" e o mapa traça a rota.</p>
+                        </div>
+                        <div class="passo__visual passo__visual--mapa" data-revelar id="mapa-exemplo">
+                            <div class="mapa-fundo"><span class="rotulo">Mapa do local da peneira</span></div>
+                        </div>
+                    </article>
+                    <article class="passo">
+                        <div class="passo__texto" data-revelar>
+                            <span class="passo__num" aria-hidden="true">3</span>
+                            <h3>Treine com a sua escolinha</h3>
+                            <p>Pelo app você recebe os treinos do professor, acompanha a agenda e conversa no chat. A evolução fica registrada.</p>
+                        </div>
+                        <div class="passo__visual" data-revelar><img src="images/tela3.webp" alt="Tela de agenda do app ProAtleta com treinos marcados" width="560" height="1106" loading="lazy"></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao secao-laranja" id="escolinhas" aria-labelledby="escolinhas-titulo">
+            <div class="container escolinhas__grade">
+                <div data-revelar>
+                    <p class="rotulo">Para escolinhas, clubes e instituições</p>
+                    <h2 class="display titulo-secao" id="escolinhas-titulo">Publique sua peneira no ProAtleta</h2>
+                    <ul class="lista-check">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9.5"/></svg>Cadastro gratuito da sua instituição em menos de dois minutos.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9.5"/></svg>Sua peneira aparece no site e no app, com o local no mapa.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9.5"/></svg>Atletas filtram por categoria e posição, então chega quem você procura.</li>
+                    </ul>
+                    <a class="btn btn--escuro" href="instituicoes.html">Cadastrar minha instituição <span class="seta" aria-hidden="true">→</span></a>
+                </div>
+                <div class="previa" data-revelar>
+                    <p class="rotulo previa__rotulo">Assim sua peneira aparece</p>
+                    <div id="previa-cartao"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao secao-escura" id="app" aria-labelledby="app-titulo">
+            <div class="container app__grade">
+                <div>
+                    <div class="cabeca-secao" data-revelar style="margin-bottom:0">
+                        <div>
+                            <p class="rotulo">O app ProAtleta</p>
+                            <h2 class="display titulo-secao" id="app-titulo">A escolinha no seu <span class="destaque">bolso</span></h2>
+                        </div>
+                    </div>
+                    <div class="recursos">
+                        <div class="recurso" data-revelar>
+                            <h3>Treinos</h3>
+                            <p>O professor monta o treino com os exercícios e você vê tudo no celular.</p>
+                        </div>
+                        <div class="recurso" data-revelar>
+                            <h3>Agenda</h3>
+                            <p>Treinos, jogos e peneiras no mesmo calendário, com aviso antes.</p>
+                        </div>
+                        <div class="recurso" data-revelar>
+                            <h3>Chat</h3>
+                            <p>Fale com o professor sem misturar com o grupo da família.</p>
+                        </div>
+                        <div class="recurso" data-revelar>
+                            <h3>Peneiras</h3>
+                            <p>As melhores oportunidades perto de você, com mapa e inscrição.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="telas" aria-label="Telas do app">
+                    <img src="images/tela1.webp" alt="Tela de abertura do app" width="560" height="1106" loading="lazy">
+                    <img src="images/tela2.webp" alt="Tela inicial com busca de escolinhas" width="560" height="1106" loading="lazy">
+                    <img src="images/tela3.webp" alt="Tela de agenda" width="560" height="1106" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="secao" id="sobre" aria-labelledby="sobre-titulo">
+            <div class="container sobre__grade">
+                <div class="sobre__foto" data-revelar>
+                    <img src="images/garoto.webp" alt="Atleta segurando uma bola de basquete" width="900" height="973" loading="lazy">
+                </div>
+                <div class="sobre__texto" data-revelar>
+                    <p class="rotulo" style="color:var(--laranja-forte)">Quem somos</p>
+                    <h2 class="display titulo-secao" id="sobre-titulo">Muito prazer, somos <span class="destaque">ProAtleta</span></h2>
+                    <p class="lede">Nascemos para ajudar a nova geração de atletas a chegar mais longe no esporte, ligando atletas, famílias, professores e escolinhas.</p>
+                    <p>Sabemos como é difícil descobrir onde e quando acontecem as peneiras, e como faz falta um canal simples entre o atleta e a escolinha. O ProAtleta resolve essas duas coisas.</p>
+                    <div class="hero__acoes">
+                        <a class="btn" href="#" data-abrir-cadastro>Criar conta de atleta</a>
+                        <a class="btn btn--contorno" href="https://instagram.com/proatleta2025/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao secao-escura" id="contato" aria-labelledby="contato-titulo">
+            <div class="container contato__grade">
+                <div data-revelar>
+                    <p class="rotulo" style="color:var(--laranja)">Fale com a gente</p>
+                    <h2 class="display titulo-secao" id="contato-titulo">Bora <span class="destaque">conversar</span></h2>
+                    <p class="lede" style="margin-top:var(--e4)">Dúvidas, parcerias ou quer levar o ProAtleta para a sua escolinha? Mande uma mensagem.</p>
+                    <div class="contato__canais">
+                        <a href="mailto:proatleta1@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 7 8.5-7"/></svg>proatleta1@gmail.com</a>
+                        <a href="https://instagram.com/proatleta2025/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>@proatleta2025</a>
+                    </div>
+                </div>
+                <form class="form caixa" id="form-contato" novalidate data-revelar style="background:var(--preto-2);border-color:var(--linha-escura)">
+                    <div class="duas">
+                        <div class="campo"><label for="c-nome">Nome</label><input id="c-nome" name="nome" autocomplete="name" required><span class="erro" aria-live="polite"></span></div>
+                        <div class="campo"><label for="c-celular">Celular <span class="dica">(opcional)</span></label><input id="c-celular" name="celular" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(11) 91234-5678"><span class="erro"></span></div>
+                    </div>
+                    <div class="campo"><label for="c-email">E-mail</label><input id="c-email" name="email" type="email" autocomplete="email" required><span class="erro" aria-live="polite"></span></div>
+                    <div class="campo"><label for="c-msg">Mensagem</label><textarea id="c-msg" name="mensagem" required></textarea><span class="erro" aria-live="polite"></span></div>
+                    <button class="btn" type="submit">Enviar mensagem</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="container">
+            <p class="rodape__marca" aria-hidden="true">ProAtleta</p>
+            <div class="rodape__linha">
+                <p>&copy; <span data-ano>2026</span> ProAtleta. Todos os direitos reservados.</p>
+                <nav aria-label="Rodapé">
                     <ul>
-                        <li><a href="#inicio">Início</a></li>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="#sobre">Sobre nós</a></li>
-                        <li><a href="#aplicacoes">Aplicações</a></li>
-                        <li><a href="#contato">Contate-nos</a></li>
-                        <li><a href="cadastro.html">Cadastrar</a></li>
+                        <li><a href="peneiras.html">Peneiras</a></li>
+                        <li><a href="instituicoes.html">Para instituições</a></li>
+                        <li><a href="mailto:proatleta1@gmail.com">proatleta1@gmail.com</a></li>
                     </ul>
                 </nav>
-            </div><!-- menu-mobile -->
-            <div class="overlay-menu" id="overlay-menu"></div>
-        </div><!-- interface -->
-    </header>
-    <main>
-        <section class="topo-do-site" id="inicio">
-            <div class="interface">
-                <div class="flex">
-                    <div class="txt-topo-site">
-                        <h1><span>VIVA</span> O ESPORTE <span>INTENSAMENTE!</span></h1>
-                        <p>O ProAtleta oferece o suporte e a motivação que os jovens atletas precisam para alcançar suas
-                            metas dentro e fora de campo. Nosso objetivo é ajudar cada criança a desenvolver suas
-                            habilidades, confiança e saúde física a qualquer hora, em qualquer lugar, em qualquer idade
-                            e em qualquer nível de experiência.
-                        </p>
-                        <div class="btn-login">
-                            <a href="#"></a>
-                            <button>
-                                <img src="images/botao.png" alt="botao" width="450px" height="225px">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="img-topo-site">
-                        <img src="images/garoto.png" alt="garoto" width="550px" height="600px">
-                    </div>
-                </div>
             </div>
-        </section> <!-- topo do site-->
+        </div>
+    </footer>
 
-        <section class="servicos" id="servicos">
-            <div class="interface">
-                <div class="gradient-separator" role="separator" aria-orientation="horizontal"></div>
-                <h2 class="titulo">NOSSOS <span>SERVIÇOS</span></h2>
-
-                <div class="flex">
-                    <div class="servicos-box">
-                        <i class="bi bi-clipboard-check"></i>
-                        <h3>Treinos</h3>
-                        <p>Treinamento realizado pelos professores da sua escolinha de preferência.</p>
-                    </div><!--serviços-box-->
-
-                    <div class="servicos-box">
-                        <i class="bi bi-dribbble"></i>
-                        <h3>Esportes</h3>
-                        <p>Atendemos a uma grande variedade de esportes, como: futebol, basquete, vôlei, tênis e muito
-                            mais.</p>
-                    </div><!--serviços-box-->
-
-                    <div class="servicos-box">
-                        <i class="bi bi-heart-pulse"></i>
-                        <h3>Saúde</h3>
-                        <p>O esporte é fundamental para uma vida saudável, pois auxilia no combate à depressão e à
-                            ansiedade, melhora as relações sociais, aumenta a autoestima e contribui para a prevenção de
-                            doenças.</p>
-                    </div><!--serviços-box-->
-
-                    <div class="servicos-box">
-                        <i class="bi bi-chat-dots"></i>
-                        <h3>Comunicação</h3>
-                        <p>A comunicação é essencial nas escolinhas, pois ajuda a construir uma boa relação entre
-                            professores, alunos e pais.</p>
-                    </div><!--serviços-box-->
-                </div><!--flex-->
-            </div><!--interface-->
-            <div class="gradient-separator" role="separator" aria-orientation="horizontal" style="margin-top: 120px;">
+    <dialog class="modal" id="dlg-cadastro" aria-labelledby="dlg-cadastro-titulo">
+        <div class="modal__cabeca">
+            <div>
+                <p class="rotulo" style="color:var(--laranja-forte)">Conta de atleta</p>
+                <h2 id="dlg-cadastro-titulo">Crie sua conta</h2>
             </div>
-        </section><!--serviços-->
-
-
-
-        <section class="sobre" id="sobre">
-            <div class="interface">
-                <div class="flex">
-                    <div class="img-sobre">
-                        <img src="images/nos.png" alt="nos" width="300px" height="500px">
-                    </div><!--img sobre-->
-
-                    <div class="txt-sobre">
-                        <h2>MUITO PRAZER, <span>SOMOS PRO ATLETA</span></h2>
-                        <p>Uma empresa criada com o intuito de ajudar a nova geração de atletas a alcançar seus
-                            objetivos esportivos. Com uma interface simples e fácil de usar, facilita a interação dos
-                            atletas com a escolinha.
-
-
-                        </p>
-
-                        <p>Sabendo das dificuldades enfrentadas pela nova geração, buscamos facilitar sua
-                            profissionalização no esporte de sua preferência.
-
-                        </p>
-                        <div class="btn-social">
-                            <a href="https://instagram.com/proatleta2025/"><button class="contato" style="background-color: #f85f00;"><i
-                                        class="bi bi-instagram" style="color: #ffffff;"></i></button></a>
-                        </div><!--btn-social-->
-                    </div><!--txt-sobre-->
-
-                </div><!--interface-->
-        </section><!--sobre-->
-
-        <section class="aplicacoes" id="aplicacoes">
-            <div class="interface">
-                <h2 class="titulo">INTERFACE <span>INTUITIVA</span> E <span>MODERNA</span></h2>
-                <p>Design pensado para oferecer a melhor experiência para o usuário, com informações claras e navegação
-                    fluida.</p>
-                <div class="flex">
-                    <div class="img-apli">
-                        <img src="images/tela1.png" alt="tela1" width="540px" height="675px">
-                        <h1>Tela Inicial</h1>
-                        <p style="color: grey;">Imagem de abertura com destaque para o usuário segurando uma bola de
-                            basquete. A tela chama o usuário para começar a usar o app.</p>
-                    </div><!--img-aplicações-->
-
-                    <div class="img-apli">
-                        <img src="images/tela2.png" alt="tela2" width="540px" height="675px">
-                        <h1>Tela de Início</h1>
-                        <p style="color: grey;">Interface de seleção de escolinhas esportivas, com campo de busca e
-                            botão para acessar peneiras. Visual limpo, foco na escolha rápida do usuário.</p>
-                    </div><!--img-aplicações-->
-
-                    <div class="img-apli">
-                        <img src="images/tela3.png" alt="tela3" width="540px" height="675px">
-                        <h1>Agenda</h1>
-                        <p style="color: grey;">Exibição do calendário com os treinos ou eventos do usuário. Interface
-                            clara, mostrando datas e horários de forma organizada, permitindo fácil acompanhamento.</p>
-                    </div><!--img-aplicações-->
-
-                </div><!-- interface -->
-        </section><!-- aplicacoes -->
-
-        <section class="formulario" id="contato">
-            <div class="interface">
-                <h2 class="titulo"> FALE <span>CONOSCO</span></h2>
-
-                <form id="contactForm" action="php/enviar.php" method="POST">
-                    <input type="text" name="nome" placeholder="Seu nome" required>
-                    <input type="email" name="email" placeholder="Seu email" required>
-                    <input type="tel" name="celular" placeholder="Seu celular" required>
-                    <textarea name="mensagem" placeholder="Sua mensagem" required></textarea>
-                    <div class="btn-enviar"><input type="submit" value="ENVIAR"></div>
-                </form>
-
-                <!-- Popup Menssagem -->
-
-                <div class="overlay-popup" id="popup-mensagem">
-                    <div class="popup" style="text-align: center; justify-items: center;">
-                        <p id="popupMessage" style="padding-bottom: 25px;"></p>
-                        <button class="close" id="popupClose"
-                            style="font-size: 20px; width: 50px;"><strong>OK</strong></button>
-                    </div>
+            <button class="fechar" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+        <div class="modal__corpo">
+            <form class="form" novalidate>
+                <div class="campo"><label for="cad-nome">Nome completo</label><input id="cad-nome" name="nome" autocomplete="name" maxlength="60" required><span class="erro" aria-live="polite"></span></div>
+                <div class="campo"><label for="cad-email">E-mail</label><input id="cad-email" name="email" type="email" autocomplete="email" maxlength="60" required><span class="erro" aria-live="polite"></span></div>
+                <div class="duas">
+                    <div class="campo"><label for="cad-senha">Senha</label><div class="olho"><input id="cad-senha" name="senha" type="password" autocomplete="new-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="erro" aria-live="polite"></span></div>
+                    <div class="campo"><label for="cad-confirmar">Confirme a senha</label><div class="olho"><input id="cad-confirmar" name="confirmar" type="password" autocomplete="new-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="erro" aria-live="polite"></span></div>
                 </div>
+                <p class="dica" style="font-size:15px;color:var(--texto-suave)">8 caracteres ou mais, com uma letra maiúscula e um número.</p>
+                <p class="form-aviso" role="status"></p>
+                <button class="btn" type="submit">Criar minha conta</button>
+                <p style="font-size:15px;color:var(--texto-suave)">É escolinha ou clube? <a href="instituicoes.html" style="color:var(--laranja-forte);font-weight:700">Cadastre sua instituição</a>.</p>
+            </form>
+        </div>
+    </dialog>
 
-            </div><!-- interface -->
-        </section><!-- formulario -->
-
-        <footer>
-            <div class="interface">
-                <div class="line-footer">
-                    <div class="flex">
-                        <div class="logo-footer">
-                            <img src="images/logofooter.png" alt="LogoProAtleta" width="70px" height="70px">
-                        </div><!-- logo-footer -->
-                        <div class="btn-social">
-                            <a href="https://instagram.com/proatleta2025/"><button class="contato"><i
-                                        class="bi bi-instagram" style="color: #f85f00;"></i></button></a>
-                        </div><!--btn-social-->
-                    </div>
-                </div><!-- line-footer -->
-
-                <div class="line-footer borda" style="display: flex; justify-content: space-between;">
-
-                    <p><i class="bi bi-envelope-fill" style="color: #ffffff;"></i> <a style="color: #ffffff;"
-                            href="mailto:proatleta1@gmail.com">proatleta1@gmail.com</a></p>
-
-                    <p style="font-size: 18px; color: #ffffff;">&copy; 2025 ProAtleta. Todos os direitos reservados.</p>
-                </div><!-- line-footer -->
-
-                <!-- Popup -->
-                <div class="overlay-popup" id="overlay-popup">
-                    <div class="popup">
-                        <div class="header-popup">
-                            <h2>Cadastro</h2>
-                            <button class="close" onclick="fecharPopup()">✖</button>
-                        </div>
-                        <form id="cadastroForm"
-                            action="https://proatleta.site/cadastro_site.php"
-                            method="POST">
-                            <div class="input-group">
-                                <i class="fas fa-user"></i>
-                                <input type="text" placeholder="Seu nome" required name="nome" id="nome">
-                            </div>
-
-                            <div class="input-group">
-                                <i class="fas fa-at"></i>
-                                <input type="email" placeholder="Ex: nome@gmail.com" required name="email" id="email">
-                            </div>
-
-                            <div class="input-group">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" placeholder="Sua senha" required name="senha" id="senha">
-                                <i id="viewPassword" class="fas fa-eye olho"></i>
-                            </div>
-
-                            <div class="input-group">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" placeholder="Confirme sua senha" required name="confirmar"
-                                    id="confirmar">
-                                <i id="viewPassword2" class="fas fa-eye olho"></i>
-                            </div>
-
-
-                            <p id="mensagem" style="color: #f85f00;"></p>
-
-                            <button class="submit" type="submit"><span>Cadastrar</span></button>
-                        </form>
-                    </div>
-                </div>
-
-            </div><!-- interface -->
-        </footer>
-
-    </main>
-    <script src="js/cadastro_site.js"></script>
-    <script src="js/mascara_cadastro.js"></script>
-    <script src="js/divisor.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/enviar.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="lib/gsap.min.js"></script>
+    <script src="lib/ScrollTrigger.min.js"></script>
+    <script src="lib/lenis.min.js"></script>
+    <script src="lib/motion.js"></script>
+    <script src="js/peneiras-dados.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/home.js"></script>
+    <script type="module" src="js/bola3d.js"></script>
 </body>
 
 </html>

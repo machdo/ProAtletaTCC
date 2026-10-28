@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para escolinhas e clubes | ProAtleta</title>
+    <meta name="description" content="Escolinhas, clubes e instituições: cadastre-se de graça e publique suas peneiras no site e no app ProAtleta.">
+    <meta name="theme-color" content="#141210">
+    <link rel="icon" type="image/webp" href="images/logofooter.webp">
+    <link rel="preload" href="lib/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+
+<body>
+    <a class="pular" href="#main">Pular para o conteúdo</a>
+    <header class="topo topo--sobre-escuro">
+        <div class="container topo__barra">
+            <a class="topo__logo" href="index.html" aria-label="ProAtleta, página inicial">
+                <img class="logo-laranja" src="images/logo_laranja.webp" alt="ProAtleta" width="640" height="143">
+                <img class="logo-branca" src="images/logo_branca.webp" alt="" width="640" height="143">
+            </a>
+            <nav class="nav" aria-label="Principal">
+                <ul>
+                    <li><a href="peneiras.html">Peneiras</a></li>
+                    <li><a href="index.html#escolinhas">Para escolinhas</a></li>
+                    <li><a href="index.html#app">O app</a></li>
+                    <li><a href="index.html#sobre">Sobre</a></li>
+                    <li><a href="index.html#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="topo__acoes">
+                <a class="btn btn--pequeno btn--escuro" href="#" data-abrir-cadastro>Criar conta</a>
+            </div>
+            <button class="btn-menu" type="button" aria-expanded="false" aria-controls="menu-movel" aria-label="Abrir menu"><span></span></button>
+        </div>
+    </header>
+
+    <div class="menu-movel" id="menu-movel">
+        <ul>
+            <li><a class="grande" href="peneiras.html">Peneiras</a></li>
+            <li><a class="grande" href="index.html#escolinhas">Para escolinhas</a></li>
+            <li><a class="grande" href="index.html#app">O app</a></li>
+            <li><a class="grande" href="index.html#sobre">Sobre</a></li>
+            <li><a class="grande" href="index.html#contato">Contato</a></li>
+        </ul>
+        <a class="btn btn--escuro" href="#" data-abrir-cadastro>Criar conta de atleta</a>
+    </div>
+    <main id="main" tabindex="-1">
+        <section class="cabecalho-pagina" aria-labelledby="pg-titulo">
+            <svg class="cal" viewBox="0 0 520 520" aria-hidden="true" data-cal><path d="M40 60h440v400H40zM40 160h110v200H40M480 160H370v200h110" /></svg>
+            <div class="container" style="position:relative">
+                <p class="rotulo" style="color:var(--laranja)">Escolinhas, clubes e instituições</p>
+                <h1 class="display" id="pg-titulo">Publique sua <span class="destaque">peneira</span></h1>
+                <p class="lede">Cadastro gratuito. Sua peneira aparece no site e no app ProAtleta, com o local no mapa, para atletas da sua região.</p>
+            </div>
+        </section>
+
+        <section class="secao" style="padding-top:var(--e8)">
+            <div class="container">
+                <!-- Visitante: criar conta ou entrar -->
+                <div id="area-entrada" class="painel-conta">
+                    <div class="caixa">
+                        <div class="abas" role="tablist" aria-label="Acesso da instituição">
+                            <button type="button" role="tab" id="aba-criar" aria-controls="form-criar" aria-selected="true">Criar conta</button>
+                            <button type="button" role="tab" id="aba-entrar" aria-controls="form-entrar" aria-selected="false">Já tenho conta</button>
+                        </div>
+
+                        <form class="form" id="form-criar" role="tabpanel" aria-labelledby="aba-criar" novalidate>
+                            <div class="campo"><label for="i-nome">Nome da instituição</label><input id="i-nome" name="nome" autocomplete="organization" maxlength="120" required><span class="erro" aria-live="polite"></span></div>
+                            <div class="duas">
+                                <div class="campo"><label for="i-tipo">Tipo</label>
+                                    <select id="i-tipo" name="tipo">
+                                        <option value="escolinha">Escolinha</option>
+                                        <option value="clube">Clube</option>
+                                        <option value="instituto">Instituto</option>
+                                        <option value="projeto social">Projeto social</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                </div>
+                                <div class="campo"><label for="i-tel">Telefone ou WhatsApp</label><input id="i-tel" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(11) 91234-5678"></div>
+                            </div>
+                            <div class="duas">
+                                <div class="campo"><label for="i-cidade">Cidade</label><input id="i-cidade" name="cidade" autocomplete="address-level2" placeholder="São Paulo"></div>
+                                <div class="campo"><label for="i-site">Site ou Instagram <span class="dica">(opcional)</span></label><input id="i-site" name="site" placeholder="https://instagram.com/suaescolinha"></div>
+                            </div>
+                            <div class="campo"><label for="i-email">E-mail</label><input id="i-email" name="email" type="email" autocomplete="email" required><span class="erro" aria-live="polite"></span></div>
+                            <div class="campo"><label for="i-senha">Senha</label><div class="olho"><input id="i-senha" name="senha" type="password" autocomplete="new-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="dica">8 caracteres ou mais, com uma letra maiúscula e um número.</span><span class="erro" aria-live="polite"></span></div>
+                            <p class="form-aviso" role="status"></p>
+                            <button class="btn" type="submit">Criar conta da instituição</button>
+                        </form>
+
+                        <form class="form" id="form-entrar" role="tabpanel" aria-labelledby="aba-entrar" novalidate hidden>
+                            <div class="campo"><label for="e-email">E-mail</label><input id="e-email" name="email" type="email" autocomplete="email" required><span class="erro" aria-live="polite"></span></div>
+                            <div class="campo"><label for="e-senha">Senha</label><div class="olho"><input id="e-senha" name="senha" type="password" autocomplete="current-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="erro" aria-live="polite"></span></div>
+                            <p class="form-aviso" role="status"></p>
+                            <button class="btn" type="submit">Entrar</button>
+                        </form>
+                    </div>
+                    <aside class="painel-conta__lado">
+                        <h2 class="display" style="font-size:clamp(36px,4vw,52px)">Como funciona</h2>
+                        <ul class="lista-check" style="margin:0">
+                            <li><span class="cartao__data" style="width:44px;padding:6px 0"><span class="dia" style="font-size:22px">1</span></span>Crie a conta da sua instituição.</li>
+                            <li><span class="cartao__data" style="width:44px;padding:6px 0"><span class="dia" style="font-size:22px">2</span></span>Preencha a peneira: data, endereço, categorias e posições.</li>
+                            <li><span class="cartao__data" style="width:44px;padding:6px 0"><span class="dia" style="font-size:22px">3</span></span>Ela entra no ar no site e no app, com o mapa do local.</li>
+                        </ul>
+                        <p style="color:var(--texto-suave)">Instituições verificadas ganham o selo e aparecem mais alto em "Melhores peneiras". A verificação é feita pela equipe ProAtleta.</p>
+                    </aside>
+                </div>
+
+                <!-- Instituição logada: publicar e gerenciar -->
+                <div id="area-painel" hidden>
+                    <div class="bem-vindo">
+                        <div>
+                            <p class="rotulo" style="color:var(--laranja-forte)">Painel da instituição</p>
+                            <h2 class="display" style="font-size:clamp(36px,5vw,60px)" id="ola">Olá</h2>
+                        </div>
+                        <button class="btn btn--contorno btn--pequeno" type="button" id="sair">Sair</button>
+                    </div>
+                    <div class="painel-conta">
+                        <form class="form caixa" id="form-peneira" novalidate>
+                            <h2>Nova peneira</h2>
+                            <div class="campo"><label for="p-titulo">Título</label><input id="p-titulo" name="titulo" maxlength="140" placeholder="Peneira de futebol Sub-13 e Sub-15" required><span class="erro" aria-live="polite"></span></div>
+                            <div class="tres">
+                                <div class="campo"><label for="p-esporte">Esporte</label>
+                                    <select id="p-esporte" name="esporte">
+                                        <option>Futebol</option><option>Futsal</option><option>Vôlei</option><option>Basquete</option><option>Handebol</option><option>Outro</option>
+                                    </select>
+                                </div>
+                                <div class="campo"><label for="p-data">Data</label><input id="p-data" name="data_peneira" type="date" required><span class="erro" aria-live="polite"></span></div>
+                                <div class="campo"><label for="p-hora">Hora</label><input id="p-hora" name="hora" type="time"></div>
+                            </div>
+                            <div class="campo"><label for="p-categorias">Categorias</label><input id="p-categorias" name="categorias" placeholder="Sub-13, Sub-15"><span class="dica">Separe por vírgula.</span></div>
+                            <div class="campo"><label for="p-posicoes">Posições <span class="dica">(opcional)</span></label><input id="p-posicoes" name="posicoes" placeholder="Goleiro, Zagueiro, Atacante"></div>
+                            <div class="campo"><label for="p-endereco">Endereço do local</label><input id="p-endereco" name="endereco" autocomplete="street-address" placeholder="Rua, número e bairro" required><span class="erro" aria-live="polite"></span></div>
+                            <div class="duas">
+                                <div class="campo"><label for="p-cidade">Cidade</label><input id="p-cidade" name="cidade" autocomplete="address-level2" required><span class="erro" aria-live="polite"></span></div>
+                                <div class="campo"><label for="p-estado">Estado</label><input id="p-estado" name="estado" maxlength="2" value="SP" autocomplete="address-level1"></div>
+                            </div>
+                            <div class="duas">
+                                <div class="campo"><label for="p-vagas">Vagas <span class="dica">(opcional)</span></label><input id="p-vagas" name="vagas" type="number" min="1" inputmode="numeric"></div>
+                                <div class="campo"><label for="p-gratuita">Inscrição</label>
+                                    <select id="p-gratuita" name="gratuita"><option value="1">Gratuita</option><option value="0">Com taxa</option></select>
+                                </div>
+                            </div>
+                            <div class="campo"><label for="p-link">Link de inscrição <span class="dica">(opcional)</span></label><input id="p-link" name="link_inscricao" type="url" placeholder="https://"><span class="erro" aria-live="polite"></span></div>
+                            <div class="campo"><label for="p-descricao">O que o atleta precisa saber</label><textarea id="p-descricao" name="descricao" maxlength="2000" placeholder="O que levar, idade mínima, documentos, autorização dos responsáveis..."></textarea></div>
+                            <p class="form-aviso" role="status"></p>
+                            <button class="btn" type="submit">Publicar peneira</button>
+                        </form>
+                        <aside class="painel-conta__lado">
+                            <p class="rotulo" style="color:var(--laranja-forte)">Prévia</p>
+                            <div id="previa"></div>
+                            <div class="mapa" id="previa-mapa" style="margin:0">
+                                <div class="mapa-fundo"><span>Digite o endereço para ver o local no mapa</span></div>
+                            </div>
+                            <div class="caixa" style="padding:var(--e5)">
+                                <h2 style="font-size:32px">Suas peneiras</h2>
+                                <div class="minhas" id="minhas"></div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="rodape">
+        <div class="container">
+            <p class="rodape__marca" aria-hidden="true">ProAtleta</p>
+            <div class="rodape__linha">
+                <p>&copy; <span data-ano>2026</span> ProAtleta. Todos os direitos reservados.</p>
+                <nav aria-label="Rodapé">
+                    <ul>
+                        <li><a href="peneiras.html">Peneiras</a></li>
+                        <li><a href="instituicoes.html">Para instituições</a></li>
+                        <li><a href="mailto:proatleta1@gmail.com">proatleta1@gmail.com</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+    <dialog class="modal" id="dlg-cadastro" aria-labelledby="dlg-cadastro-titulo">
+        <div class="modal__cabeca">
+            <div>
+                <p class="rotulo" style="color:var(--laranja-forte)">Conta de atleta</p>
+                <h2 id="dlg-cadastro-titulo">Crie sua conta</h2>
+            </div>
+            <button class="fechar" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+        <div class="modal__corpo">
+            <form class="form" novalidate>
+                <div class="campo"><label for="cad-nome">Nome completo</label><input id="cad-nome" name="nome" autocomplete="name" maxlength="60" required><span class="erro" aria-live="polite"></span></div>
+                <div class="campo"><label for="cad-email">E-mail</label><input id="cad-email" name="email" type="email" autocomplete="email" maxlength="60" required><span class="erro" aria-live="polite"></span></div>
+                <div class="duas">
+                    <div class="campo"><label for="cad-senha">Senha</label><div class="olho"><input id="cad-senha" name="senha" type="password" autocomplete="new-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="erro" aria-live="polite"></span></div>
+                    <div class="campo"><label for="cad-confirmar">Confirme a senha</label><div class="olho"><input id="cad-confirmar" name="confirmar" type="password" autocomplete="new-password" required><button type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div><span class="erro" aria-live="polite"></span></div>
+                </div>
+                <p class="dica" style="font-size:15px;color:var(--texto-suave)">8 caracteres ou mais, com uma letra maiúscula e um número.</p>
+                <p class="form-aviso" role="status"></p>
+                <button class="btn" type="submit">Criar minha conta</button>
+                <p style="font-size:15px;color:var(--texto-suave)">É escolinha ou clube? <a href="instituicoes.html" style="color:var(--laranja-forte);font-weight:700">Cadastre sua instituição</a>.</p>
+            </form>
+        </div>
+    </dialog>
+    <script src="lib/gsap.min.js"></script>
+    <script src="lib/ScrollTrigger.min.js"></script>
+    <script src="lib/lenis.min.js"></script>
+    <script src="lib/motion.js"></script>
+    <script src="js/peneiras-dados.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/instituicoes.js"></script>
+</body>
+
+</html>

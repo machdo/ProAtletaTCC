@@ -2,66 +2,84 @@
 <html>
 
 <head>
-    <!-- Required meta tags-->
     <meta charset="utf-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar (Android only) -->
-    <meta name="theme-color" content="#2196f3">
-    <!-- Your app title -->
+    <meta name="theme-color" content="#f86100">
     <title>Peneiras</title>
-    <!-- Path to Framework7 Library Bundle CSS -->
     <link rel="stylesheet" href="lib/framework7-bundle.min.css">
-    <!-- CSS PERSONALIZADO PARA MENU-->
-    <link rel="stylesheet" href="css/escolinhas.css">
-    <!--Ícones Material Design-->
     <link rel="stylesheet" href="css/materialdesignicons.min.css">
-    <!-- Ícones Remix Icons -->
     <link rel="stylesheet" href="css/remixicon/remixicon.css">
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/peneiras.css">
-
+    <link rel="stylesheet" href="css/proatleta-ui.css">
 </head>
 
 <body>
-    <!-- App root element -->
     <div id="app">
-
-        <!-- Your main view, should have "view-main" class -->
         <div class="view view-main">
-            <!-- Initial Page, "data-name" contains page name -->
-            <div data-name="peneiras" class="page">
+            <div data-name="peneiras" class="page pa-pagina">
 
-                <!-- Top Navbar -->
-                <div class="top-nav2">
-                    <h1 class="title-logo2">Peneiras</h1>
-                    <div class="navbar-btn">
-                        <a href="#" class="btn-voltar back">
-                            <i class="ri-arrow-left-s-line"></i>
-                        </a>
-                    </div>
+                <div class="pa-topo">
+                    <a href="#" class="pa-icone back" aria-label="Voltar"><i class="ri-arrow-left-s-line"></i></a>
+                    <h1 class="pa-topo__titulo">Peneiras</h1>
+                    <button type="button" class="pa-icone" id="pnAtualizar" aria-label="Atualizar"><i class="ri-refresh-line"></i></button>
                 </div>
 
-                <!-- Scrollable page content -->
-                <div class="page-content">
-                    <div class="peneiras-container">
-                        <div id="peneirasContainer">
-                            <!-- Peneiras serão carregadas aqui via JS -->
-                        </div>
+                <div class="page-content ptr-content" data-ptr-distance="60" data-ptr-mousewheel="false">
+                    <div class="ptr-preloader">
+                        <div class="preloader"></div>
+                        <div class="ptr-arrow"></div>
+                    </div>
+
+                    <div class="pa-conteudo">
+                        <p class="pa-status" id="pnStatus" aria-live="polite"></p>
+
+                        <label class="pa-busca pa-anima">
+                            <i class="ri-search-line" aria-hidden="true"></i>
+                            <input type="search" id="pnBusca" placeholder="Clube, posição ou categoria" autocomplete="off" aria-label="Buscar peneira">
+                        </label>
+
+                        <div class="pa-chips pa-anima" id="pnEsportes" aria-label="Esporte"></div>
+                        <div class="pa-chips pa-anima" id="pnCidades" aria-label="Cidade"></div>
+
+                        <section id="pnBlocoDestaques">
+                            <div class="pa-secao-titulo">
+                                <h2>Melhores peneiras</h2>
+                            </div>
+                            <div class="pa-trilho" id="pnDestaques"></div>
+                        </section>
+
+                        <section>
+                            <div class="pa-secao-titulo">
+                                <h2>Todas as peneiras</h2>
+                                <span id="pnContagem"></span>
+                            </div>
+                            <div class="pa-lista" id="pnLista"></div>
+                        </section>
+
+                        <section>
+                            <div class="pa-secao-titulo">
+                                <h2>Notícias de peneiras</h2>
+                            </div>
+                            <p class="pa-status" id="pnNoticiasStatus"></p>
+                            <div class="pa-lista" id="pnNoticias"></div>
+                        </section>
+
+                        <a href="/instituicao/" class="pa-convite pa-anima">
+                            <i class="mdi mdi-shield-star-outline" aria-hidden="true"></i>
+                            <span><strong>É escolinha ou clube?</strong>Publique sua peneira no ProAtleta</span>
+                            <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Path to Framework7 Library Bundle JS-->
     <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
-    <!-- jQuery -->
     <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
-    <!-- Roteamento do app-->
     <script type="text/javascript" src="js/routes.js"></script>
     <script src="cordova.js"></script>
-    <script src="js/esporte_escolinha.js"></script>
     <script src="js/peneiras.js"></script>
 </body>
 

@@ -1,9 +1,12 @@
-<?php 
+<?php
+ini_set('display_errors', '0');
+require __DIR__ . '/_conexao.php';
+
 if (isset($_GET['email'], $_GET['token'])) {
     $email = $_GET['email'];
     $token = $_GET['token'];
 
-    $conn = new mysqli("localhost", "u339248760_proatleta1", "Vini@#07alves", "u339248760_proatleta");
+    $conn = conectar();
 
     if ($conn->connect_error) {
         die("Erro de conexão.");
